@@ -1,0 +1,57 @@
+{
+  "name": "project02",
+  "version": "0.0.1",
+  "description": "A Quasar Project",
+  "productName": "Quasar App",
+  "author": "elliotbradly <elliotbradly@gmail.com>",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "dev-pivot": "cd artefact && cd 999.pivot && node run.cjs"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.16.4",
+    "@root/walk": "^1.1.0",
+    "aedes": "^0.50.0",
+    "async-mqtt": "2.2.1",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
+    "browserify": "^17.0.0",
+    "chance": "^1.1.11",
+    "commander": "^11.1.0",
+    "contro": "^2.2.0",
+    "dot": "^1.1.3",
+    "dotenv": "^16.3.1",
+    "electron-store": "^8.1.0",
+    "h3-js": "^3.7.2",
+    "honeycomb-grid": "^3.1.8",
+    "luxon": "^3.4.3",
+    "moment": "^2.29.4",
+    "pinia": "^2.0.11",
+    "pixi.js-legacy": "^7.3.2",
+    "quasar": "^2.6.0",
+    "rx-lite": "^4.0.8",
+    "string": "^3.3.3",
+    "stringify": "^5.2.0",
+    "terminal-kit": "^3.0.1",
+    "typescript-ioc": "^3.2.2",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0",
+    "websocket-stream": "^5.5.2",
+    "xterm": "^5.3.0"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^1.3.0",
+    "autoprefixer": "^10.4.2",
+    "electron": "^27.0.2",
+    "electron-packager": "^17.1.2",
+    "postcss": "^8.4.14"
+  },
+  "engines": {
+    "node": "^18 || ^16 || ^14.19",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}

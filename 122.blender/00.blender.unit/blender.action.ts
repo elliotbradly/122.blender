@@ -1,0 +1,18 @@
+import { Action } from "../99.core/interface/action.interface";
+import  BlenderBit  from "./fce/blender.bit";
+
+// Blender actions
+
+export const INIT_BLENDER = "[Blender action] Init Blender";
+export class InitBlender implements Action {
+ readonly type = INIT_BLENDER;
+ constructor(public bale: BlenderBit) {}
+}
+
+export const UPDATE_BLENDER = "[Blender action] Update Blender";
+export class UpdateBlender implements Action {
+ readonly type = UPDATE_BLENDER;
+ constructor(public bale: BlenderBit) {}
+}
+
+export type Actions = | InitBlender | UpdateBlender ;
