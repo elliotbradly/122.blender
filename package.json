@@ -9,7 +9,8 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "dev-pivot": "cd artefact && cd 999.pivot && node run.cjs"
+    "dev-pivot": "cd artefact && cd 999.pivot && node run.cjs",
+    "blender": "cd blender &&  blender.exe"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",

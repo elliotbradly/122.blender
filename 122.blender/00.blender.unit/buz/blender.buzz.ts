@@ -28,7 +28,7 @@ export const updateBlender = (cpy: BlenderModel, bal:BlenderBit, ste: State) => 
 
   const { exec } = require('child_process');
 
-  exec('quasar dev -m electron', async (err, stdout, stderr) => {
+  exec('npm run blender', async (err, stdout, stderr) => {
 
     if (bal.slv != null) bal.slv({ condBit: { idx: "open-control", dat: {} } });
 
