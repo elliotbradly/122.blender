@@ -22,9 +22,10 @@ export const initBlender = async (cpy: BlenderModel, bal:BlenderBit, ste: State)
  return cpy;
 };
 
+
+
 export const updateBlender = (cpy: BlenderModel, bal:BlenderBit, ste: State) => {
 
-  debugger
 
   const { exec } = require('child_process');
 
@@ -38,9 +39,27 @@ export const updateBlender = (cpy: BlenderModel, bal:BlenderBit, ste: State) => 
 };
 
 
+export const openBlender = (cpy: BlenderModel, bal:BlenderBit, ste: State) => {
+
+
+  const { exec } = require('child_process');
+
+  exec('quasar dev -m electron', async (err, stdout, stderr) => {
+
+    if (bal.slv != null) bal.slv({ condBit: { idx: "open-control", dat: {} } });
+
+  })
+
+
+  return cpy;
+  };
+
 
 
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
+
+
+
 
 import { BlenderModel } from "../blender.model";
 import BlenderBit from "../fce/blender.bit";

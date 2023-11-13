@@ -391,11 +391,16 @@ exports.updateVisage = updateVisage;
 const mountVisage = async (cpy, bal, ste) => {
     if (typeof window != "object")
         return bal.slv({ fceBit: { idx: "error-size-visage", dat: {} } });
+    if (bal.dat.h != null)
+        bal.dat.height = bal.dat.h;
+    if (bal.dat.w != null)
+        bal.dat.width = bal.dat.h;
     if (bal.dat != null)
         bal.dat = { width: bal.dat.width, height: bal.dat.height };
     else
         bal.dat = { width: null, height: null };
     bal.dat.typ = VISAGE.MOUNT_FULL;
+    bal.dat;
     if (bal.dat.height != null)
         bal.dat.typ = VISAGE.MOUNT_HEIGHT;
     if (bal.dat.width != null)

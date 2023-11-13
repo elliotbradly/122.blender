@@ -18,7 +18,7 @@ export const mount = async (value: HelloWorld) => {
   const instance = getCurrentInstance();
   const SHADE = inject('SHADE')
 
-  var bit = await SHADE['hunt'](ActVsg.MOUNT_VISAGE, { idx: "vsg00", src: "indexCanvas", dat: {} });
+  var bit = await SHADE['hunt'](ActVsg.MOUNT_VISAGE, { idx: "vsg00", src: "indexCanvas", dat: {w:32, h:32} });
   instance?.proxy?.$forceUpdate();
 
   return value
@@ -31,7 +31,7 @@ export const update = async (value: HelloWorld) => {
   const SHADE = inject('SHADE')
 
   var bit = await SHADE['hunt'](ActVsg.REMOVE_VISAGE, { idx: "vsg00" })
-  bit = await SHADE['hunt'](ActVsg.MOUNT_VISAGE, { idx: "vsg00", src: "indexCanvas", dat: {} })
+  bit = await SHADE['hunt'](ActVsg.MOUNT_VISAGE, { idx: "vsg00", src: "indexCanvas", dat: {w:32, h:32} })
 
   bit = await SHADE['hunt'](ActVsg.READ_VISAGE, { idx: "vsg00" })
 

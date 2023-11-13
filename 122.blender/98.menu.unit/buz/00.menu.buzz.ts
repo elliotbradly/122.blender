@@ -36,7 +36,7 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-  lst = [ActBld.UPDATE_BLENDER]
+  lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER]
 
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 3, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
@@ -44,6 +44,11 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
   src = bit.chcBit.src;
 
   switch (src) {
+
+    case ActBld.OPEN_BLENDER:
+      bit = await ste.hunt(ActBld.OPEN_BLENDER, {})
+      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' })
+      break;
 
     case ActBld.UPDATE_BLENDER:
       bit = await ste.hunt(ActBld.UPDATE_BLENDER, {})
