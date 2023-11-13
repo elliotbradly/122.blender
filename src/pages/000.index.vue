@@ -16,7 +16,7 @@ import * as ActShd from '../110.shade/00.shade.unit/shade.action'
 import * as ActVsg from '../110.shade/01.visage.unit/visage.action'
 import * as ActCan from '../110.shade/03.container.unit/container.action'
 
-import {mount, update, unmount } from "../composables/screens"
+import {mount, update, unmount } from "../composables/tiny-screen"
 
 const router = useRouter()
 const route = useRoute()
