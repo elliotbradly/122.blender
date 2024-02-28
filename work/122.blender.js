@@ -1,7 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 (function (global){(function (){
-global.CONTROL = require("../dist/111.control/hunt");
-global.CONTROL.ActCtl = require("../dist/111.control/00.control.unit/control.action");
+global.BLENDER = require("../dist/122.blender/hunt");
+global.BLENDER.ActBld = require("../dist/122.blender/00.blender.unit/blender.action");
 
 
 
@@ -9,132 +9,83 @@ global.CONTROL.ActCtl = require("../dist/111.control/00.control.unit/control.act
 
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../dist/111.control/00.control.unit/control.action":3,"../dist/111.control/hunt":35}],2:[function(require,module,exports){
+},{"../dist/122.blender/00.blender.unit/blender.action":2,"../dist/122.blender/hunt":35}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.openControl = exports.updateControl = exports.initControl = void 0;
-const ActMnu = require("../../98.menu.unit/menu.action");
-const ActCtr = require("../../00.control.unit/control.action");
-const ActBus = require("../../99.bus.unit/bus.action");
-const ActDsk = require("../../act/disk.action");
-const ActPvt = require("../../act/pivot.action");
-var bit, val, idx, dex, lst, dat, src;
-const initControl = async (cpy, bal, ste) => {
-    if (bal.dat != null)
-        bit = await ste.hunt(ActBus.INIT_BUS, { idx: cpy.idx, lst: [ActCtr], dat: bal.dat, src: bal.src });
-    if (bal.val == 1)
-        patch(ste, ActMnu.INIT_MENU, bal);
-    if (bal.slv != null)
-        bal.slv({ intBit: { idx: "init-space" } });
-    return cpy;
-};
-exports.initControl = initControl;
-const updateControl = (cpy, bal, ste) => {
-    const { exec } = require('child_process');
-    exec('tsc -b 110.shade', async (err, stdout, stderr) => {
-        if (err) {
-            console.error(`exec error: ${err}`);
-        }
-        bit = await ste.bus(ActPvt.BUNDLE_PIVOT, { src: "111.control" });
-        bit = await ste.bus(ActDsk.READ_DISK, { src: './work/111.control.js' });
-        var shade = bit.dskBit.dat;
-        bit = await ste.bus(ActDsk.WRITE_DISK, { src: './public/jsx/111.control.js', dat: shade });
-        setTimeout(() => {
-            if (bal.slv != null)
-                bal.slv({ ctlBit: { idx: "update-control" } });
-        }, 3);
-    });
-    return cpy;
-};
-exports.updateControl = updateControl;
-var patch = (ste, type, bale) => ste.dispatch({ type, bale });
-const openControl = (cpy, bal, ste) => {
-    const { exec } = require('child_process');
-    exec('quasar dev -m electron', async (err, stdout, stderr) => {
-        if (bal.slv != null)
-            bal.slv({ condBit: { idx: "open-control", dat: {} } });
-    });
-    return cpy;
-};
-exports.openControl = openControl;
-
-},{"../../00.control.unit/control.action":3,"../../98.menu.unit/menu.action":15,"../../99.bus.unit/bus.action":20,"../../act/disk.action":31,"../../act/pivot.action":33,"child_process":undefined}],3:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.OpenControl = exports.OPEN_CONTROL = exports.UpdateControl = exports.UPDATE_CONTROL = exports.InitControl = exports.INIT_CONTROL = void 0;
-// Control actions
-exports.INIT_CONTROL = "[Control action] Init Control";
-class InitControl {
+exports.OpenBlender = exports.OPEN_BLENDER = exports.UpdateBlender = exports.UPDATE_BLENDER = exports.InitBlender = exports.INIT_BLENDER = void 0;
+// Blender actions
+exports.INIT_BLENDER = "[Blender action] Init Blender";
+class InitBlender {
     constructor(bale) {
         this.bale = bale;
-        this.type = exports.INIT_CONTROL;
+        this.type = exports.INIT_BLENDER;
     }
 }
-exports.InitControl = InitControl;
-exports.UPDATE_CONTROL = "[Control action] Update Control";
-class UpdateControl {
+exports.InitBlender = InitBlender;
+exports.UPDATE_BLENDER = "[Blender action] Update Blender";
+class UpdateBlender {
     constructor(bale) {
         this.bale = bale;
-        this.type = exports.UPDATE_CONTROL;
+        this.type = exports.UPDATE_BLENDER;
     }
 }
-exports.UpdateControl = UpdateControl;
-exports.OPEN_CONTROL = "[Open action] Open Control";
-class OpenControl {
+exports.UpdateBlender = UpdateBlender;
+exports.OPEN_BLENDER = "[Open action] Open Blender";
+class OpenBlender {
     constructor(bale) {
         this.bale = bale;
-        this.type = exports.OPEN_CONTROL;
+        this.type = exports.OPEN_BLENDER;
     }
 }
-exports.OpenControl = OpenControl;
+exports.OpenBlender = OpenBlender;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.openControl = exports.updateControl = exports.initControl = void 0;
-var control_buzz_1 = require("./buz/control.buzz");
-Object.defineProperty(exports, "initControl", { enumerable: true, get: function () { return control_buzz_1.initControl; } });
-var control_buzz_2 = require("./buz/control.buzz");
-Object.defineProperty(exports, "updateControl", { enumerable: true, get: function () { return control_buzz_2.updateControl; } });
-var control_buzz_3 = require("./buz/control.buzz");
-Object.defineProperty(exports, "openControl", { enumerable: true, get: function () { return control_buzz_3.openControl; } });
+exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
+var blender_buzz_1 = require("./buz/blender.buzz");
+Object.defineProperty(exports, "initBlender", { enumerable: true, get: function () { return blender_buzz_1.initBlender; } });
+var blender_buzz_2 = require("./buz/blender.buzz");
+Object.defineProperty(exports, "updateBlender", { enumerable: true, get: function () { return blender_buzz_2.updateBlender; } });
+var blender_buzz_3 = require("./buz/blender.buzz");
+Object.defineProperty(exports, "openBlender", { enumerable: true, get: function () { return blender_buzz_3.openBlender; } });
 
-},{"./buz/control.buzz":2}],5:[function(require,module,exports){
+},{"./buz/blender.buzz":7}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ControlModel = void 0;
-class ControlModel {
+exports.BlenderModel = void 0;
+class BlenderModel {
     constructor() {
-        this.idx = '111.control';
-        //controlBitList: ControlBit[] = [];
-        //controlBits: any = {};
+        this.idx = '122.blender';
+        //blenderBitList: BlenderBit[] = [];
+        //blenderBits: any = {};
     }
 }
-exports.ControlModel = ControlModel;
+exports.BlenderModel = BlenderModel;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reducer = void 0;
 const clone = require("clone-deep");
-const Act = require("./control.action");
-const control_model_1 = require("./control.model");
-const Buzz = require("./control.buzzer");
-function reducer(model = new control_model_1.ControlModel(), act, state) {
+const Act = require("./blender.action");
+const blender_model_1 = require("./blender.model");
+const Buzz = require("./blender.buzzer");
+function reducer(model = new blender_model_1.BlenderModel(), act, state) {
     switch (act.type) {
-        case Act.UPDATE_CONTROL:
-            return Buzz.updateControl(clone(model), act.bale, state);
-        case Act.INIT_CONTROL:
-            return Buzz.initControl(clone(model), act.bale, state);
-        case Act.OPEN_CONTROL:
-            return Buzz.openControl(clone(model), act.bale, state);
+        case Act.UPDATE_BLENDER:
+            return Buzz.updateBlender(clone(model), act.bale, state);
+        case Act.INIT_BLENDER:
+            return Buzz.initBlender(clone(model), act.bale, state);
+        case Act.OPEN_BLENDER:
+            return Buzz.openBlender(clone(model), act.bale, state);
         default:
             return model;
     }
 }
 exports.reducer = reducer;
 
-},{"./control.action":3,"./control.buzzer":4,"./control.model":5,"clone-deep":40}],7:[function(require,module,exports){
+},{"./blender.action":2,"./blender.buzzer":3,"./blender.model":4,"clone-deep":40}],6:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -148,17 +99,66 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_ioc_1 = require("typescript-ioc");
 const state_1 = require("../99.core/state");
-let ControlUnit = class ControlUnit {
+let BlenderUnit = class BlenderUnit {
     constructor(state) {
     }
 };
-ControlUnit = __decorate([
+BlenderUnit = __decorate([
     typescript_ioc_1.Singleton,
     __metadata("design:paramtypes", [state_1.default])
-], ControlUnit);
-exports.default = ControlUnit;
+], BlenderUnit);
+exports.default = BlenderUnit;
 
-},{"../99.core/state":26,"typescript-ioc":58}],8:[function(require,module,exports){
+},{"../99.core/state":26,"typescript-ioc":58}],7:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
+const ActMnu = require("../../98.menu.unit/menu.action");
+const ActBld = require("../../00.blender.unit/blender.action");
+const ActBus = require("../../99.bus.unit/bus.action");
+const ActDsk = require("../../act/disk.action");
+const ActPvt = require("../../act/pivot.action");
+var bit, val, idx, dex, lst, dat, src;
+const initBlender = async (cpy, bal, ste) => {
+    if (bal.dat != null)
+        bit = await ste.hunt(ActBus.INIT_BUS, { idx: cpy.idx, lst: [ActBld], dat: bal.dat, src: bal.src });
+    if (bal.val == 1)
+        patch(ste, ActMnu.INIT_MENU, bal);
+    if (bal.slv != null)
+        bal.slv({ intBit: { idx: "init-space" } });
+    return cpy;
+};
+exports.initBlender = initBlender;
+const updateBlender = (cpy, bal, ste) => {
+    const { exec } = require("child_process");
+    exec("tsc -b 122.blender", async (err, stdout, stderr) => {
+        if (err) {
+            console.error(`exec error: ${err}`);
+        }
+        bit = await ste.bus(ActPvt.BUNDLE_PIVOT, { src: "122.blender" });
+        bit = await ste.bus(ActDsk.READ_DISK, { src: "./work/122.blender.js" });
+        var blend = bit.dskBit.dat;
+        bit = await ste.bus(ActDsk.WRITE_DISK, { src: "./public/jsx/122.blender.js", dat: blend });
+        setTimeout(() => {
+            if (bal.slv != null)
+                bal.slv({ blnBit: { idx: "update-blender" } });
+        }, 3);
+    });
+    return cpy;
+};
+exports.updateBlender = updateBlender;
+const openBlender = (cpy, bal, ste) => {
+    const { exec } = require("child_process");
+    exec("quasar dev -m electron", async (err, stdout, stderr) => {
+        if (bal.slv != null)
+            bal.slv({ blnBit: { idx: "open-blender", dat: {} } });
+    });
+    return cpy;
+};
+exports.openBlender = openBlender;
+var patch = (ste, type, bale) => ste.dispatch({ type, bale });
+
+},{"../../00.blender.unit/blender.action":2,"../../98.menu.unit/menu.action":15,"../../99.bus.unit/bus.action":20,"../../act/disk.action":31,"../../act/pivot.action":33,"child_process":undefined}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.emptyCollect = exports.deleteCollect = exports.removeCollect = exports.createCollect = exports.writeCollect = exports.readCollect = exports.fetchCollect = exports.updateCollect = exports.initCollect = void 0;
@@ -467,7 +467,7 @@ exports.default = CollectUnit;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createMenu = exports.closeMenu = exports.testMenu = exports.updateMenu = exports.initMenu = void 0;
-const ActCtl = require("../../00.control.unit/control.action");
+const ActBld = require("../../00.blender.unit/blender.action");
 //import * as ActFoc from "../../01.focus.unit/focus.action";
 //import * as ActPvt from "../../96.pivot.unit/pivot.action";
 //import * as ActMap from "../../03.hexmap.unit/hexmap.action"
@@ -483,28 +483,28 @@ const initMenu = async (cpy, bal, ste) => {
         bal = { idx: null };
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 3, y: 0, xSpan: 6, ySpan: 12 });
     bit = await ste.bus(ActCvs.WRITE_CANVAS, { idx: 'cvs1', dat: { clr: Color.CYAN, net: bit.grdBit.dat }, });
-    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 8, y: 0, xSpan: 2, ySpan: 12 });
+    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 8, y: 0, xSpan: 4, ySpan: 12 });
     bit = await ste.bus(ActCns.WRITE_CONSOLE, { idx: 'cns00', src: "", dat: { net: bit.grdBit.dat, src: "alligaor0" } });
     bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "-----------" });
-    bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "Control PIVOT V0" });
+    bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "Blender PIVOT V0" });
     bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "-----------" });
     (0, exports.updateMenu)(cpy, bal, ste);
     return cpy;
 };
 exports.initMenu = initMenu;
 const updateMenu = async (cpy, bal, ste) => {
-    lst = [ActCtl.UPDATE_CONTROL, ActCtl.OPEN_CONTROL];
-    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 3, ySpan: 12 });
+    lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER];
+    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 });
     bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat });
     src = bit.chcBit.src;
     switch (src) {
-        case ActCtl.UPDATE_CONTROL:
-            bit = await ste.hunt(ActCtl.UPDATE_CONTROL, {});
-            bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating control....' });
+        case ActBld.OPEN_BLENDER:
+            bit = await ste.hunt(ActBld.OPEN_BLENDER, {});
+            bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' });
             break;
-        case ActCtl.OPEN_CONTROL:
-            bit = await ste.hunt(ActCtl.OPEN_CONTROL, {});
-            bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open control....' });
+        case ActBld.UPDATE_BLENDER:
+            bit = await ste.hunt(ActBld.UPDATE_BLENDER, {});
+            bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' });
             break;
         default:
             bit = await ste.bus(ActTrm.CLOSE_TERMINAL, {});
@@ -532,7 +532,7 @@ var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 const Align = require("../../val/align");
 const Color = require("../../val/console-color");
 
-},{"../../00.control.unit/control.action":3,"../../act/canvas.action":28,"../../act/choice.action":29,"../../act/console.action":30,"../../act/grid.action":32,"../../act/terminal.action":34,"../../val/align":36,"../../val/console-color":37}],15:[function(require,module,exports){
+},{"../../00.blender.unit/blender.action":2,"../../act/canvas.action":28,"../../act/choice.action":29,"../../act/console.action":30,"../../act/grid.action":32,"../../act/terminal.action":34,"../../val/align":36,"../../val/console-color":37}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContainerMenu = exports.CONTAINER_MENU = exports.VisageMenu = exports.VISAGE_MENU = exports.ShadeMenu = exports.SHADE_MENU = exports.CloseMenu = exports.CLOSE_MENU = exports.TestMenu = exports.TEST_MENU = exports.UpdateMenu = exports.UPDATE_MENU = exports.InitMenu = exports.INIT_MENU = void 0;
@@ -1019,28 +1019,28 @@ exports.default = State;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reducer = exports.list = void 0;
-const control_unit_1 = require("./00.control.unit/control.unit");
+const blender_unit_1 = require("./00.blender.unit/blender.unit");
 const collect_unit_1 = require("./97.collect.unit/collect.unit");
 const menu_unit_1 = require("./98.menu.unit/menu.unit");
 const bus_unit_1 = require("./99.bus.unit/bus.unit");
-const control_model_1 = require("./00.control.unit/control.model");
+const blender_model_1 = require("./00.blender.unit/blender.model");
 const collect_model_1 = require("./97.collect.unit/collect.model");
 const menu_model_1 = require("./98.menu.unit/menu.model");
 const bus_model_1 = require("./99.bus.unit/bus.model");
-exports.list = [control_unit_1.default, collect_unit_1.default, menu_unit_1.default, bus_unit_1.default];
-const reduceFromControl = require("./00.control.unit/control.reduce");
+exports.list = [blender_unit_1.default, collect_unit_1.default, menu_unit_1.default, bus_unit_1.default];
+const reduceFromBlender = require("./00.blender.unit/blender.reduce");
 const reduceFromCollect = require("./97.collect.unit/collect.reduce");
 const reduceFromMenu = require("./98.menu.unit/menu.reduce");
 const reduceFromBus = require("./99.bus.unit/bus.reduce");
 exports.reducer = {
-    control: reduceFromControl.reducer,
+    blender: reduceFromBlender.reducer,
     collect: reduceFromCollect.reducer,
     menu: reduceFromMenu.reducer,
     bus: reduceFromBus.reducer,
 };
 class UnitData {
     constructor() {
-        this.control = new control_model_1.ControlModel();
+        this.blender = new blender_model_1.BlenderModel();
         this.collect = new collect_model_1.CollectModel();
         this.menu = new menu_model_1.MenuModel();
         this.bus = new bus_model_1.BusModel();
@@ -1048,7 +1048,7 @@ class UnitData {
 }
 exports.default = UnitData;
 
-},{"./00.control.unit/control.model":5,"./00.control.unit/control.reduce":6,"./00.control.unit/control.unit":7,"./97.collect.unit/collect.model":11,"./97.collect.unit/collect.reduce":12,"./97.collect.unit/collect.unit":13,"./98.menu.unit/menu.model":17,"./98.menu.unit/menu.reduce":18,"./98.menu.unit/menu.unit":19,"./99.bus.unit/bus.model":22,"./99.bus.unit/bus.reduce":23,"./99.bus.unit/bus.unit":24}],28:[function(require,module,exports){
+},{"./00.blender.unit/blender.model":4,"./00.blender.unit/blender.reduce":5,"./00.blender.unit/blender.unit":6,"./97.collect.unit/collect.model":11,"./97.collect.unit/collect.reduce":12,"./97.collect.unit/collect.unit":13,"./98.menu.unit/menu.model":17,"./98.menu.unit/menu.reduce":18,"./98.menu.unit/menu.unit":19,"./99.bus.unit/bus.model":22,"./99.bus.unit/bus.reduce":23,"./99.bus.unit/bus.unit":24}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NEST_CANVAS = exports.CREATE_CANVAS = exports.REMOVE_CANVAS = exports.DELETE_CANVAS = exports.WRITE_CANVAS = exports.READ_CANVAS = exports.UPDATE_CANVAS = exports.INIT_CANVAS = void 0;
