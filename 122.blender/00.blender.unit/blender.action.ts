@@ -22,5 +22,12 @@ export const OPEN_BLENDER = "[Open action] Open Blender";
  constructor(public bale: BlenderBit) {}
  }
  
+export const CLOSE_BLENDER = "[Close action] Close Blender";
+ export class CloseBlender implements Action {
+ readonly type = CLOSE_BLENDER;
+ constructor(public bale: BlenderBit) {}
+ }
+ 
 export type Actions = | InitBlender | UpdateBlender 
 | OpenBlender
+| CloseBlender

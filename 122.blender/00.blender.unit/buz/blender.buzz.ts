@@ -13,15 +13,15 @@ import * as ActEng from "../../act/engine.action";
 var bit, val, idx, dex, lst, dat, src;
 
 export const initBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
-  
-  console.log( "init blender before")
+
+  console.log("init blender before")
 
   if (bal.dat != null) bit = await ste.hunt(ActBus.INIT_BUS, { idx: cpy.idx, lst: [ActBld], dat: bal.dat, src: bal.src });
 
-  console.log( "init blender after")
+  console.log("init blender after")
 
   if (bal.val == 1) patch(ste, ActMnu.INIT_MENU, bal);
-  if (bal.slv != null) bal.slv({ intBit: { idx: "init-blender", val:0, bit } });
+  if (bal.slv != null) bal.slv({ intBit: { idx: "init-blender", val: 0, bit } });
 
   return cpy;
 };
@@ -53,15 +53,26 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
 };
 
 export const openBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
-  
+
   //bus to DEPTH
-  bit = await ste.bus( ActEng.OPEN_ENGINE , { idx: bal.idx });
+  bit = await ste.bus(ActEng.OPEN_ENGINE, { idx: bal.idx });
   bal.slv({ blnBit: { idx: "open-blender", bit } });
 
   return cpy;
 };
 
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
+
+export const closeBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
+
+  console.log("close blender")
+
+  bit = await ste.bus(ActEng.CLOSE_ENGINE, {});
+  bal.slv({ blnBit: { idx: "close-blender", bit } });
+
+  return cpy;
+};
+
 
 import { BlenderModel } from "../blender.model";
 import BlenderBit from "../fce/blender.bit";

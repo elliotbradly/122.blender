@@ -8,7 +8,7 @@ global.BLENDER.MQTT = require("async-mqtt");
 },{"../dist/122.blender/00.blender.unit/blender.action":2,"../dist/122.blender/hunt":36,"async-mqtt":39}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OpenBlender = exports.OPEN_BLENDER = exports.UpdateBlender = exports.UPDATE_BLENDER = exports.InitBlender = exports.INIT_BLENDER = void 0;
+exports.CloseBlender = exports.CLOSE_BLENDER = exports.OpenBlender = exports.OPEN_BLENDER = exports.UpdateBlender = exports.UPDATE_BLENDER = exports.InitBlender = exports.INIT_BLENDER = void 0;
 // Blender actions
 exports.INIT_BLENDER = "[Blender action] Init Blender";
 class InitBlender {
@@ -34,17 +34,27 @@ class OpenBlender {
     }
 }
 exports.OpenBlender = OpenBlender;
+exports.CLOSE_BLENDER = "[Close action] Close Blender";
+class CloseBlender {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.CLOSE_BLENDER;
+    }
+}
+exports.CloseBlender = CloseBlender;
 
 },{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
+exports.closeBlender = exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
 var blender_buzz_1 = require("./buz/blender.buzz");
 Object.defineProperty(exports, "initBlender", { enumerable: true, get: function () { return blender_buzz_1.initBlender; } });
 var blender_buzz_2 = require("./buz/blender.buzz");
 Object.defineProperty(exports, "updateBlender", { enumerable: true, get: function () { return blender_buzz_2.updateBlender; } });
 var blender_buzz_3 = require("./buz/blender.buzz");
 Object.defineProperty(exports, "openBlender", { enumerable: true, get: function () { return blender_buzz_3.openBlender; } });
+var blender_buzz_4 = require("./buz/blender.buzz");
+Object.defineProperty(exports, "closeBlender", { enumerable: true, get: function () { return blender_buzz_4.closeBlender; } });
 
 },{"./buz/blender.buzz":7}],4:[function(require,module,exports){
 "use strict";
@@ -75,6 +85,8 @@ function reducer(model = new blender_model_1.BlenderModel(), act, state) {
             return Buzz.initBlender(clone(model), act.bale, state);
         case Act.OPEN_BLENDER:
             return Buzz.openBlender(clone(model), act.bale, state);
+        case Act.CLOSE_BLENDER:
+            return Buzz.closeBlender(clone(model), act.bale, state);
         default:
             return model;
     }
@@ -108,7 +120,7 @@ exports.default = BlenderUnit;
 },{"../99.core/state":26,"typescript-ioc":228}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
+exports.closeBlender = exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
 const ActMnu = require("../../98.menu.unit/menu.action");
 const ActBld = require("../../00.blender.unit/blender.action");
 const ActBus = require("../../99.bus.unit/bus.action");
@@ -156,6 +168,13 @@ const openBlender = async (cpy, bal, ste) => {
 };
 exports.openBlender = openBlender;
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
+const closeBlender = async (cpy, bal, ste) => {
+    console.log("close blender");
+    bit = await ste.bus(ActEng.CLOSE_ENGINE, {});
+    bal.slv({ blnBit: { idx: "close-blender", bit } });
+    return cpy;
+};
+exports.closeBlender = closeBlender;
 
 },{"../../00.blender.unit/blender.action":2,"../../98.menu.unit/menu.action":15,"../../99.bus.unit/bus.action":20,"../../act/disk.action":31,"../../act/engine.action":32,"../../act/pivot.action":34,"child_process":undefined}],8:[function(require,module,exports){
 "use strict";
@@ -1103,11 +1122,12 @@ exports.DELETE_DISK = '[Delete action] Delete Disk';
 },{}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OPEN_ENGINE = exports.MOVEMENT_ENGINE = exports.UPDATE_ENGINE = exports.INIT_ENGINE = void 0;
+exports.CLOSE_ENGINE = exports.OPEN_ENGINE = exports.MOVEMENT_ENGINE = exports.UPDATE_ENGINE = exports.INIT_ENGINE = void 0;
 exports.INIT_ENGINE = "[Engine action] Init Engine";
 exports.UPDATE_ENGINE = "[Engine action] Update Engine";
 exports.MOVEMENT_ENGINE = "[Movement action] Movement Engine";
 exports.OPEN_ENGINE = "[Open action] Open Engine";
+exports.CLOSE_ENGINE = "[Close action] Close Engine";
 
 },{}],33:[function(require,module,exports){
 "use strict";
