@@ -8,6 +8,7 @@ import * as ActBus from "../../99.bus.unit/bus.action";
 import * as ActVrt from "../../act/vurt.action";
 import * as ActDsk from "../../act/disk.action";
 import * as ActPvt from "../../act/pivot.action";
+import * as ActEng from "../../act/engine.action";
 
 var bit, val, idx, dex, lst, dat, src;
 
@@ -51,12 +52,11 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
   return cpy;
 };
 
-export const openBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
-  const { exec } = require("child_process");
-
-  exec("quasar dev -m electron", async (err, stdout, stderr) => {
-    if (bal.slv != null) bal.slv({ blnBit: { idx: "open-blender", dat: {} } });
-  });
+export const openBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
+  
+  //bus to DEPTH
+  bit = await ste.bus( ActEng.OPEN_ENGINE , { idx: bal.idx });
+  bal.slv({ blnBit: { idx: "open-blender", bit } });
 
   return cpy;
 };
