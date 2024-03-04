@@ -12,10 +12,15 @@ import * as ActPvt from "../../act/pivot.action";
 var bit, val, idx, dex, lst, dat, src;
 
 export const initBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
+  
+  console.log( "init blender before")
+
   if (bal.dat != null) bit = await ste.hunt(ActBus.INIT_BUS, { idx: cpy.idx, lst: [ActBld], dat: bal.dat, src: bal.src });
 
+  console.log( "init blender after")
+
   if (bal.val == 1) patch(ste, ActMnu.INIT_MENU, bal);
-  if (bal.slv != null) bal.slv({ intBit: { idx: "init-space" } });
+  if (bal.slv != null) bal.slv({ intBit: { idx: "init-blender", val:0, bit } });
 
   return cpy;
 };
@@ -34,6 +39,9 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
     var blend = bit.dskBit.dat;
 
     bit = await ste.bus(ActDsk.WRITE_DISK, { src: "./public/jsx/122.blender.js", dat: blend });
+    src = "../111.control/rpgmaker/app/js/plugins/122.blender.js"
+    bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+
 
     setTimeout(() => {
       if (bal.slv != null) bal.slv({ blnBit: { idx: "update-blender" } });
