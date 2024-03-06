@@ -54,6 +54,9 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
 
 export const openBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
 
+  if ( bal == null ) bal = { idx:null}
+  if ( bal.idx == null ) bal.idx = 'simo-being';
+
   //bus to DEPTH
   bit = await ste.bus(ActEng.OPEN_ENGINE, { idx: bal.idx });
   bal.slv({ blnBit: { idx: "open-blender", bit } });
