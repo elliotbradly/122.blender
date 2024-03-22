@@ -72,7 +72,8 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
     socket.addEventListener('message', function (event) {
       if (event.data) {
-        console.log("you have a message")
+        console.log("you have connected to the web socket")
+        console.log( event.data )
       }
     });
 

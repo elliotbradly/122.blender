@@ -40,7 +40,11 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
     var blend = bit.dskBit.dat;
 
     bit = await ste.bus(ActDsk.WRITE_DISK, { src: "./public/jsx/122.blender.js", dat: blend });
+    
     src = "../111.control/rpgmaker/app/js/plugins/122.blender.js"
+    bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+
+    src = "../service/fictiq.com/js/plugins/122.blender.js"
     bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
 
 

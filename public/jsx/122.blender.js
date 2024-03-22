@@ -151,6 +151,8 @@ const updateBlender = (cpy, bal, ste) => {
         bit = await ste.bus(ActDsk.WRITE_DISK, { src: "./public/jsx/122.blender.js", dat: blend });
         src = "../111.control/rpgmaker/app/js/plugins/122.blender.js";
         bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+        src = "../service/fictiq.com/js/plugins/122.blender.js";
+        bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
         setTimeout(() => {
             if (bal.slv != null)
                 bal.slv({ blnBit: { idx: "update-blender" } });
@@ -620,7 +622,8 @@ const initActivity = (cpy, bal, ste) => {
         var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
         socket.addEventListener('message', function (event) {
             if (event.data) {
-                console.log("you have a message");
+                console.log("you have connected to the web socket");
+                console.log(event.data);
             }
         });
         if (auth == null) {
