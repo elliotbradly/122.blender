@@ -13,6 +13,7 @@
     "blender": "cd blender &&  blender.exe"
   },
   "dependencies": {
+    "@discord/embedded-app-sdk": "^1.0.2",
     "@quasar/extras": "^1.16.4",
     "@root/walk": "^1.1.0",
     "aedes": "^0.50.0",
