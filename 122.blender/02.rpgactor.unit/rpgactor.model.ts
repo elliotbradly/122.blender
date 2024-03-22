@@ -1,4 +1,4 @@
-import Rpgactor from "./fce/Rpgactor.interface";
+import Rpgactor from "./fce/rpgactor.interface";
 import RpgactorBit from "./fce/rpgactor.interface";
 
 export class RpgactorModel implements Rpgactor {

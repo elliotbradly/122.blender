@@ -1,4 +1,4 @@
-import Rpgmap from "./fce/Rpgmap.interface";
+import Rpgmap from "./fce/rpgmap.interface";
 import RpgmapBit from "./fce/rpgmap.interface";
 
 export class RpgmapModel implements Rpgmap {
