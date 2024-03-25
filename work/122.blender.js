@@ -145,23 +145,30 @@ const updateBlender = (cpy, bal, ste) => {
         if (err) {
             console.error(`exec error: ${err}`);
         }
+        lst = [];
         bit = await ste.bus(ActPvt.BUNDLE_PIVOT, { src: "122.blender" });
+        lst.push(bit);
         bit = await ste.bus(ActDsk.READ_DISK, { src: "./work/122.blender.js" });
         var blend = bit.dskBit.dat;
         bit = await ste.bus(ActDsk.WRITE_DISK, { src: "./public/jsx/122.blender.js", dat: blend });
+        lst.push(bit);
         src = "../111.control/rpgmaker/app/js/plugins/122.blender.js";
         bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+        lst.push(bit);
         src = "../service/fictiq.com/js/plugins/122.blender.js";
         bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+        lst.push(bit);
         bit = await ste.bus(ActDsk.READ_DISK, { src: "./0.AlligatorEarth.js" });
         var alligator = bit.dskBit.dat;
         src = "../111.control/rpgmaker/app/js/plugins/AlligatorEarth.js";
         bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
+        lst.push(bit);
         src = "../service/fictiq.com/js/plugins/AlligatorEarth.js";
         bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
+        lst.push(bit);
         setTimeout(() => {
             if (bal.slv != null)
-                bal.slv({ blnBit: { idx: "update-blender" } });
+                bal.slv({ blnBit: { idx: "update-blender", lst } });
         }, 3);
     });
     return cpy;
@@ -956,7 +963,8 @@ exports.default = CollectUnit;
 },{"../99.core/state":50,"typescript-ioc":315}],38:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createMenu = exports.closeMenu = exports.testMenu = exports.updateMenu = exports.initMenu = void 0;
+exports.printMenu = exports.createMenu = exports.closeMenu = exports.testMenu = exports.updateMenu = exports.initMenu = void 0;
+const ActMnu = require("../menu.action");
 const ActBld = require("../../00.blender.unit/blender.action");
 //import * as ActFoc from "../../01.focus.unit/focus.action";
 //import * as ActPvt from "../../96.pivot.unit/pivot.action";
@@ -971,9 +979,10 @@ var bit, lst, dex, idx, dat, src;
 const initMenu = async (cpy, bal, ste) => {
     if (bal == null)
         bal = { idx: null };
-    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 3, y: 0, xSpan: 6, ySpan: 12 });
+    bit = await ste.bus(ActTrm.CLEAR_TERMINAL, {});
+    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 3, y: 0, xSpan: 1, ySpan: 12 });
     bit = await ste.bus(ActCvs.WRITE_CANVAS, { idx: 'cvs1', dat: { clr: Color.CYAN, net: bit.grdBit.dat }, });
-    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 8, y: 0, xSpan: 4, ySpan: 12 });
+    bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 4, y: 0, xSpan: 10, ySpan: 12 });
     bit = await ste.bus(ActCns.WRITE_CONSOLE, { idx: 'cns00', src: "", dat: { net: bit.grdBit.dat, src: "alligaor0" } });
     bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "-----------" });
     bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "Blender PIVOT V0" });
@@ -993,14 +1002,15 @@ const updateMenu = async (cpy, bal, ste) => {
             bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' });
             break;
         case ActBld.UPDATE_BLENDER:
-            bit = await ste.hunt(ActBld.UPDATE_BLENDER, {});
+            var bitUp = await ste.hunt(ActBld.UPDATE_BLENDER, {});
             bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' });
+            bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp);
             break;
         default:
             bit = await ste.bus(ActTrm.CLOSE_TERMINAL, {});
             break;
     }
-    (0, exports.updateMenu)(cpy, bal, ste);
+    setTimeout(() => { (0, exports.updateMenu)(cpy, bal, ste); }, 11);
     return cpy;
 };
 exports.updateMenu = updateMenu;
@@ -1018,14 +1028,25 @@ const createMenu = (cpy, bal, ste) => {
     return cpy;
 };
 exports.createMenu = createMenu;
+const printMenu = async (cpy, bal, ste) => {
+    dat = bal;
+    if (dat == null)
+        return bal.slv({ mnuBit: { idx: "print-menu", dat } });
+    var itm = JSON.stringify(dat);
+    lst = itm.split(",");
+    lst.forEach((a) => ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: a }));
+    ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: "------------" });
+    bal.slv({ mnuBit: { idx: "print-menu", dat: itm } });
+};
+exports.printMenu = printMenu;
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 const Align = require("../../val/align");
 const Color = require("../../val/console-color");
 
-},{"../../00.blender.unit/blender.action":2,"../../act/canvas.action":52,"../../act/choice.action":53,"../../act/console.action":54,"../../act/grid.action":57,"../../act/terminal.action":59,"../../val/align":61,"../../val/console-color":62}],39:[function(require,module,exports){
+},{"../../00.blender.unit/blender.action":2,"../../act/canvas.action":52,"../../act/choice.action":53,"../../act/console.action":54,"../../act/grid.action":57,"../../act/terminal.action":59,"../../val/align":61,"../../val/console-color":62,"../menu.action":39}],39:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContainerMenu = exports.CONTAINER_MENU = exports.VisageMenu = exports.VISAGE_MENU = exports.ShadeMenu = exports.SHADE_MENU = exports.CloseMenu = exports.CLOSE_MENU = exports.TestMenu = exports.TEST_MENU = exports.UpdateMenu = exports.UPDATE_MENU = exports.InitMenu = exports.INIT_MENU = void 0;
+exports.PrintMenu = exports.PRINT_MENU = exports.ContainerMenu = exports.CONTAINER_MENU = exports.VisageMenu = exports.VISAGE_MENU = exports.ShadeMenu = exports.SHADE_MENU = exports.CloseMenu = exports.CLOSE_MENU = exports.TestMenu = exports.TEST_MENU = exports.UpdateMenu = exports.UPDATE_MENU = exports.InitMenu = exports.INIT_MENU = void 0;
 exports.INIT_MENU = "[Menu action] Init Menu";
 class InitMenu {
     constructor(bale) {
@@ -1082,11 +1103,19 @@ class ContainerMenu {
     }
 }
 exports.ContainerMenu = ContainerMenu;
+exports.PRINT_MENU = "[Visage action] Print Menu";
+class PrintMenu {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.PRINT_MENU;
+    }
+}
+exports.PrintMenu = PrintMenu;
 
 },{}],40:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeMenu = exports.testMenu = exports.updateMenu = exports.initMenu = void 0;
+exports.printMenu = exports.closeMenu = exports.testMenu = exports.updateMenu = exports.initMenu = void 0;
 var _00_menu_buzz_1 = require("./buz/00.menu.buzz");
 Object.defineProperty(exports, "initMenu", { enumerable: true, get: function () { return _00_menu_buzz_1.initMenu; } });
 var _00_menu_buzz_2 = require("./buz/00.menu.buzz");
@@ -1095,6 +1124,8 @@ var _00_menu_buzz_3 = require("./buz/00.menu.buzz");
 Object.defineProperty(exports, "testMenu", { enumerable: true, get: function () { return _00_menu_buzz_3.testMenu; } });
 var _00_menu_buzz_4 = require("./buz/00.menu.buzz");
 Object.defineProperty(exports, "closeMenu", { enumerable: true, get: function () { return _00_menu_buzz_4.closeMenu; } });
+var _00_menu_buzz_5 = require("./buz/00.menu.buzz");
+Object.defineProperty(exports, "printMenu", { enumerable: true, get: function () { return _00_menu_buzz_5.printMenu; } });
 
 },{"./buz/00.menu.buzz":38}],41:[function(require,module,exports){
 "use strict";
@@ -1128,6 +1159,8 @@ function reducer(model = new menu_model_1.MenuModel(), act, state) {
             return Buzz.testMenu(clone(model), act.bale, state);
         case Act.CLOSE_MENU:
             return Buzz.closeMenu(clone(model), act.bale, state);
+        case Act.PRINT_MENU:
+            return Buzz.printMenu(clone(model), act.bale, state);
         default:
             return model;
     }
@@ -1647,20 +1680,19 @@ exports.BUNDLE_PIVOT = "[Patch action] Bundle Pivot";
 },{}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ADD_PORT = exports.CONTENT_TERMINAL = exports.ROOT_TERMINAL = exports.CLOSE_TERMINAL = exports.TABLE_TERMINAL = exports.INPUT_TERMINAL = exports.CLEAR_TERMINAL = exports.UPDATE_TERMINAL = exports.WRITE_TERMINAL = exports.FOCUS_TERMINAL = exports.OPEN_TERMINAL = exports.INIT_TERMINAL = void 0;
+exports.CLEAR_TERMINAL = exports.OPEN_TERMINAL = exports.LAYOUT_TERMINAL = exports.INPUT_TERMINAL = exports.OPTION_TERMINAL = exports.CLOSE_TERMINAL = exports.PRINT_TERMINAL = exports.EDIT_TERMINAL = exports.RUN_TERMINAL = exports.UPDATE_TERMINAL = exports.INIT_TERMINAL = void 0;
 // Terminal actions
 exports.INIT_TERMINAL = "[Terminal action] Init Terminal";
-exports.OPEN_TERMINAL = "[Terminal action] Open Terminal";
-exports.FOCUS_TERMINAL = "[Terminal action] Focus Terminal";
-exports.WRITE_TERMINAL = "[Terminal action] Write Terminal";
 exports.UPDATE_TERMINAL = "[Terminal action] Update Terminal";
-exports.CLEAR_TERMINAL = "[Terminal action] Clear Terminal";
-exports.INPUT_TERMINAL = "[Terminal action] Input Terminal";
-exports.TABLE_TERMINAL = "[Terminal action] Table Terminal";
-exports.CLOSE_TERMINAL = "[Terminal action] Close Terminal";
-exports.ROOT_TERMINAL = "[Terminal action] Root Terminal";
-exports.CONTENT_TERMINAL = "[Terminal action] Content Terminal";
-exports.ADD_PORT = "[Terminal action] Add Port";
+exports.RUN_TERMINAL = "[Run action] Run Terminal";
+exports.EDIT_TERMINAL = "[Edit action] Edit Terminal";
+exports.PRINT_TERMINAL = "[Print action] Print Terminal";
+exports.CLOSE_TERMINAL = "[Close action] Close Terminal";
+exports.OPTION_TERMINAL = "[Option action] Option Terminal";
+exports.INPUT_TERMINAL = "[Input action] Input Terminal";
+exports.LAYOUT_TERMINAL = "[Layout action] Layout Terminal";
+exports.OPEN_TERMINAL = "[Layout action] Open Terminal";
+exports.CLEAR_TERMINAL = "[Layout action] Clear Terminal";
 
 },{}],60:[function(require,module,exports){
 "use strict";

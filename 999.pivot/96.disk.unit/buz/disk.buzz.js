@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.existDisk = exports.deleteDisk = exports.ensureDisk = exports.trashDisk = exports.batchDisk = exports.frameDisk = exports.copyDisk = exports.load_listDisk = exports.indexDisk = exports.readDisk = exports.writeDisk = exports.updateDisk = exports.initDisk = void 0;
+exports.colorDisk = exports.swatchDisk = exports.existDisk = exports.deleteDisk = exports.ensureDisk = exports.trashDisk = exports.batchDisk = exports.frameDisk = exports.copyDisk = exports.load_listDisk = exports.indexDisk = exports.readDisk = exports.writeDisk = exports.updateDisk = exports.initDisk = void 0;
 const ActDsk = require("../../96.disk.unit/disk.action");
 var bit, lst, idx, val, dat;
 const initDisk = (cpy, bal, ste) => {
@@ -37,9 +37,9 @@ const writeDisk = async (cpy, bal, ste) => {
     }
     FS.ensureFileSync(bal.src);
     //if (bal.idx == 'debug') {
-    console.log("............");
-    console.log("writing..." + bal.src);
-    console.log("............");
+    //console.log("............")
+    //console.log("writing..." + bal.src)
+    //console.log("............")
     //}
     bal;
     //these streets are like an algorithm
@@ -51,7 +51,7 @@ const writeDisk = async (cpy, bal, ste) => {
     setTimeout(() => {
         if (bal.slv != null)
             bal.slv({ dskBit: { idx: "write-disk", src: bal.src } });
-    }, 33);
+    }, 3);
     return cpy;
 };
 exports.writeDisk = writeDisk;
@@ -67,9 +67,9 @@ const readDisk = async (cpy, bal, ste) => {
     dat;
     if (dat.split != null) {
         lst = dat.split('\n');
-        console.log("............");
-        console.log("reading..." + bal.src);
-        console.log("............");
+        //console.log("............")
+        //console.log("reading..." + bal.src)
+        //console.log("............")
     }
     if (bal.slv != null)
         bal.slv({ dskBit: { idx: "read-disk", src: bal.src, dat, lst } });
@@ -77,7 +77,6 @@ const readDisk = async (cpy, bal, ste) => {
 };
 exports.readDisk = readDisk;
 const indexDisk = async (cpy, bal, ste) => {
-    debugger;
     if ((bal.src == null) && (bal.slv != null))
         bal.slv({ dskBit: { idx: "list-disk-error", src: 'no src present' } });
     if (bal.val == null)
@@ -122,7 +121,11 @@ const copyDisk = async (cpy, bal, ste) => {
     }
     FS.ensureDirSync(bal.src);
     FS.ensureDirSync(bal.idx);
-    bit = await FS.remove(bal.idx);
+    if (bal.val == null)
+        bal.val = 0;
+    if (bal.val == 0) {
+        bit = await FS.remove(bal.idx);
+    }
     if (bal.dat == 'debug') {
         console.log("............");
         console.log("copying..." + bal.src);
@@ -211,6 +214,68 @@ const existDisk = (cpy, bal, ste) => {
     return cpy;
 };
 exports.existDisk = existDisk;
+const swatchDisk = (cpy, bal, ste) => {
+    if (bal.src == null)
+        bal.src = './data/swatch.png';
+    if (bal.idx == null)
+        bal.idx = 'FF00FF';
+    var PNG = require("pngjs").PNG;
+    var convert = require('color-convert');
+    var rgb = convert.hex.rgb(bal.idx);
+    FS.ensureFileSync(bal.src);
+    let newfile = new PNG({ width: 128, height: 128 });
+    for (let y = 0; y < newfile.height; y++) {
+        for (let x = 0; x < newfile.width; x++) {
+            let idx = (newfile.width * y + x) << 2;
+            newfile.data[idx] = rgb[0];
+            newfile.data[idx + 1] = rgb[1];
+            newfile.data[idx + 2] = rgb[2];
+            newfile.data[idx + 3] = 0xff;
+        }
+    }
+    newfile
+        .pack()
+        .pipe(FS.createWriteStream(bal.src))
+        .on("finish", function () {
+        console.log("Written! " + bal.src);
+        if (bal.slv != null)
+            bal.slv({ dskBit: { idx: "swatch-disk", src: bal.src } });
+    });
+    return cpy;
+};
+exports.swatchDisk = swatchDisk;
+const colorDisk = (cpy, bal, ste) => {
+    var PNG = require("pngjs").PNG;
+    var convert = require('color-convert');
+    var r, g, b;
+    var hex;
+    bal.src;
+    FS.createReadStream(bal.src)
+        .pipe(new PNG({
+        filterType: 4,
+    }))
+        .on("parsed", function () {
+        for (var y = 0; y < this.height; y++) {
+            for (var x = 0; x < this.width; x++) {
+                var idx = (this.width * y + x) << 2;
+                // invert color
+                r = this.data[idx];
+                g = this.data[idx + 1];
+                b = this.data[idx + 2];
+                hex = convert.rgb.hex([r, g, b]);
+                //maybe turn this more into a dominate color 
+                // and reduce opacity
+                //this.data[idx + 3] = this.data[idx + 3] >> 1;
+            }
+        }
+        dat = { r, g, b, hex };
+        if (bal.slv != null)
+            bal.slv({ dskBit: { idx: "color-disk", dat } });
+        //this.pack().pipe(fs.createWriteStream("out.png"));
+    });
+    return cpy;
+};
+exports.colorDisk = colorDisk;
 const FS = require("fs-extra");
 /*
 

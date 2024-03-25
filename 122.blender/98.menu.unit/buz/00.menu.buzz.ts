@@ -19,10 +19,12 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   if (bal == null) bal = { idx: null }
 
-  bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 3, y: 0, xSpan: 6, ySpan: 12 })
+  bit = await ste.bus(ActTrm.CLEAR_TERMINAL, {})
+
+  bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 3, y: 0, xSpan: 1, ySpan: 12 })
   bit = await ste.bus(ActCvs.WRITE_CANVAS, { idx: 'cvs1', dat: { clr: Color.CYAN, net: bit.grdBit.dat }, })
 
-  bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 8, y: 0, xSpan: 4, ySpan: 12 })
+  bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 4, y: 0, xSpan: 10, ySpan: 12 })
   bit = await ste.bus(ActCns.WRITE_CONSOLE, { idx: 'cns00', src: "", dat: { net: bit.grdBit.dat, src: "alligaor0" } })
 
   bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "-----------" })
@@ -37,7 +39,6 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER]
-
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
 
@@ -51,8 +52,9 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
       break;
 
     case ActBld.UPDATE_BLENDER:
-      bit = await ste.hunt(ActBld.UPDATE_BLENDER, {})
+      var bitUp = await ste.hunt(ActBld.UPDATE_BLENDER, {})
       bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' })
+      bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp)
       break;
 
     default:
@@ -60,8 +62,7 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
       break;
   }
 
-
-  updateMenu(cpy, bal, ste);
+  setTimeout(() => { updateMenu(cpy, bal, ste) }, 11 )
 
   return cpy;
 };
@@ -80,6 +81,21 @@ export const closeMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 export const createMenu = (cpy: MenuModel, bal: MenuBit, ste: State) => {
   debugger
   return cpy;
+};
+
+export const printMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
+
+  dat = bal;
+  if (dat == null) return bal.slv({ mnuBit: { idx: "print-menu", dat } });
+
+  var itm = JSON.stringify(dat);
+
+  lst = itm.split(",");
+  lst.forEach((a) => ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: a }));
+  ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: "------------" });
+
+
+  bal.slv({ mnuBit: { idx: "print-menu", dat: itm } });
 };
 
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });

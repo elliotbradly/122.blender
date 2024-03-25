@@ -169,12 +169,12 @@ const bundlePivot = async (cpy, bal, ste) => {
         if (err) {
             console.error(`exec error: ${err}`);
         }
-        console.log("bundling " + bal.src);
+        // console.log("bundling " + bal.src)
         //bit = await ste.bus(ActDsk.WRITE_DISK, { src: './002.bundle-pivot.bat', dat: template })
         //bit = await ste.bus(ActDsk.BATCH_DISK, { src: '002.bundle-pivot.bat' })
         if (bal.val == null)
             bal.val = 3;
-        setTimeout(() => bal.slv({ pvtBit: { idx: "bundle-pivot" } }), bal.val);
+        setTimeout(() => bal.slv({ pvtBit: { idx: "bundle-pivot" }, src: bal.src }), bal.val);
     });
     //bit = await FS.ensureDirSync( '../' + bal.src + '/work/')
     //bit = await ste.bus(ActVrt.LIST_PIVOT_VURT, {})
