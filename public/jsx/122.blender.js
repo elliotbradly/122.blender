@@ -153,6 +153,12 @@ const updateBlender = (cpy, bal, ste) => {
         bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
         src = "../service/fictiq.com/js/plugins/122.blender.js";
         bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+        bit = await ste.bus(ActDsk.READ_DISK, { src: "./0.AlligatorEarth.js" });
+        var alligator = bit.dskBit.dat;
+        src = "../111.control/rpgmaker/app/js/plugins/AlligatorEarth.js";
+        bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
+        src = "../service/fictiq.com/js/plugins/AlligatorEarth.js";
+        bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
         setTimeout(() => {
             if (bal.slv != null)
                 bal.slv({ blnBit: { idx: "update-blender" } });
@@ -605,6 +611,9 @@ const initActivity = (cpy, bal, ste) => {
         // Authenticate with Discord client (using the access_token)
         auth = await discordSdk.commands.authenticate({
             access_token,
+        });
+        discordSdk.subscribe(embedded_app_sdk_1.Events.CURRENT_USER_UPDATE, (data) => {
+            console.log('update ' + JSON.stringify(data));
         });
         const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
             headers: {

@@ -47,7 +47,15 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
     src = "../service/fictiq.com/js/plugins/122.blender.js"
     bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
 
+    bit = await ste.bus(ActDsk.READ_DISK, { src: "./0.AlligatorEarth.js" });
+    var alligator = bit.dskBit.dat;
 
+    src = "../111.control/rpgmaker/app/js/plugins/AlligatorEarth.js"
+    bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
+
+    src = "../service/fictiq.com/js/plugins/AlligatorEarth.js"
+    bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
+    
     setTimeout(() => {
       if (bal.slv != null) bal.slv({ blnBit: { idx: "update-blender" } });
     }, 3);

@@ -50,6 +50,12 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
       access_token,
     });
 
+    discordSdk.subscribe(Events.CURRENT_USER_UPDATE, ( data )=>{
+
+      console.log( 'update ' + JSON.stringify( data ))
+
+    });
+
 
     const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
       headers: {
@@ -96,4 +102,4 @@ export const updateActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State)
 import { ActivityModel } from "../activity.model";
 import ActivityBit from "../fce/activity.bit";
 import State from "../../99.core/state";
-import { DiscordSDK } from "@discord/embedded-app-sdk";
+import { DiscordSDK, Events } from "@discord/embedded-app-sdk";
