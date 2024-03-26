@@ -11,7 +11,7 @@ window.BLENDER.MQTT = require("async-mqtt");
 },{"../dist/122.blender/00.blender.unit/blender.action":2,"../dist/122.blender/01.rpgstage.unit/rpgstage.action":9,"../dist/122.blender/02.rpgactor.unit/rpgactor.action":15,"../dist/122.blender/03.rpgparty.unit/rpgparty.action":21,"../dist/122.blender/04.rpgmap.unit/rpgmap.action":27,"../dist/122.blender/80.activity.unit/activity.action":32,"../dist/122.blender/hunt":66,"async-mqtt":132}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CloseBlender = exports.CLOSE_BLENDER = exports.OpenBlender = exports.OPEN_BLENDER = exports.UpdateBlender = exports.UPDATE_BLENDER = exports.InitBlender = exports.INIT_BLENDER = void 0;
+exports.ReloadBlender = exports.RELOAD_BLENDER = exports.CloseBlender = exports.CLOSE_BLENDER = exports.OpenBlender = exports.OPEN_BLENDER = exports.UpdateBlender = exports.UPDATE_BLENDER = exports.InitBlender = exports.INIT_BLENDER = void 0;
 // Blender actions
 exports.INIT_BLENDER = "[Blender action] Init Blender";
 class InitBlender {
@@ -45,11 +45,19 @@ class CloseBlender {
     }
 }
 exports.CloseBlender = CloseBlender;
+exports.RELOAD_BLENDER = "[Reload action] Reload Blender";
+class ReloadBlender {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.RELOAD_BLENDER;
+    }
+}
+exports.ReloadBlender = ReloadBlender;
 
 },{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeBlender = exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
+exports.reloadBlender = exports.closeBlender = exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
 var blender_buzz_1 = require("./buz/blender.buzz");
 Object.defineProperty(exports, "initBlender", { enumerable: true, get: function () { return blender_buzz_1.initBlender; } });
 var blender_buzz_2 = require("./buz/blender.buzz");
@@ -58,6 +66,8 @@ var blender_buzz_3 = require("./buz/blender.buzz");
 Object.defineProperty(exports, "openBlender", { enumerable: true, get: function () { return blender_buzz_3.openBlender; } });
 var blender_buzz_4 = require("./buz/blender.buzz");
 Object.defineProperty(exports, "closeBlender", { enumerable: true, get: function () { return blender_buzz_4.closeBlender; } });
+var blender_buzz_5 = require("./buz/blender.buzz");
+Object.defineProperty(exports, "reloadBlender", { enumerable: true, get: function () { return blender_buzz_5.reloadBlender; } });
 
 },{"./buz/blender.buzz":7}],4:[function(require,module,exports){
 "use strict";
@@ -90,6 +100,8 @@ function reducer(model = new blender_model_1.BlenderModel(), act, state) {
             return Buzz.openBlender(clone(model), act.bale, state);
         case Act.CLOSE_BLENDER:
             return Buzz.closeBlender(clone(model), act.bale, state);
+        case Act.RELOAD_BLENDER:
+            return Buzz.reloadBlender(clone(model), act.bale, state);
         default:
             return model;
     }
@@ -123,7 +135,7 @@ exports.default = BlenderUnit;
 },{"../99.core/state":56,"typescript-ioc":321}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeBlender = exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
+exports.reloadBlender = exports.closeBlender = exports.openBlender = exports.updateBlender = exports.initBlender = void 0;
 const ActMnu = require("../../98.menu.unit/menu.action");
 const ActBld = require("../../00.blender.unit/blender.action");
 const ActBus = require("../../99.bus.unit/bus.action");
@@ -132,10 +144,12 @@ const ActPvt = require("../../act/pivot.action");
 const ActEng = require("../../act/engine.action");
 var bit, val, idx, dex, lst, dat, src;
 const initBlender = async (cpy, bal, ste) => {
-    console.log("init blender before");
+    //var MQTT = window.BLENDER.MQTT;
+    //console.log("mqtt" + MQTT);
+    //const local = "ws://swamp-fly-448d63614f75.herokuapp.com/";
+    //const localBit = { idx: "local", src: "ws://swamp-fly-448d63614f75.herokuapp.com/" };
     if (bal.dat != null)
         bit = await ste.hunt(ActBus.INIT_BUS, { idx: cpy.idx, lst: [ActBld], dat: bal.dat, src: bal.src });
-    console.log("init blender after");
     if (bal.val == 1)
         patch(ste, ActMnu.INIT_MENU, bal);
     if (bal.slv != null)
@@ -189,7 +203,6 @@ const openBlender = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.openBlender = openBlender;
-var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 const closeBlender = async (cpy, bal, ste) => {
     console.log("close blender");
     bit = await ste.bus(ActEng.CLOSE_ENGINE, {});
@@ -197,6 +210,12 @@ const closeBlender = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.closeBlender = closeBlender;
+const reloadBlender = (cpy, bal, ste) => {
+    bal.slv({ blnBit: { idx: "reload-blender", bit } });
+    return cpy;
+};
+exports.reloadBlender = reloadBlender;
+var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
 },{"../../00.blender.unit/blender.action":2,"../../98.menu.unit/menu.action":45,"../../99.bus.unit/bus.action":50,"../../act/disk.action":61,"../../act/engine.action":62,"../../act/pivot.action":64,"child_process":undefined}],8:[function(require,module,exports){
 "use strict";
@@ -208,7 +227,71 @@ const initRpgstage = (cpy, bal, ste) => {
     cpy.gameMap = dat.gameMap;
     cpy.gameSystem = dat.gameSystem;
     cpy.gameTemp = dat.gameTemp;
-    debugger;
+    cpy.sceneManager = dat.sceneManager;
+    var display = cpy.sceneManager._scene._spriteset;
+    display = cpy.sceneManager._scene._ultraHudContainer;
+    cpy.mainHUD = display._mainHUD;
+    cpy.mainHUD.children.forEach((a, b) => {
+        var ui = a;
+        var data = a._data;
+        var name = data.Name;
+        if (name != 'debugWindow')
+            a.visible = false;
+    });
+    //debugger
+    //cpy.mainHUD.visible = false
+    //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
+    //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
+    //var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
+    //var bit = await window.BLENDER.hunt(initAtv, { val: 0 });
+    //var bit = await window.BLENDER.hunt(initBld, { val: 0, dat: MQTT, src: local });
+    //window.BLENDER.hunt(openBld, { idx: "simo-beeing" });
+    //var display = SceneManager._scene._spriteset._characterSprites[6];
+    //var display = SceneManager._scene._spriteset._destinationSprite;
+    //display.alpha = 0.5;
+    //debugger
+    //_spriteset
+    //debugger;
+    //Spriteset_Map;
+    //var base = new Sprite(ImageManager.loadPicture("Actor1_1"));
+    //Graphics.app.stage.children[0].addChild(base);
+    //display.addChild(base);
+    //$gameTemp._pkdJoyStick.base.addChild(base);
+    //this.addChild(base);
+    //this.addChildToBack(base);
+    // var count = 0;
+    //Party.create(2);
+    //Party.addActor(2, 3);
+    //Party.setLocation(2, 12, 12, 5);
+    //Party.create(3);
+    //Party.addActor(3, 4);
+    //Party.setLocation(3, 15, 15, 5);
+    //setTimeout(() => {
+    //  Party.switch(2);
+    //}, 2222);
+    //setTimeout(() => {
+    //  Party.switch(3);
+    //}, 12222);
+    //setTimeout(() => {
+    //  Party.switch(1);
+    //}, 32222);
+    // setInterval(() => {
+    //   count += 1;
+    // document.dispatchEvent(
+    //   new KeyboardEvent("keydown", {
+    //     key: "e",
+    //     keyCode: 39, // example values.
+    //     code: "ArrowRight", // put everything you need in this object.
+    //     which: 69,
+    //     shiftKey: false, // you don't need to include values
+    //     ctrlKey: false, // if you aren't going to use them.
+    //     metaKey: false, // these are here for example's sake.
+    //   })
+    // );
+    //$gameMessage.add('\SEPLAY[]  ' + count );
+    //Game_Player_executeMove.call(this, 8);
+    //console.log('go')
+    // }, 1444);
     bal.slv({ intBit: { idx: "init-rpgstage" } });
     return cpy;
 };
@@ -1098,8 +1181,13 @@ const initMenu = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.initMenu = initMenu;
+var updateBlender = async (ste) => {
+    var bitUp = await ste.hunt(ActBld.UPDATE_BLENDER, {});
+    bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' });
+    bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp);
+};
 const updateMenu = async (cpy, bal, ste) => {
-    lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER];
+    lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER, ActBld.RELOAD_BLENDER];
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 });
     bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat });
     src = bit.chcBit.src;
@@ -1109,9 +1197,28 @@ const updateMenu = async (cpy, bal, ste) => {
             bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' });
             break;
         case ActBld.UPDATE_BLENDER:
-            var bitUp = await ste.hunt(ActBld.UPDATE_BLENDER, {});
-            bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' });
-            bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp);
+            await updateBlender(ste);
+            break;
+        case ActBld.RELOAD_BLENDER:
+            var bitUp = await ste.hunt(ActBld.RELOAD_BLENDER, {});
+            bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'reloading setup' });
+            const fs = require('fs');
+            // can be a filename or a directory...
+            const fileToWatch = './0.AlligatorEarth.js';
+            const dirToWatch = './122.blender';
+            fs.watch(fileToWatch, async (eventType, fileName) => {
+                if (eventType != 'rename') {
+                    await updateBlender(ste);
+                    ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: `${fileName} was updated` });
+                }
+            });
+            fs.watch(dirToWatch, { recursive: true }, async (eventType, fileName) => {
+                if (eventType != 'rename') {
+                    bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating...' });
+                    await updateBlender(ste);
+                    ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: `${fileName} was updated` });
+                }
+            });
             break;
         default:
             bit = await ste.bus(ActTrm.CLOSE_TERMINAL, {});
@@ -1150,7 +1257,7 @@ var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 const Align = require("../../val/align");
 const Color = require("../../val/console-color");
 
-},{"../../00.blender.unit/blender.action":2,"../../act/canvas.action":58,"../../act/choice.action":59,"../../act/console.action":60,"../../act/grid.action":63,"../../act/terminal.action":65,"../../val/align":67,"../../val/console-color":68,"../menu.action":45}],45:[function(require,module,exports){
+},{"../../00.blender.unit/blender.action":2,"../../act/canvas.action":58,"../../act/choice.action":59,"../../act/console.action":60,"../../act/grid.action":63,"../../act/terminal.action":65,"../../val/align":67,"../../val/console-color":68,"../menu.action":45,"fs":undefined}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrintMenu = exports.PRINT_MENU = exports.ContainerMenu = exports.CONTAINER_MENU = exports.VisageMenu = exports.VISAGE_MENU = exports.ShadeMenu = exports.SHADE_MENU = exports.CloseMenu = exports.CLOSE_MENU = exports.TestMenu = exports.TEST_MENU = exports.UpdateMenu = exports.UPDATE_MENU = exports.InitMenu = exports.INIT_MENU = void 0;

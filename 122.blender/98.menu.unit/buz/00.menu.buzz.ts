@@ -36,9 +36,17 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
   return cpy;
 };
 
+var updateBlender = async (ste) => {
+
+  var bitUp = await ste.hunt(ActBld.UPDATE_BLENDER, {})
+  bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' })
+  bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp)
+
+}
+
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-  lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER]
+  lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER, ActBld.RELOAD_BLENDER]
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
 
@@ -52,9 +60,36 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
       break;
 
     case ActBld.UPDATE_BLENDER:
-      var bitUp = await ste.hunt(ActBld.UPDATE_BLENDER, {})
-      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' })
-      bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp)
+      await updateBlender(ste)
+      break;
+
+
+    case ActBld.RELOAD_BLENDER:
+
+      var bitUp = await ste.hunt(ActBld.RELOAD_BLENDER, {})
+      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'reloading setup' })
+
+      const fs = require('fs');
+
+      // can be a filename or a directory...
+      const fileToWatch = './0.AlligatorEarth.js'
+      const dirToWatch = './122.blender'
+
+      fs.watch(fileToWatch, async (eventType, fileName) => {
+        if (eventType != 'rename') {
+          await updateBlender(ste)
+          ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: `${fileName} was updated` })
+        }
+      });
+
+      fs.watch(dirToWatch, {recursive:true}, async (eventType, fileName) => {
+        if (eventType != 'rename') {
+          bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating...' })
+          await updateBlender(ste)
+          ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: `${fileName} was updated` })
+        }
+      });
+
       break;
 
     default:
@@ -62,7 +97,7 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
       break;
   }
 
-  setTimeout(() => { updateMenu(cpy, bal, ste) }, 11 )
+  setTimeout(() => { updateMenu(cpy, bal, ste) }, 11)
 
   return cpy;
 };

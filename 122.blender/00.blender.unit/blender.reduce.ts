@@ -19,6 +19,9 @@ case Act.OPEN_BLENDER:
 case Act.CLOSE_BLENDER:
  return Buzz.closeBlender(clone(model), act.bale, state);
  
+case Act.RELOAD_BLENDER:
+ return Buzz.reloadBlender(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

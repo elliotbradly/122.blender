@@ -28,6 +28,13 @@ export const CLOSE_BLENDER = "[Close action] Close Blender";
  constructor(public bale: BlenderBit) {}
  }
  
+export const RELOAD_BLENDER = "[Reload action] Reload Blender";
+ export class ReloadBlender implements Action {
+ readonly type = RELOAD_BLENDER;
+ constructor(public bale: BlenderBit) {}
+ }
+ 
 export type Actions = | InitBlender | UpdateBlender 
 | OpenBlender
 | CloseBlender
+| ReloadBlender

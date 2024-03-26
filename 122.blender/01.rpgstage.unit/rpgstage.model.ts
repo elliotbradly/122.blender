@@ -7,6 +7,10 @@ export class RpgstageModel implements Rpgstage {
     gameSystem: any;
     gameMap: any;
 
+    sceneManager: any;
+
+    mainHUD:any;
+
     //idx:string;
     //rpgstageBitList: RpgstageBit[] = [];
     //rpgstageBits: any = {};

@@ -14,11 +14,13 @@ var bit, val, idx, dex, lst, dat, src;
 
 export const initBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
 
-  console.log("init blender before")
+  //var MQTT = window.BLENDER.MQTT;
+  //console.log("mqtt" + MQTT);
+
+  //const local = "ws://swamp-fly-448d63614f75.herokuapp.com/";
+  //const localBit = { idx: "local", src: "ws://swamp-fly-448d63614f75.herokuapp.com/" };
 
   if (bal.dat != null) bit = await ste.hunt(ActBus.INIT_BUS, { idx: cpy.idx, lst: [ActBld], dat: bal.dat, src: bal.src });
-
-  console.log("init blender after")
 
   if (bal.val == 1) patch(ste, ActMnu.INIT_MENU, bal);
   if (bal.slv != null) bal.slv({ intBit: { idx: "init-blender", val: 0, bit } });
@@ -44,7 +46,7 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
 
     bit = await ste.bus(ActDsk.WRITE_DISK, { src: "./public/jsx/122.blender.js", dat: blend });
     lst.push(bit)
-    
+
     src = "../111.control/rpgmaker/app/js/plugins/122.blender.js"
     bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
     lst.push(bit)
@@ -63,7 +65,7 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
     src = "../service/fictiq.com/js/plugins/AlligatorEarth.js"
     bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
     lst.push(bit)
-    
+
     setTimeout(() => {
       if (bal.slv != null) bal.slv({ blnBit: { idx: "update-blender", lst } });
     }, 3);
@@ -74,8 +76,8 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
 
 export const openBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
 
-  if ( bal == null ) bal = { idx:null}
-  if ( bal.idx == null ) bal.idx = 'simo-being';
+  if (bal == null) bal = { idx: null }
+  if (bal.idx == null) bal.idx = 'simo-being';
 
   //bus to DEPTH
   bit = await ste.bus(ActEng.OPEN_ENGINE, { idx: bal.idx });
@@ -83,8 +85,6 @@ export const openBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State
 
   return cpy;
 };
-
-var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
 export const closeBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
 
@@ -95,6 +95,16 @@ export const closeBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: Stat
 
   return cpy;
 };
+
+
+export const reloadBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
+
+  bal.slv({ blnBit: { idx: "reload-blender", bit } });
+
+  return cpy;
+};
+
+var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
 
 import { BlenderModel } from "../blender.model";
