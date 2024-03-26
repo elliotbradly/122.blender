@@ -34,7 +34,14 @@ export const RELOAD_BLENDER = "[Reload action] Reload Blender";
  constructor(public bale: BlenderBit) {}
  }
  
+export const WRITE_BLENDER = "[Write action] Write Blender";
+ export class WriteBlender implements Action {
+ readonly type = WRITE_BLENDER;
+ constructor(public bale: BlenderBit) {}
+ }
+ 
 export type Actions = | InitBlender | UpdateBlender 
 | OpenBlender
 | CloseBlender
 | ReloadBlender
+| WriteBlender

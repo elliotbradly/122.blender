@@ -15,4 +15,39 @@ export class UpdateHud implements Action {
  constructor(public bale: HudBit) {}
 }
 
-export type Actions = | InitHud | UpdateHud ;
+export const READ_HUD = "[Read action] Read Hud";
+ export class ReadHud implements Action {
+ readonly type = READ_HUD;
+ constructor(public bale: HudBit) {}
+ }
+ 
+export const REMOVE_HUD = "[Remove action] Remove Hud";
+ export class RemoveHud implements Action {
+ readonly type = REMOVE_HUD;
+ constructor(public bale: HudBit) {}
+ }
+ 
+export const WRITE_HUD = "[Write action] Write Hud";
+ export class WriteHud implements Action {
+ readonly type = WRITE_HUD;
+ constructor(public bale: HudBit) {}
+ }
+ 
+export const DELETE_HUD = "[Delete action] Delete Hud";
+ export class DeleteHud implements Action {
+ readonly type = DELETE_HUD;
+ constructor(public bale: HudBit) {}
+ }
+ 
+export const CREATE_HUD = "[Create action] Create Hud";
+ export class CreateHud implements Action {
+ readonly type = CREATE_HUD;
+ constructor(public bale: HudBit) {}
+ }
+ 
+export type Actions = | InitHud | UpdateHud 
+| ReadHud
+| RemoveHud
+| WriteHud
+| DeleteHud
+| CreateHud

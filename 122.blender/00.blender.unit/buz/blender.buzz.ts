@@ -107,6 +107,12 @@ export const reloadBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
 
+export const writeBlender = (cpy: BlenderModel, bal:BlenderBit, ste: State) => {
+ debugger
+ return cpy;
+ };
+
+ 
 import { BlenderModel } from "../blender.model";
 import BlenderBit from "../fce/blender.bit";
 import State from "../../99.core/state";

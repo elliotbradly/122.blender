@@ -9,7 +9,7 @@ export class RpgstageModel implements Rpgstage {
 
     sceneManager: any;
 
-    mainHUD:any;
+    
 
     //idx:string;
     //rpgstageBitList: RpgstageBit[] = [];
