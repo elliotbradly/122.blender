@@ -12,27 +12,37 @@ import * as ActEng from "../../act/engine.action";
 
 var bit, val, idx, dex, lst, dat, src;
 
-export const initHud = (cpy: HudModel, bal: HudBit, ste: State) => {
+export const initHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
     var dat = bal.dat
 
     cpy.mainHUD = dat.mainHUD
 
-    cpy.mainHUD.children.forEach((a, b) => {
+    var dex = cpy.mainHUD.children.length - 1;
 
-        var ui = a;
-        var data = a._data;
+    var next = async () => {
+
+        if (dex < 0) {
+
+            //you can check here and see if you have all the needed items
+            bit = await ste.hunt(ActCol.LIST_COLLECT, { bit: ActHud.CREATE_HUD });
+
+            bal.slv({ intBit: { idx: "init-hud" } });
+            return cpy;
+        }
+
+        var ui = cpy.mainHUD.children[dex]
+        var data = ui._data;
         var name = data.Name;
+        bit = await ste.hunt(ActHud.WRITE_HUD, { idx: name, dat: data });
 
-        if (name != 'debugWindow') a.visible = false
+        dex -= 1
+        await next()
 
-    })
+    }
 
-    debugger
+    await next()
 
-    bal.slv({ intBit: { idx: "init-hud" } });
-
-    return cpy;
 };
 
 export const createHud = (cpy: HudModel, bal: HudBit, ste: State) => {
@@ -79,7 +89,9 @@ export const readHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
     bit = await ste.hunt(ActCol.READ_COLLECT, { idx: bal.idx, bit: ActHud.CREATE_HUD });
 
     var item = bit.clcBit.dat;
-    if (slv != null) slv({ hudBit: { idx: "read-hud", dat: bit.clcBit.dat } });
+    debugger
+
+    if (slv != null) slv({ hudBit: { idx: "read-hud", dat: item } });
 
     return cpy;
 };
@@ -89,16 +101,18 @@ export const writeHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
     bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActHud.CREATE_HUD });
 
-    if (bal.src != null) {
-        //if (Array.from(bal.src)[0] != '#')
-        //    bal.src = '#' + bal.src;
-        bit = await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, src: bal.src });
-        var hudDat = bit.hudBit.dat;
-        bit = hudDat;
-    }
-    else bit = bit.hudBit.dat;
+    //if (bal.src != null) {
+    //if (Array.from(bal.src)[0] != '#')
+    //    bal.src = '#' + bal.src;
+    //    bit = await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, src: bal.src });
+    //    var hudDat = bit.hudBit.dat;
+    //    bit = hudDat;
+    // }
+    // else bit = bit.hudBit.dat;
 
-    bal.slv({ hudBit: { idx: "write-hud", dat: bit } });
+    var item = bit.clcBit.dat;
+
+    bal.slv({ hudBit: { idx: "write-hud", dat: item } });
 
     return cpy;
 };
