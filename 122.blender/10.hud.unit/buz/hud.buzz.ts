@@ -129,7 +129,8 @@ export const deleteHud = (cpy: HudModel, bal: HudBit, ste: State) => {
 };
 
 
-
 import { HudModel } from "../hud.model";
 import HudBit from "../fce/hud.bit";
 import State from "../../99.core/state";
+
+import * as HUD from "../../val/hud";
