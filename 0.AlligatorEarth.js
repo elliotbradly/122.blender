@@ -38,40 +38,16 @@
 (() => {
   $DEBUG = true;
 
-  //var blender = require("./js/plugins/122.blender.js");
   const pluginName = "Alligator-Earth";
 
-  PluginManager.registerCommand(pluginName, "set", (args) => {});
+  PluginManager.registerCommand(pluginName, "set", (args) => { });
 
   Scene_Boot.prototype.startNormalGame = async function () {
-    //let us log into the mqtt server
 
-    var MQTT = window.BLENDER.MQTT;
+    if (Utils.isNwjs()) {
+      nw.Window.get().showDevTools();
+    }
 
-    console.log("mqtt" + MQTT);
-
-    const local = "ws://swamp-fly-448d63614f75.herokuapp.com/";
-    const localBit = { idx: "local", src: "ws://swamp-fly-448d63614f75.herokuapp.com/" };
-
-    var initBld = window.BLENDER.ActBld.INIT_BLENDER;
-    var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
-    var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
-
-    //alert("alligator alligator alligator")
-
-    
-    var bit = await window.BLENDER.hunt(initBld, { val: 0 });
-
-    //var bit = await window.BLENDER.hunt(initAtv, { val: 0 });
-
-    console.log("init activity " + JSON.stringify(bit));
-
-    //var bit = await window.BLENDER.hunt(initBld, { val: 0, dat: MQTT, src: local });
-
-    //window.BLENDER.hunt(openBld, { idx: "simo-beeing" });
-
-    // alert("open game")
-    //this.checkPlayerLocation();
     DataManager.setupNewGame();
 
     //if (DataManager.isAnySavefileExists()) {
@@ -82,39 +58,39 @@
 
     Window_TitleCommand.initCommandPosition();
 
-    var render = () => {
-      //console.log("render")
-      window.requestAnimationFrame(render);
-    };
+    setTimeout(async () => {
 
-    window.requestAnimationFrame(render);
+      var MQTT = window.BLENDER.MQTT;
+      console.log("mqtt" + MQTT);
 
-    if (Utils.isNwjs()) {
-      nw.Window.get().showDevTools();
-    }
+      const local = "ws://swamp-fly-448d63614f75.herokuapp.com/";
+      const localBit = { idx: "local", src: "ws://swamp-fly-448d63614f75.herokuapp.com/" };
 
-    setTimeout(() => {
+      var initBld = window.BLENDER.ActBld.INIT_BLENDER;
+      var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
+      var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
+      var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
+
       $gameTemp;
       $gameSystem;
       $gameMap;
 
+      var bit = await window.BLENDER.hunt(initBld, { val: 0 });
+      //var bit = await window.BLENDER.hunt(initAtv, { val: 0 });
+      //var bit = await window.BLENDER.hunt(initBld, { val: 0, dat: MQTT, src: local });
+      //window.BLENDER.hunt(openBld, { idx: "simo-beeing" });
+      bit = await window.BLENDER.hunt(initMap, { val: 0 });
+
+
       //var display = SceneManager._scene._spriteset._characterSprites[6];
       var display = SceneManager._scene._spriteset._destinationSprite;
-      
 
       display.alpha = 0.5;
 
       var display = SceneManager._scene._spriteset;
-      
-      
-      var hud = SceneManager._scene.children[3];
-      hud.children.forEach( (a)=>{
+      display = SceneManager._scene._ultraHudContainer;
+      debugger
 
-        a.parent.removeChild(a)
-
-
-
-      })
       //debugger
 
       //_spriteset
@@ -131,50 +107,53 @@
 
       //this.addChild(base);
       //this.addChildToBack(base);
+
+
+      var count = 0;
+
+      //Party.create(2);
+      //Party.addActor(2, 3);
+      //Party.setLocation(2, 12, 12, 5);
+
+      //Party.create(3);
+      //Party.addActor(3, 4);
+      //Party.setLocation(3, 15, 15, 5);
+
+      //setTimeout(() => {
+      //  Party.switch(2);
+      //}, 2222);
+
+      //setTimeout(() => {
+      //  Party.switch(3);
+      //}, 12222);
+
+      //setTimeout(() => {
+      //  Party.switch(1);
+      //}, 32222);
+
+      setInterval(() => {
+        count += 1;
+
+        // document.dispatchEvent(
+        //   new KeyboardEvent("keydown", {
+        //     key: "e",
+        //     keyCode: 39, // example values.
+        //     code: "ArrowRight", // put everything you need in this object.
+        //     which: 69,
+        //     shiftKey: false, // you don't need to include values
+        //     ctrlKey: false, // if you aren't going to use them.
+        //     metaKey: false, // these are here for example's sake.
+        //   })
+        // );
+
+        //$gameMessage.add('\SEPLAY[]  ' + count );
+
+        //Game_Player_executeMove.call(this, 8);
+        //console.log('go')
+      }, 1444);
+
     }, 1111);
 
-    var count = 0;
-
-    //Party.create(2);
-    //Party.addActor(2, 3);
-    //Party.setLocation(2, 12, 12, 5);
-
-    //Party.create(3);
-    //Party.addActor(3, 4);
-    //Party.setLocation(3, 15, 15, 5);
-
-    //setTimeout(() => {
-    //  Party.switch(2);
-    //}, 2222);
-
-    //setTimeout(() => {
-    //  Party.switch(3);
-    //}, 12222);
-
-    //setTimeout(() => {
-    //  Party.switch(1);
-    //}, 32222);
-
-    setInterval(() => {
-      count += 1;
-
-      // document.dispatchEvent(
-      //   new KeyboardEvent("keydown", {
-      //     key: "e",
-      //     keyCode: 39, // example values.
-      //     code: "ArrowRight", // put everything you need in this object.
-      //     which: 69,
-      //     shiftKey: false, // you don't need to include values
-      //     ctrlKey: false, // if you aren't going to use them.
-      //     metaKey: false, // these are here for example's sake.
-      //   })
-      // );
-
-      //$gameMessage.add('\SEPLAY[]  ' + count );
-
-      //Game_Player_executeMove.call(this, 8);
-      //console.log('go')
-    }, 1444);
   };
 
   var Game_Player_executeMove = Game_Player.prototype.executeMove;

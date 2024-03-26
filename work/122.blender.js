@@ -2,9 +2,12 @@
 window.BLENDER = require("../dist/122.blender/hunt");
 window.BLENDER.ActBld = require("../dist/122.blender/00.blender.unit/blender.action");
 window.BLENDER.ActAtv = require("../dist/122.blender/80.activity.unit/activity.action");
+window.BLENDER.ActRpm = require("../dist/122.blender/01.rpgmap.unit/rpgmap.action");
+window.BLENDER.ActRpa = require("../dist/122.blender/02.rpgactor.unit/rpgactor.action");
+window.BLENDER.ActRpp = require("../dist/122.blender/03.rpgparty.unit/rpgparty.action");
 
 window.BLENDER.MQTT = require("async-mqtt");
-},{"../dist/122.blender/00.blender.unit/blender.action":2,"../dist/122.blender/80.activity.unit/activity.action":26,"../dist/122.blender/hunt":60,"async-mqtt":126}],2:[function(require,module,exports){
+},{"../dist/122.blender/00.blender.unit/blender.action":2,"../dist/122.blender/01.rpgmap.unit/rpgmap.action":9,"../dist/122.blender/02.rpgactor.unit/rpgactor.action":15,"../dist/122.blender/03.rpgparty.unit/rpgparty.action":21,"../dist/122.blender/80.activity.unit/activity.action":26,"../dist/122.blender/hunt":60,"async-mqtt":126}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CloseBlender = exports.CLOSE_BLENDER = exports.OpenBlender = exports.OPEN_BLENDER = exports.UpdateBlender = exports.UPDATE_BLENDER = exports.InitBlender = exports.INIT_BLENDER = void 0;
