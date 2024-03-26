@@ -70,16 +70,19 @@
       var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
       var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
       var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
+      var initStage = window.BLENDER.ActRps.INIT_RPGSTAGE;
 
-      $gameTemp;
-      $gameSystem;
-      $gameMap;
+      var dat = {
+        gameTemp:$gameTemp,
+        gameSystem:$gameSystem,
+        gameMap:$gameMap
+      }
 
       var bit = await window.BLENDER.hunt(initBld, { val: 0 });
       //var bit = await window.BLENDER.hunt(initAtv, { val: 0 });
       //var bit = await window.BLENDER.hunt(initBld, { val: 0, dat: MQTT, src: local });
       //window.BLENDER.hunt(openBld, { idx: "simo-beeing" });
-      bit = await window.BLENDER.hunt(initMap, { val: 0 });
+      bit = await window.BLENDER.hunt(initStage, { dat });
 
 
       //var display = SceneManager._scene._spriteset._characterSprites[6];

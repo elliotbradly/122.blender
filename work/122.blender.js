@@ -202,8 +202,14 @@ exports.closeBlender = closeBlender;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateRpgstage = exports.initRpgstage = void 0;
+var bit, val, idx, dex, lst, dat, src;
 const initRpgstage = (cpy, bal, ste) => {
+    var dat = bal.dat;
+    cpy.gameMap = dat.gameMap;
+    cpy.gameSystem = dat.gameSystem;
+    cpy.gameTemp = dat.gameTemp;
     debugger;
+    bal.slv({ intBit: { idx: "init-rpgstage" } });
     return cpy;
 };
 exports.initRpgstage = initRpgstage;
