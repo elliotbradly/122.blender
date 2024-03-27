@@ -1,7 +1,10 @@
+import * as ActRps from "../../01.rpgstage.unit/rpgstage.action";
 
 var discordSdk;
 var auth;
 var currentGuild;
+
+var bit, val, idx, dex, lst, dat, src;
 
 export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) => {
 
@@ -50,11 +53,9 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
       access_token,
     });
 
-    discordSdk.subscribe(Events.CURRENT_USER_UPDATE, ( data )=>{
-
-      console.log( 'update ' + JSON.stringify( data ))
-
-    });
+    var user = auth.user
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'user:----' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(user) });
 
 
     const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {

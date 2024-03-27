@@ -238,6 +238,7 @@ exports.writeBlender = writeBlender;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
+const ActAtv = require("../../80.activity.unit/activity.action");
 const ActRps = require("../rpgstage.action");
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActTxt = require("../../act/text.action");
@@ -265,6 +266,8 @@ const initRpgstage = async (cpy, bal, ste) => {
     var text = bit.txtBit.dat.bit;
     hud.addChild(text);
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
+    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
     //debugger
     //debugger
     //cpy.mainHUD.visible = false
@@ -333,7 +336,10 @@ const debugRpgstage = async (cpy, bal, ste) => {
         bal.src = '';
     if (cpy.debugList.length > cpy.debugListSize)
         cpy.debugList.shift();
-    cpy.debugList.push(bal.src);
+    lst = bal.src.split(",");
+    lst.forEach((a) => {
+        cpy.debugList.push(a);
+    });
     bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat: { txt: cpy.debugList.join('\n') } });
     bal.slv({ rpsBit: { idx: "debug-rpgstage" } });
     return cpy;
@@ -341,7 +347,7 @@ const debugRpgstage = async (cpy, bal, ste) => {
 exports.debugRpgstage = debugRpgstage;
 const HUD = require("../../val/hud");
 
-},{"../../10.hud.unit/hud.action":33,"../../act/text.action":72,"../../val/hud":76,"../rpgstage.action":9}],9:[function(require,module,exports){
+},{"../../10.hud.unit/hud.action":33,"../../80.activity.unit/activity.action":38,"../../act/text.action":72,"../../val/hud":76,"../rpgstage.action":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DebugRpgstage = exports.DEBUG_RPGSTAGE = exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
@@ -1053,9 +1059,11 @@ exports.default = ActivityUnit;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateActivity = exports.initActivity = void 0;
+const ActRps = require("../../01.rpgstage.unit/rpgstage.action");
 var discordSdk;
 var auth;
 var currentGuild;
+var bit, val, idx, dex, lst, dat, src;
 const initActivity = (cpy, bal, ste) => {
     discordSdk = new embedded_app_sdk_1.DiscordSDK(cpy.clientID);
     setupDiscordSdk().then(() => {
@@ -1094,9 +1102,9 @@ const initActivity = (cpy, bal, ste) => {
         auth = await discordSdk.commands.authenticate({
             access_token,
         });
-        discordSdk.subscribe(embedded_app_sdk_1.Events.CURRENT_USER_UPDATE, (data) => {
-            console.log('update ' + JSON.stringify(data));
-        });
+        var user = auth.user;
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'user:----' });
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(user) });
         const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
             headers: {
                 // NOTE: we're using the access_token provided by the "authenticate" command
@@ -1130,7 +1138,7 @@ const updateActivity = (cpy, bal, ste) => {
 exports.updateActivity = updateActivity;
 const embedded_app_sdk_1 = require("@discord/embedded-app-sdk");
 
-},{"@discord/embedded-app-sdk":105}],44:[function(require,module,exports){
+},{"../../01.rpgstage.unit/rpgstage.action":9,"@discord/embedded-app-sdk":105}],44:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.listCollect = exports.formatCollect = exports.dotCollect = exports.emptyCollect = exports.deleteCollect = exports.modelCollect = exports.getCollect = exports.putCollect = exports.removeCollect = exports.createCollect = exports.writeCollect = exports.readCollect = exports.fetchCollect = exports.updateCollect = exports.initCollect = void 0;

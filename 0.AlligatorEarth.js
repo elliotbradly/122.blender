@@ -75,7 +75,6 @@
       var bit;
 
       bit = await window.SHADE.hunt(initShade, { val:0 });
-
       bit = await window.BLENDER.hunt(initBlender, { val: 0 });
       bit = await window.BLENDER.hunt(initStage, { dat });
       

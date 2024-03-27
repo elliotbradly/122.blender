@@ -3,6 +3,8 @@ import * as ActMnu from "../../98.menu.unit/menu.action";
 
 import * as ActBld from "../../00.blender.unit/blender.action";
 
+import * as ActAtv from "../../80.activity.unit/activity.action";
+
 import * as ActRps from "../rpgstage.action";
 
 import * as ActHud from "../../10.hud.unit/hud.action";
@@ -43,15 +45,21 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     var hud = bit.hudBit.dat.bit;
 
-    dat = { txt:'', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
+    dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
     bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat })
     var text = bit.txtBit.dat.bit
     hud.addChild(text)
 
-    bit = await ste.hunt( ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
-  
-    
-    
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
+
+    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+
+
+
+
+
+
     //debugger
 
     //debugger
@@ -142,14 +150,18 @@ export const updateRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State)
 };
 
 export const debugRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
-    
-    if ( bal.src == null ) bal.src = '';
-    if ( cpy.debugList.length > cpy.debugListSize) cpy.debugList.shift()
 
-    cpy.debugList.push( bal.src )
-     
-    bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat:{txt:cpy.debugList.join('\n') } })
-    
+    if (bal.src == null) bal.src = '';
+    if (cpy.debugList.length > cpy.debugListSize) cpy.debugList.shift()
+
+    lst = bal.src.split(",");
+
+    lst.forEach((a) => {
+        cpy.debugList.push(a)
+    })
+
+    bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat: { txt: cpy.debugList.join('\n') } })
+
     bal.slv({ rpsBit: { idx: "debug-rpgstage" } });
 
     return cpy;
