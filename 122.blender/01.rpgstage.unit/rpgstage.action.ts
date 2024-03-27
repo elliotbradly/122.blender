@@ -15,4 +15,11 @@ export class UpdateRpgstage implements Action {
  constructor(public bale: RpgstageBit) {}
 }
 
-export type Actions = | InitRpgstage | UpdateRpgstage ;
+export const DEBUG_RPGSTAGE = "[Debug action] Debug Rpgstage";
+ export class DebugRpgstage implements Action {
+ readonly type = DEBUG_RPGSTAGE;
+ constructor(public bale: RpgstageBit) {}
+ }
+ 
+export type Actions = | InitRpgstage | UpdateRpgstage 
+| DebugRpgstage

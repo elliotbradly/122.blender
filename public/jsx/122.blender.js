@@ -237,7 +237,8 @@ exports.writeBlender = writeBlender;
 },{"../../00.blender.unit/blender.action":2,"../../98.menu.unit/menu.action":51,"../../99.bus.unit/bus.action":56,"../../act/disk.action":67,"../../act/engine.action":68,"../../act/pivot.action":70,"child_process":undefined}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRpgstage = exports.initRpgstage = void 0;
+exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
+const ActRps = require("../rpgstage.action");
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActTxt = require("../../act/text.action");
 var bit, val, idx, dex, lst, dat, src;
@@ -259,11 +260,11 @@ const initRpgstage = async (cpy, bal, ste) => {
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     var hud = bit.hudBit.dat.bit;
-    var txt = "alligator \nalligator \nalligator allgator alligator alligator a ab abc abc abcd abcde abcde abcdef abcdef";
-    dat = { txt, x: -133, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' };
+    dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' };
     bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat });
     var text = bit.txtBit.dat.bit;
     hud.addChild(text);
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
     //debugger
     //debugger
     //cpy.mainHUD.visible = false
@@ -327,12 +328,23 @@ const updateRpgstage = (cpy, bal, ste) => {
     return cpy;
 };
 exports.updateRpgstage = updateRpgstage;
+const debugRpgstage = async (cpy, bal, ste) => {
+    if (bal.src == null)
+        bal.src = '';
+    if (cpy.debugList.length > cpy.debugListSize)
+        cpy.debugList.shift();
+    cpy.debugList.push(bal.src);
+    bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat: { txt: cpy.debugList.join('\n') } });
+    bal.slv({ rpsBit: { idx: "debug-rpgstage" } });
+    return cpy;
+};
+exports.debugRpgstage = debugRpgstage;
 const HUD = require("../../val/hud");
 
-},{"../../10.hud.unit/hud.action":33,"../../act/text.action":72,"../../val/hud":76}],9:[function(require,module,exports){
+},{"../../10.hud.unit/hud.action":33,"../../act/text.action":72,"../../val/hud":76,"../rpgstage.action":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
+exports.DebugRpgstage = exports.DEBUG_RPGSTAGE = exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
 // Rpgstage actions
 exports.INIT_RPGSTAGE = "[Rpgstage action] Init Rpgstage";
 class InitRpgstage {
@@ -350,21 +362,38 @@ class UpdateRpgstage {
     }
 }
 exports.UpdateRpgstage = UpdateRpgstage;
+exports.DEBUG_RPGSTAGE = "[Debug action] Debug Rpgstage";
+class DebugRpgstage {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.DEBUG_RPGSTAGE;
+    }
+}
+exports.DebugRpgstage = DebugRpgstage;
 
 },{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRpgstage = exports.initRpgstage = void 0;
+exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
 var rpgstage_buzz_1 = require("./buz/rpgstage.buzz");
 Object.defineProperty(exports, "initRpgstage", { enumerable: true, get: function () { return rpgstage_buzz_1.initRpgstage; } });
 var rpgstage_buzz_2 = require("./buz/rpgstage.buzz");
 Object.defineProperty(exports, "updateRpgstage", { enumerable: true, get: function () { return rpgstage_buzz_2.updateRpgstage; } });
+var rpgstage_buzz_3 = require("./buz/rpgstage.buzz");
+Object.defineProperty(exports, "debugRpgstage", { enumerable: true, get: function () { return rpgstage_buzz_3.debugRpgstage; } });
 
 },{"./buz/rpgstage.buzz":8}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RpgstageModel = void 0;
 class RpgstageModel {
+    constructor() {
+        this.debugList = [];
+        this.debugListSize = 15;
+        //idx:string;
+        //rpgstageBitList: RpgstageBit[] = [];
+        //rpgstageBits: any = {};
+    }
 }
 exports.RpgstageModel = RpgstageModel;
 
@@ -382,6 +411,8 @@ function reducer(model = new rpgstage_model_1.RpgstageModel(), act, state) {
             return Buzz.updateRpgstage(clone(model), act.bale, state);
         case Act.INIT_RPGSTAGE:
             return Buzz.initRpgstage(clone(model), act.bale, state);
+        case Act.DEBUG_RPGSTAGE:
+            return Buzz.debugRpgstage(clone(model), act.bale, state);
         default:
             return model;
     }
