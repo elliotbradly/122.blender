@@ -259,8 +259,8 @@ const initRpgstage = async (cpy, bal, ste) => {
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     var hud = bit.hudBit.dat.bit;
-    var txt = "alligator \n alligator \n alligator allgator alligator alligator";
-    dat = { txt, x: -120, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280 };
+    var txt = "alligator \nalligator \nalligator allgator alligator alligator a ab abc abc abcd abcde abcde abcdef abcdef";
+    dat = { txt, x: -133, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' };
     bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat });
     var text = bit.txtBit.dat.bit;
     hud.addChild(text);
