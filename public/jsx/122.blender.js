@@ -720,10 +720,14 @@ const initHud = async (cpy, bal, ste) => {
 exports.initHud = initHud;
 const createHud = (cpy, bal, ste) => {
     var comp = bal;
-    var bit = comp;
     if (bal.src == null)
         bal.src = 'sprite-ultrahudcomponent-window';
-    var dat = { idx: bal.idx, src: bal.src, bit, dat: bit._data };
+    var dat = { idx: bal.idx, src: bal.src };
+    var bit = comp.dat;
+    dat.bit = bit;
+    dat.dat = bit._data;
+    //debugger
+    //var dat = { idx: bal.idx, src: bal.src, bit, dat: bit._data };
     bal.slv({ hudBit: { idx: "create-hud", dat } });
     return cpy;
 };
@@ -743,7 +747,6 @@ const readHud = async (cpy, bal, ste) => {
         bal.idx = 'hud00';
     bit = await ste.hunt(ActCol.READ_COLLECT, { idx: bal.idx, bit: ActHud.CREATE_HUD });
     var item = bit.clcBit.dat;
-    debugger;
     if (slv != null)
         slv({ hudBit: { idx: "read-hud", dat: item } });
     return cpy;

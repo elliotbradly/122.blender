@@ -46,13 +46,19 @@ export const initHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 };
 
 export const createHud = (cpy: HudModel, bal: HudBit, ste: State) => {
-    
+ 
     var comp:any = bal;
 
-    var bit:Sprite_UltraHUDComponent_Window = comp as Sprite_UltraHUDComponent_Window
     if ( bal.src == null ) bal.src = 'sprite-ultrahudcomponent-window'; 
+    var dat: HBit = { idx: bal.idx, src: bal.src  };
 
-    var dat = { idx: bal.idx, src: bal.src, bit, dat: bit._data };
+    var bit:Sprite_UltraHUDComponent_Window = comp.dat as Sprite_UltraHUDComponent_Window
+    dat.bit = bit;
+    dat.dat = bit._data;
+
+    //debugger
+    
+    //var dat = { idx: bal.idx, src: bal.src, bit, dat: bit._data };
     bal.slv({ hudBit: { idx: "create-hud", dat } });
     return cpy;
 };
@@ -78,8 +84,7 @@ export const readHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
     bit = await ste.hunt(ActCol.READ_COLLECT, { idx: bal.idx, bit: ActHud.CREATE_HUD });
 
     var item = bit.clcBit.dat;
-    debugger
-
+    
     if (slv != null) slv({ hudBit: { idx: "read-hud", dat: item } });
 
     return cpy;
@@ -125,3 +130,4 @@ import State from "../../99.core/state";
 import * as HUD from "../../val/hud";
 
 import Sprite_UltraHUDComponent_Window from '../fce/sprite-ultraHUDComponent-window'
+import HBit from "../fce/h.bit";
