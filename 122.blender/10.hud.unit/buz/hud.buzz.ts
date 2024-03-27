@@ -34,7 +34,7 @@ export const initHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
         var ui = cpy.mainHUD.children[dex]
         var data = ui._data;
         var name = data.Name;
-        bit = await ste.hunt(ActHud.WRITE_HUD, { idx: name, dat: data });
+        bit = await ste.hunt(ActHud.WRITE_HUD, { idx: name, dat:ui });
 
         dex -= 1
         await next()
@@ -46,25 +46,14 @@ export const initHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 };
 
 export const createHud = (cpy: HudModel, bal: HudBit, ste: State) => {
+    
+    var comp:any = bal;
 
-    var dat = { idx: bal.idx, src: bal.src, bit: null, dat: null };
+    var bit:Sprite_UltraHUDComponent_Window = comp as Sprite_UltraHUDComponent_Window
+    if ( bal.src == null ) bal.src = 'sprite-ultrahudcomponent-window'; 
 
-    for (var key in bal.dat) {
-        dat[key] = bal.dat[key];
-    }
-
-    //var data = {};
-    //var list = bal.dat.lst;
-    //list.forEach((a) => {
-    //    var idx = a.name.toLowerCase();
-    //    data[idx] = a.hex;
-    //});
-
-    //dat.dat = data;
-    //dat.bit = require("nearest-color").from(data);
-
+    var dat = { idx: bal.idx, src: bal.src, bit, dat: bit._data };
     bal.slv({ hudBit: { idx: "create-hud", dat } });
-
     return cpy;
 };
 
@@ -134,3 +123,5 @@ import HudBit from "../fce/hud.bit";
 import State from "../../99.core/state";
 
 import * as HUD from "../../val/hud";
+
+import Sprite_UltraHUDComponent_Window from '../fce/sprite-ultraHUDComponent-window'

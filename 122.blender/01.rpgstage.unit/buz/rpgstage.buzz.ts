@@ -30,17 +30,14 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     var hudData = { mainHUD: display._mainHUD }
 
     bit = await ste.hunt( ActHud.INIT_HUD, { dat: hudData });
-    
 
+    bit = await ste.hunt( ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
+    debugger
+    
     //debugger
     
     //cpy.mainHUD.visible = false
     
-    
-
-    
-    
-
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
     //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
     //var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
@@ -128,3 +125,5 @@ export const updateRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State)
 import { RpgstageModel } from "../rpgstage.model";
 import RpgstageBit from "../fce/rpgstage.bit";
 import State from "../../99.core/state";
+
+import * as HUD from "../../val/hud"
