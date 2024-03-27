@@ -251,8 +251,8 @@ const initRpgstage = async (cpy, bal, ste) => {
     var hudData = { mainHUD: display._mainHUD };
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
     //debugger
@@ -2371,7 +2371,7 @@ exports.BLUE = "blue";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DEBUG_WINDOW = exports.ICON_WINDOW = exports.PLAY_DATA_GROUP = exports.WELCOME_WINDOW = void 0;
 exports.WELCOME_WINDOW = "welcomeWindow";
-exports.PLAY_DATA_GROUP = "playDataGroup";
+exports.PLAY_DATA_GROUP = "playerDataGroup";
 exports.ICON_WINDOW = "iconWindow";
 exports.DEBUG_WINDOW = "debugWindow";
 
