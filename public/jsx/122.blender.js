@@ -251,7 +251,11 @@ const initRpgstage = async (cpy, bal, ste) => {
     var hudData = { mainHUD: display._mainHUD };
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
-    debugger;
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
+    //debugger
     //debugger
     //cpy.mainHUD.visible = false
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
@@ -733,11 +737,12 @@ const createHud = (cpy, bal, ste) => {
 };
 exports.createHud = createHud;
 const updateHud = async (cpy, bal, ste) => {
+    var data = bal.dat;
     bit = await ste.hunt(ActHud.READ_HUD, { idx: bal.idx });
     dat = bit.hudBit.dat;
-    bal.src;
-    var itm = dat.bit(bal.src);
-    bal.slv({ hudBit: { idx: "update-hud", dat: itm } });
+    if (data.visible != null)
+        dat.bit.visible = data.visible;
+    bal.slv({ hudBit: { idx: "update-hud", dat } });
     return cpy;
 };
 exports.updateHud = updateHud;
@@ -754,15 +759,9 @@ const readHud = async (cpy, bal, ste) => {
 exports.readHud = readHud;
 const writeHud = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActHud.CREATE_HUD });
-    //if (bal.src != null) {
-    //if (Array.from(bal.src)[0] != '#')
-    //    bal.src = '#' + bal.src;
-    //    bit = await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, src: bal.src });
-    //    var hudDat = bit.hudBit.dat;
-    //    bit = hudDat;
-    // }
-    // else bit = bit.hudBit.dat;
     var item = bit.clcBit.dat;
+    if (bit.clcBit.val == 1)
+        await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, dat: bal.dat });
     bal.slv({ hudBit: { idx: "write-hud", dat: item } });
     return cpy;
 };
@@ -1150,6 +1149,7 @@ const writeCollect = async (cpy, bal, ste) => {
         bal.slv({ rskBit: { idx: "write-collect-err", src: 'no-bit' } });
     var cabBit = cpy.caboodleBitList[cpy.caboodleBits[type]];
     bal.idx;
+    val = 0;
     if (cabBit.bits[bal.idx] == null) {
         bit = await ste.hunt(bal.bit, { idx: bal.idx, src: bal.src, dat: bal.dat });
         var objDat = bit[Object.keys(bit)[0]];
@@ -1166,6 +1166,7 @@ const writeCollect = async (cpy, bal, ste) => {
         cabBit.bits[idx] = dat.dex;
     }
     else {
+        val = 1;
         var cabDat = cabBit.bitList[cabBit.bits[bal.idx]];
         bal.dat;
         for (var key in bal.dat) {
@@ -1180,7 +1181,7 @@ const writeCollect = async (cpy, bal, ste) => {
     if ((dat == null) && (bal.slv != null))
         bal.slv({ rskBit: { idx: "write-collect-err", src: 'no-dat' } });
     if (bal.slv != null)
-        bal.slv({ clcBit: { idx: "write-collect", dat } });
+        bal.slv({ clcBit: { idx: "write-collect", val, dat } });
     return cpy;
 };
 exports.writeCollect = writeCollect;

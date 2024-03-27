@@ -65,13 +65,14 @@ export const createHud = (cpy: HudModel, bal: HudBit, ste: State) => {
 
 export const updateHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
+    var data = bal.dat
+
     bit = await ste.hunt(ActHud.READ_HUD, { idx: bal.idx });
     dat = bit.hudBit.dat;
-    bal.src;
-
-    var itm = dat.bit(bal.src);
-
-    bal.slv({ hudBit: { idx: "update-hud", dat: itm } });
+    
+    if ( data.visible != null ) dat.bit.visible = data.visible
+    
+    bal.slv({ hudBit: { idx: "update-hud", dat } });
 
     return cpy;
 };
@@ -92,19 +93,13 @@ export const readHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
 
 export const writeHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
-
+    
     bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActHud.CREATE_HUD });
-
-    //if (bal.src != null) {
-    //if (Array.from(bal.src)[0] != '#')
-    //    bal.src = '#' + bal.src;
-    //    bit = await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, src: bal.src });
-    //    var hudDat = bit.hudBit.dat;
-    //    bit = hudDat;
-    // }
-    // else bit = bit.hudBit.dat;
-
     var item = bit.clcBit.dat;
+
+    if ( bit.clcBit.val == 1 ) await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, dat: bal.dat });
+    
+    
 
     bal.slv({ hudBit: { idx: "write-hud", dat: item } });
 

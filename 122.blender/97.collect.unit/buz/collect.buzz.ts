@@ -66,6 +66,8 @@ export const writeCollect = async (cpy: CollectModel, bal: CollectBit, ste: Stat
 
       bal.idx
 
+      val = 0;
+
 
       if (cabBit.bits[bal.idx] == null) {
 
@@ -88,9 +90,9 @@ export const writeCollect = async (cpy: CollectModel, bal: CollectBit, ste: Stat
 
       } else {
 
+            val = 1;
+
             var cabDat = cabBit.bitList[cabBit.bits[bal.idx]]
-
-
 
             bal.dat
 
@@ -107,7 +109,7 @@ export const writeCollect = async (cpy: CollectModel, bal: CollectBit, ste: Stat
 
       if ((dat == null) && (bal.slv != null)) bal.slv({ rskBit: { idx: "write-collect-err", src: 'no-dat' } });
 
-      if (bal.slv != null) bal.slv({ clcBit: { idx: "write-collect", dat } });
+      if (bal.slv != null) bal.slv({ clcBit: { idx: "write-collect", val, dat } });
 
       return cpy;
 };

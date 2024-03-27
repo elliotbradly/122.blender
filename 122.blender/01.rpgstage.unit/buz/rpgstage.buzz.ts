@@ -32,7 +32,14 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     bit = await ste.hunt( ActHud.INIT_HUD, { dat: hudData });
 
     bit = await ste.hunt( ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
-    debugger
+    
+    ste.hunt( ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat:{visible:false} });
+    ste.hunt( ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat:{visible:false} });
+    ste.hunt( ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat:{visible:false} });
+    ste.hunt( ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat:{visible:false} });
+    
+    
+    //debugger
     
     //debugger
     
