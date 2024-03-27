@@ -34,3 +34,4 @@ yarn-error.log*
 /*.ini
 /.vscode/settings.json
 /*.editorconfig
+/*.env
