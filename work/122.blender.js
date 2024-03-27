@@ -1065,15 +1065,23 @@ var auth;
 var currentGuild;
 var bit, val, idx, dex, lst, dat, src;
 const initActivity = (cpy, bal, ste) => {
-    discordSdk = new embedded_app_sdk_1.DiscordSDK(cpy.clientID);
+    try {
+        discordSdk = new embedded_app_sdk_1.DiscordSDK(cpy.clientID);
+    }
+    catch (error) {
+        console.log("Discord SDK is not present");
+        bal.slv({ intBit: { idx: "init-activity", val: 0, src: 'discord sdk not present' } });
+        return cpy;
+    }
     setupDiscordSdk().then(() => {
         console.log("Discord SDK is authenticated");
-        if (bal.slv != null)
-            bal.slv({ intBit: { idx: "init-activity", val: 1, dat: currentGuild } });
+        bal.slv({ intBit: { idx: "init-activity", val: 1, dat: currentGuild } });
+        return cpy;
         // We can now make API calls within the scopes we requested in setupDiscordSDK()
         // Note: the access_token returned is a sensitive secret and should be treated as such
     });
     async function setupDiscordSdk() {
+        debugger;
         await discordSdk.ready();
         console.log("Discord SDK is ready");
         // Authorize with Discord Client
@@ -1129,7 +1137,6 @@ const initActivity = (cpy, bal, ste) => {
             throw new Error("Authenticate command failed");
         }
     }
-    return cpy;
 };
 exports.initActivity = initActivity;
 const updateActivity = (cpy, bal, ste) => {
