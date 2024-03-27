@@ -63,8 +63,8 @@ const init = async (prt) => {
     BLENDER = require(path.resolve('./dist/122.blender/hunt'));
     BLENDER_ACTION = require(path.resolve('./dist/122.blender/00.blender.unit/blender.action'));
 
-    //SPACE = require(path.resolve('./002.space/index'));
-    //SPACE_ACTION = require(path.resolve('./002.space/00.space.unit/space.action'));
+    CONTROL = require(path.resolve('./900.control/index'));
+    CONTROL_ACTION = require(path.resolve('./900.control/00.control.unit/control.action'));
 
     PIVOT = require(path.resolve('./999.pivot/index'));
     PIVOT_ACTION = require(path.resolve('./999.pivot/00.pivot.unit/pivot.action'));
@@ -75,8 +75,8 @@ const init = async (prt) => {
     if (pvt == false) {
 
         await TERMINAL.hunt(TERMINAL_ACTION.INIT_TERMINAL, { dat: MQTT, src: local });
+        await CONTROL.hunt( CONTROL_ACTION.INIT_CONTROL, {  dat: MQTT, src: local });
         await PIVOT.hunt(PIVOT_ACTION.INIT_PIVOT, { dat: MQTT, src: local });
-        //await SPACE.hunt( SPACE_ACTION.INIT_SPACE, {  dat: MQTT, src: local });
         await BLENDER.hunt(BLENDER_ACTION.INIT_BLENDER, { val: 1, dat: MQTT, src: [localBit] });
 
     }
