@@ -119,7 +119,6 @@ export const createMenu = (cpy: MenuModel, bal: MenuBit, ste: State) => {
 };
 
 export const printMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
-
   dat = bal;
   if (dat == null) return bal.slv({ mnuBit: { idx: "print-menu", dat } });
 
@@ -128,7 +127,6 @@ export const printMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
   lst = itm.split(",");
   lst.forEach((a) => ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: a }));
   ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: "------------" });
-
 
   bal.slv({ mnuBit: { idx: "print-menu", dat: itm } });
 };
