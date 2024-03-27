@@ -3,6 +3,8 @@ import RpgstageBit from "./fce/rpgstage.interface";
 
 export class RpgstageModel implements Rpgstage {
 
+    shade: any;
+
     gameTemp: any;
     gameSystem: any;
     gameMap: any;

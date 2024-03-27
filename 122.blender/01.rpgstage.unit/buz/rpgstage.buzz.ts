@@ -7,16 +7,15 @@ import * as ActHud from "../../10.hud.unit/hud.action";
 import * as ActCol from "../../97.collect.unit/collect.action";
 import * as ActBus from "../../99.bus.unit/bus.action";
 
-import * as ActVrt from "../../act/vurt.action";
-import * as ActDsk from "../../act/disk.action";
-import * as ActPvt from "../../act/pivot.action";
-import * as ActEng from "../../act/engine.action";
+import * as ActTxt from "../../act/text.action";
 
 var bit, val, idx, dex, lst, dat, src;
 
 export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
     var dat = bal.dat
+
+    cpy.shade = dat.shade;
 
     cpy.gameMap = dat.gameMap;
     cpy.gameSystem = dat.gameSystem;
@@ -37,6 +36,18 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     ste.hunt( ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat:{visible:false} });
     ste.hunt( ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat:{visible:false} });
     ste.hunt( ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat:{visible:false} });
+
+
+    bit = await ste.hunt( ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat:{} });
+    var hud = bit.hudBit.dat.bit;
+    
+    var txt = "alligator \n alligator \n alligator allgator alligator alligator"
+    dat ={ txt, x:-120, y:-140, sze:16, clr:0xFFFFFF, wrp:280}
+    bit = await cpy.shade.hunt( ActTxt.WRITE_TEXT, {idx:'txt00', dat} )
+    var text = bit.txtBit.dat.bit
+    
+    hud.addChild( text)
+
     
     
     //debugger

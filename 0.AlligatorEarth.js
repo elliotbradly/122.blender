@@ -60,19 +60,25 @@
 
     setTimeout(async () => {
 
-      var initBld = window.BLENDER.ActBld.INIT_BLENDER;
+      var initBlender = window.BLENDER.ActBld.INIT_BLENDER;
+      var initShade = window.SHADE.ActShd.INIT_SHADE;
       var initStage = window.BLENDER.ActRps.INIT_RPGSTAGE;
 
       var dat = {
         gameTemp:$gameTemp,
         gameSystem:$gameSystem,
         gameMap:$gameMap,
-        sceneManager:SceneManager
+        sceneManager:SceneManager,
+        shade:window.SHADE
       }
 
-      var bit = await window.BLENDER.hunt(initBld, { val: 0 });
-      bit = await window.BLENDER.hunt(initStage, { dat });
+      var bit;
 
+      bit = await window.SHADE.hunt(initShade, { val:0 });
+
+      bit = await window.BLENDER.hunt(initBlender, { val: 0 });
+      bit = await window.BLENDER.hunt(initStage, { dat });
+      
       
     }, 1011);
 
