@@ -62,6 +62,12 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
     case ActBld.COMMIT_BLENDER:
       bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'commit blender....' })
       bit = await ste.hunt(ActBld.COMMIT_BLENDER, {})
+      lst = bit.blnBit.lst;
+
+      lst.forEach( (a)=>{
+        ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: a })
+      })
+
       break;
 
     case ActBld.UPDATE_BLENDER:
