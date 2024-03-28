@@ -117,8 +117,7 @@ export const commitBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: Sta
 
   bit = await ste.bus(ActGit.COMMIT_GITHUB, { src: " from 122.blender" });
   lst = bit.gitBit.lst;
-  debugger
-
+  
   bal.slv({ blnBit: { idx: "commit-blender", lst } });
   return cpy;
 };
