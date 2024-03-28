@@ -46,7 +46,7 @@ var updateBlender = async (ste) => {
 
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-  lst = [ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER, ActBld.RELOAD_BLENDER]
+  lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActBld.COMMIT_BLENDER]
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
 
@@ -57,6 +57,11 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
     case ActBld.OPEN_BLENDER:
       bit = await ste.hunt(ActBld.OPEN_BLENDER, {})
       bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' })
+      break;
+
+    case ActBld.COMMIT_BLENDER:
+      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'commit blender....' })
+      bit = await ste.hunt(ActBld.COMMIT_BLENDER, {})
       break;
 
     case ActBld.UPDATE_BLENDER:
@@ -82,7 +87,7 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
         }
       });
 
-      fs.watch(dirToWatch, {recursive:true}, async (eventType, fileName) => {
+      fs.watch(dirToWatch, { recursive: true }, async (eventType, fileName) => {
         if (eventType != 'rename') {
           bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating...' })
           await updateBlender(ste)
