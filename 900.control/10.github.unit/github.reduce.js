@@ -11,6 +11,8 @@ function reducer(model = new github_model_1.GithubModel(), act, state) {
             return Buzz.updateGithub(clone(model), act.bale, state);
         case Act.INIT_GITHUB:
             return Buzz.initGithub(clone(model), act.bale, state);
+        case Act.COMMIT_GITHUB:
+            return Buzz.commitGithub(clone(model), act.bale, state);
         default:
             return model;
     }

@@ -12,7 +12,7 @@ var bit, lst, dex, idx, dat, src;
 const initMenu = async (cpy, bal, ste) => {
     if (bal == null)
         bal = { idx: null };
-    //bit = await ste.bus(ActTrm.CLEAR_TERMINAL, {})
+    bit = await ste.bus(ActTrm.CLEAR_TERMINAL, {});
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 4, y: 0, xSpan: 1, ySpan: 12 });
     bit = await ste.bus(ActCvs.WRITE_CANVAS, { idx: 'cvs1', dat: { clr: Color.CYAN, net: bit.grdBit.dat }, });
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 4, y: 0, xSpan: 8, ySpan: 12 });
@@ -25,13 +25,18 @@ const initMenu = async (cpy, bal, ste) => {
 };
 exports.initMenu = initMenu;
 const updateMenu = async (cpy, bal, ste) => {
-    lst = [ActCtl.UPDATE_CONTROL];
+    lst = [ActCtl.UPDATE_CONTROL, ActMnu.GITHUB_MENU];
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 });
     bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat });
     src = bit.chcBit.src;
     switch (src) {
         case ActCtl.UPDATE_CONTROL:
-            bit = await ste.hunt(ActCtl.UPDATE_CONTROL, { idx });
+            ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "Update Control Pivot" });
+            bit = await ste.hunt(ActCtl.UPDATE_CONTROL, {});
+            bit = await ste.hunt(ActMnu.PRINT_MENU, bit);
+            break;
+        case ActMnu.GITHUB_MENU:
+            bit = await ste.hunt(ActMnu.GITHUB_MENU, {});
             bit = await ste.hunt(ActMnu.PRINT_MENU, bit);
             bit = await ste.hunt(ActMnu.UPDATE_MENU);
             break;
@@ -39,7 +44,9 @@ const updateMenu = async (cpy, bal, ste) => {
             bit = await ste.bus(ActTrm.CLOSE_TERMINAL, {});
             break;
     }
-    (0, exports.updateMenu)(cpy, bal, ste);
+    setTimeout(() => {
+        (0, exports.updateMenu)(cpy, bal, ste);
+    }, 1111);
     return cpy;
 };
 exports.updateMenu = updateMenu;

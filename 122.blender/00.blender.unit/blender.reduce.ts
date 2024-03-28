@@ -25,6 +25,9 @@ case Act.RELOAD_BLENDER:
 case Act.WRITE_BLENDER:
  return Buzz.writeBlender(clone(model), act.bale, state);
  
+case Act.COMMIT_BLENDER:
+ return Buzz.commitBlender(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

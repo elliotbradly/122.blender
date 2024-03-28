@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PrintMenu = exports.PRINT_MENU = exports.YieldMenu = exports.YIELD_MENU = exports.RenderMenu = exports.RENDER_MENU = exports.CreateHexmapMenu = exports.CREATE_HEXMAP_MENU = exports.HexmapMenu = exports.HEXMAP_MENU = exports.CreateMenu = exports.CREATE_MENU = exports.UpdateFocusPlayMenu = exports.UPDATE_FOCUS_PLAY_MENU = exports.FocusPlayMenu = exports.FOCUS_PLAY_MENU = exports.FocusMenu = exports.FOCUS_MENU = exports.TimeMenu = exports.TIME_MENU = exports.CloseMenu = exports.CLOSE_MENU = exports.TestMenu = exports.TEST_MENU = exports.UpdateMenu = exports.UPDATE_MENU = exports.InitMenu = exports.INIT_MENU = void 0;
+exports.PrintMenu = exports.PRINT_MENU = exports.YieldMenu = exports.YIELD_MENU = exports.RenderMenu = exports.RENDER_MENU = exports.CreateHexmapMenu = exports.CREATE_HEXMAP_MENU = exports.HexmapMenu = exports.HEXMAP_MENU = exports.CreateMenu = exports.CREATE_MENU = exports.UpdateFocusPlayMenu = exports.UPDATE_FOCUS_PLAY_MENU = exports.FocusPlayMenu = exports.FOCUS_PLAY_MENU = exports.FocusMenu = exports.FOCUS_MENU = exports.GithubMenu = exports.GITHUB_MENU = exports.CloseMenu = exports.CLOSE_MENU = exports.TestMenu = exports.TEST_MENU = exports.UpdateMenu = exports.UPDATE_MENU = exports.InitMenu = exports.INIT_MENU = void 0;
 exports.INIT_MENU = "[Menu action] Init Menu";
 class InitMenu {
     constructor(bale) {
@@ -33,14 +33,14 @@ class CloseMenu {
     }
 }
 exports.CloseMenu = CloseMenu;
-exports.TIME_MENU = "[Time action] Time Menu";
-class TimeMenu {
+exports.GITHUB_MENU = "[Time action] Github Menu";
+class GithubMenu {
     constructor(bale) {
         this.bale = bale;
-        this.type = exports.TIME_MENU;
+        this.type = exports.GITHUB_MENU;
     }
 }
-exports.TimeMenu = TimeMenu;
+exports.GithubMenu = GithubMenu;
 exports.FOCUS_MENU = "[Focus action] Focus Menu";
 class FocusMenu {
     constructor(bale) {

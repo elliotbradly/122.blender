@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateGithub = exports.UPDATE_GITHUB = exports.InitGithub = exports.INIT_GITHUB = void 0;
+exports.CommitGithub = exports.COMMIT_GITHUB = exports.UpdateGithub = exports.UPDATE_GITHUB = exports.InitGithub = exports.INIT_GITHUB = void 0;
 // Github actions
 exports.INIT_GITHUB = "[Github action] Init Github";
 class InitGithub {
@@ -18,4 +18,12 @@ class UpdateGithub {
     }
 }
 exports.UpdateGithub = UpdateGithub;
+exports.COMMIT_GITHUB = "[Commit action] Commit Github";
+class CommitGithub {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.COMMIT_GITHUB;
+    }
+}
+exports.CommitGithub = CommitGithub;
 //# sourceMappingURL=github.action.js.map

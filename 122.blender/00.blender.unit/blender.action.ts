@@ -40,8 +40,15 @@ export const WRITE_BLENDER = "[Write action] Write Blender";
  constructor(public bale: BlenderBit) {}
  }
  
+export const COMMIT_BLENDER = "[Commit action] Commit Blender";
+ export class CommitBlender implements Action {
+ readonly type = COMMIT_BLENDER;
+ constructor(public bale: BlenderBit) {}
+ }
+ 
 export type Actions = | InitBlender | UpdateBlender 
 | OpenBlender
 | CloseBlender
 | ReloadBlender
 | WriteBlender
+| CommitBlender

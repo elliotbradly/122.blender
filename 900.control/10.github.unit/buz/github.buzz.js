@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateGithub = exports.initGithub = void 0;
+exports.commitGithub = exports.updateGithub = exports.initGithub = void 0;
+const { exec } = require('child_process');
 var bit, val, idx, dex, lst, dat, src;
 const initGithub = (cpy, bal, ste) => {
     debugger;
@@ -22,5 +23,25 @@ const updateGithub = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.updateGithub = updateGithub;
+const commitGithub = (cpy, bal, ste) => {
+    if (bal.val == null)
+        bal.val = 0;
+    if (bal.src == null)
+        bal.src = 'committing...';
+    for (var i = 0; i < bal.val; i++) {
+        process.chdir("../");
+    }
+    var message = 'git commit -am "' + bal.src + '" && git push';
+    exec(message, async (err, stdout, stderr) => {
+        lst = stdout.split('\n');
+        if (stderr && stderr.includes('warning') == false) {
+            bal.slv({ gitBit: { idx: "commit-git", src: 'git-error', lst } });
+            return cpy;
+        }
+        bal.slv({ gitBit: { idx: "commit-git", lst } });
+        return cpy;
+    });
+};
+exports.commitGithub = commitGithub;
 const octokit_1 = require("octokit");
 //# sourceMappingURL=github.buzz.js.map

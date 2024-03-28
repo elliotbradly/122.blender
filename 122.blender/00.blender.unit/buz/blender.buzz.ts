@@ -5,7 +5,7 @@ import * as ActBld from "../../00.blender.unit/blender.action";
 import * as ActCol from "../../97.collect.unit/collect.action";
 import * as ActBus from "../../99.bus.unit/bus.action";
 
-import * as ActVrt from "../../act/vurt.action";
+import * as ActGit from "../../act/github.action";
 import * as ActDsk from "../../act/disk.action";
 import * as ActPvt from "../../act/pivot.action";
 import * as ActEng from "../../act/engine.action";
@@ -111,6 +111,18 @@ export const writeBlender = (cpy: BlenderModel, bal:BlenderBit, ste: State) => {
  debugger
  return cpy;
  };
+
+ 
+export const commitBlender = async (cpy: BlenderModel, bal:BlenderBit, ste: State) => {
+
+  bit = await ste.bus(ActGit.COMMIT_GITHUB, { src: " from 122.blender" });
+  var github = bit.gitBit;
+ debugger
+
+ 
+ return cpy;
+ };
+
 
  
 import { BlenderModel } from "../blender.model";
