@@ -28,15 +28,25 @@ const commitGithub = (cpy, bal, ste) => {
         bal.val = 0;
     if (bal.src == null)
         bal.src = 'committing...';
+    if (bal.lst == null)
+        bal.lst = [];
+    if (bal.dat == null)
+        bal.dat = {};
     for (var i = 0; i < bal.val; i++) {
         process.chdir("../");
     }
+    bal.lst.forEach((a) => { process.chdir(a); });
     var message = 'git commit -am "' + bal.src + '" && git push';
     exec(message, async (err, stdout, stderr) => {
         lst = stdout.split('\n');
         if (stderr && stderr.includes('warning') == false) {
             bal.slv({ gitBit: { idx: "commit-git", src: 'git-error', lst } });
             return cpy;
+        }
+        if (bal.dat == null)
+            bal.dat = {};
+        if (bal.dat.lst != null) {
+            bal.dat.lst.forEach((a) => { process.chdir(a); });
         }
         bal.slv({ gitBit: { idx: "commit-git", lst } });
         return cpy;

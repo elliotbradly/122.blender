@@ -115,7 +115,8 @@ export const writeBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) => 
 
 export const commitBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
 
-  bit = await ste.bus(ActGit.COMMIT_GITHUB, { idx:'122.blender', lst:['../', './service', './fictiq.com'], src: " from 122.blender" });
+  dat = {lst:[ '../', '../', './122.blender' ]}
+  bit = await ste.bus(ActGit.COMMIT_GITHUB, { idx:'122.blender', lst:['../', './service', './fictiq.com'], src: " from 122.blender", dat });
   lst = bit.gitBit.lst;
   
   bal.slv({ blnBit: { idx: "commit-blender", lst } });

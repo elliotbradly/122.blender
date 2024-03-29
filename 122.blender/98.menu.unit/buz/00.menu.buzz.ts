@@ -68,6 +68,15 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
         ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: a })
       })
 
+      var count = 0
+
+      var interval = setInterval( ()=>{
+
+        count += 1;
+        if ( count <= 11 ) ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'waiting... ' + count })
+        else clearInterval( interval )
+      }, 1000)
+
       break;
 
     case ActBld.UPDATE_BLENDER:

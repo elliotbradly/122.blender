@@ -13,13 +13,13 @@ const ActGrd = require("../../act/grid.action");
 const ActCns = require("../../act/console.action");
 var bit, lst, dex, idx, dat, src;
 const githubMenu = async (cpy, bal, ste) => {
-    lst = [ActGit.UPDATE_GITHUB, ActGit.COMMIT_GITHUB];
+    lst = [ActGit.COMMIT_GITHUB, ActMnu.UPDATE_MENU];
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 });
     bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat });
     src = bit.chcBit.src;
     switch (src) {
         case ActGit.COMMIT_GITHUB:
-            bit = await ste.hunt(ActGit.COMMIT_GITHUB, { val: 1, src: 'committing control' });
+            bit = await ste.hunt(ActGit.COMMIT_GITHUB, { lst: ['../'], src: 'committing control' });
             bit = await ste.hunt(ActMnu.PRINT_MENU, bit);
             break;
         case ActGit.UPDATE_GITHUB:
@@ -34,6 +34,10 @@ const githubMenu = async (cpy, bal, ste) => {
             lst.forEach((a) => ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: a }));
             ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: '------------' });
             bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open turn....' });
+            break;
+        case ActMnu.UPDATE_MENU:
+            bit = await ste.hunt(ActMnu.UPDATE_MENU);
+            bit = await ste.hunt(ActMnu.PRINT_MENU, bit);
             break;
         default:
             bit = await ste.bus(ActTrm.CLOSE_TERMINAL, {});

@@ -17,9 +17,7 @@ import * as ActTxt from "../../act/text.action";
 var bit, val, idx, dex, lst, dat, src;
 
 export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
-
-    console.log("init rpg stage")
-
+    
     var dat = bal.dat
 
     cpy.shade = dat.shade;
@@ -53,14 +51,19 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     hud.addChild(text)
 
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
 
     bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
-
-
-
-
-
 
     //debugger
 
