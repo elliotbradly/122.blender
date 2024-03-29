@@ -18,6 +18,8 @@ var bit, val, idx, dex, lst, dat, src;
 
 export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
+    console.log("init rpg stage")
+
     var dat = bal.dat
 
     cpy.shade = dat.shade;
