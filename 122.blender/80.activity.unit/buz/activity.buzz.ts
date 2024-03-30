@@ -92,6 +92,8 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     const currentUrl = window.location.origin;
     // get our current connection and replace http with ws, or https with wss
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
+
+    
     socket.addEventListener('message', function (event) {
       if (event.data) {
         console.log("you have connected to the web socket")
