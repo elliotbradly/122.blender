@@ -104,9 +104,6 @@ export const reloadBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
   return cpy;
 };
 
-var patch = (ste, type, bale) => ste.dispatch({ type, bale });
-
-
 export const writeBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
   debugger
   return cpy;
@@ -123,6 +120,7 @@ export const commitBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: Sta
   return cpy;
 };
 
+var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
 
 import { BlenderModel } from "../blender.model";

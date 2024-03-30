@@ -1,5 +1,7 @@
 import * as ActRps from "../../01.rpgstage.unit/rpgstage.action";
 
+import * as ActCsk from "../../96.clientsocket.unit/clientsocket.action";
+
 var discordSdk;
 var auth;
 var currentGuild;
@@ -32,8 +34,6 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
 
   async function setupDiscordSdk() {
     
-    debugger
-
     await discordSdk.ready();
     console.log("Discord SDK is ready");
 
@@ -85,23 +85,8 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     currentGuild = guilds.find((g) => g.id === discordSdk.guildId);
 
 
-    console.log("creating web socket")
-
-
-    //now connect to websocket??
-    const currentUrl = window.location.origin;
-    // get our current connection and replace http with ws, or https with wss
-    var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
-
-    
-    socket.addEventListener('message', function (event) {
-      if (event.data) {
-        console.log("you have connected to the web socket")
-        console.log( event.data )
-      }
-    });
-
-
+    ////here
+    bit = await ste.hunt( ActCsk.INIT_CLIENTSOCKET, {});
 
 
     if (auth == null) {
