@@ -18,7 +18,12 @@ export const initClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, s
     const currentUrl = window.location.origin;
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
 
+    var intBit = { intBit: { idx: bal.idx }}
+    socket.send( JSON.stringify( intBit ));
+
     socket.addEventListener('message', (event)=> {
+
+        
         if (event.data) patch( ste, ActCsk.UPDATE_CLIENTSOCKET, {dat:event.data} )
     });
 

@@ -10,22 +10,22 @@ var bit, val, idx, dex, lst, dat, src;
 
 export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) => {
 
-  
+
 
   try {
     discordSdk = new DiscordSDK(cpy.clientID);
   } catch (error) {
     console.log("Discord SDK is not present");
-     bal.slv({ intBit: { idx: "init-activity", val: 0, src: 'discord sdk not present' } });
-     return cpy;
+    bal.slv({ intBit: { idx: "init-activity", val: 0, src: 'discord sdk not present' } });
+    return cpy;
   }
-  
+
 
 
   setupDiscordSdk().then(() => {
     console.log("Discord SDK is authenticated");
-     bal.slv({ intBit: { idx: "init-activity", val: 1, dat: currentGuild } });
-     return cpy;
+    bal.slv({ intBit: { idx: "init-activity", val: 1, dat: currentGuild } });
+    return cpy;
     // We can now make API calls within the scopes we requested in setupDiscordSDK()
     // Note: the access_token returned is a sensitive secret and should be treated as such
   });
@@ -33,7 +33,7 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
 
 
   async function setupDiscordSdk() {
-    
+
     await discordSdk.ready();
     console.log("Discord SDK is ready");
 
@@ -48,6 +48,11 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
         "guilds",
       ],
     });
+
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'code:----' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(code) });
+
+    debugger
 
     // Retrieve an access_token from your activity's server
     const response = await fetch("/api/token", {
@@ -86,7 +91,7 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
 
 
     ////here
-    bit = await ste.hunt( ActCsk.INIT_CLIENTSOCKET, {});
+    bit = await ste.hunt(ActCsk.INIT_CLIENTSOCKET, {});
 
 
     if (auth == null) {
@@ -94,7 +99,7 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     }
   }
 
- 
+
 };
 
 export const updateActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) => {

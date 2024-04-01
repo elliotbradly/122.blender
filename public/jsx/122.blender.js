@@ -1126,6 +1126,9 @@ const initActivity = (cpy, bal, ste) => {
                 "guilds",
             ],
         });
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'code:----' });
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(code) });
+        debugger;
         // Retrieve an access_token from your activity's server
         const response = await fetch("/api/token", {
             method: "POST",
