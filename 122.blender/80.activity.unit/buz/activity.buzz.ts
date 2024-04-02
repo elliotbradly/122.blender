@@ -37,7 +37,6 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     await discordSdk.ready();
     console.log("Discord SDK is ready");
 
-    // Authorize with Discord Client
     const { code } = await discordSdk.commands.authorize({
       client_id: cpy.clientID,
       response_type: "code",
@@ -52,9 +51,6 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'code:----' });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(code) });
 
-    debugger
-
-    // Retrieve an access_token from your activity's server
     const response = await fetch("/api/token", {
       method: "POST",
       headers: {
@@ -64,11 +60,9 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
         code,
       }),
     });
-
-
+    
     const { access_token } = await response.json();
 
-    // Authenticate with Discord client (using the access_token)
     auth = await discordSdk.commands.authenticate({
       access_token,
     });
@@ -77,21 +71,19 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'user:----' });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(user) });
 
+    bit = await ste.hunt(ActCsk.INIT_CLIENTSOCKET, {idx:code, dat:auth});
 
-    const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
-      headers: {
-        // NOTE: we're using the access_token provided by the "authenticate" command
-        Authorization: `Bearer ${auth.access_token}`,
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => response.json());
+
+    //const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
+    //  headers: {
+    // NOTE: we're using the access_token provided by the "authenticate" command
+    //    Authorization: `Bearer ${auth.access_token}`,
+    //    'Content-Type': 'application/json',
+    //  },
+    //}).then((response) => response.json());
 
     // 2. Find the current guild's info, including it's "icon"
-    currentGuild = guilds.find((g) => g.id === discordSdk.guildId);
-
-
-    ////here
-    bit = await ste.hunt(ActCsk.INIT_CLIENTSOCKET, {});
+    //currentGuild = guilds.find((g) => g.id === discordSdk.guildId);
 
 
     if (auth == null) {

@@ -1115,7 +1115,6 @@ const initActivity = (cpy, bal, ste) => {
     async function setupDiscordSdk() {
         await discordSdk.ready();
         console.log("Discord SDK is ready");
-        // Authorize with Discord Client
         const { code } = await discordSdk.commands.authorize({
             client_id: cpy.clientID,
             response_type: "code",
@@ -1128,8 +1127,6 @@ const initActivity = (cpy, bal, ste) => {
         });
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'code:----' });
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(code) });
-        debugger;
-        // Retrieve an access_token from your activity's server
         const response = await fetch("/api/token", {
             method: "POST",
             headers: {
@@ -1140,24 +1137,22 @@ const initActivity = (cpy, bal, ste) => {
             }),
         });
         const { access_token } = await response.json();
-        // Authenticate with Discord client (using the access_token)
         auth = await discordSdk.commands.authenticate({
             access_token,
         });
         var user = auth.user;
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'user:----' });
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(user) });
-        const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
-            headers: {
-                // NOTE: we're using the access_token provided by the "authenticate" command
-                Authorization: `Bearer ${auth.access_token}`,
-                'Content-Type': 'application/json',
-            },
-        }).then((response) => response.json());
+        bit = await ste.hunt(ActCsk.INIT_CLIENTSOCKET, { idx: code, dat: auth });
+        //const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
+        //  headers: {
+        // NOTE: we're using the access_token provided by the "authenticate" command
+        //    Authorization: `Bearer ${auth.access_token}`,
+        //    'Content-Type': 'application/json',
+        //  },
+        //}).then((response) => response.json());
         // 2. Find the current guild's info, including it's "icon"
-        currentGuild = guilds.find((g) => g.id === discordSdk.guildId);
-        ////here
-        bit = await ste.hunt(ActCsk.INIT_CLIENTSOCKET, {});
+        //currentGuild = guilds.find((g) => g.id === discordSdk.guildId);
         if (auth == null) {
             throw new Error("Authenticate command failed");
         }
@@ -1174,21 +1169,33 @@ const embedded_app_sdk_1 = require("@discord/embedded-app-sdk");
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateClientsocket = exports.initClientsocket = void 0;
+const ActRps = require("../../01.rpgstage.unit/rpgstage.action");
 const ActCsk = require("../../96.clientsocket.unit/clientsocket.action");
 var bit, val, idx, dex, lst, dat, src;
 const initClientsocket = (cpy, bal, ste) => {
     const currentUrl = window.location.origin;
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
-    socket.addEventListener('message', (event) => {
-        if (event.data)
-            patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: event.data });
-    });
+    var init = async (event) => {
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
+        var intBit = { intBit: { idx: bal.idx, dat: bal.dat } };
+        socket.send(JSON.stringify(intBit));
+        socket.removeEventListener('message', init);
+        socket.addEventListener('message', update);
+    };
+    var update = async (event) => {
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'updating the client socket' });
+        if (event.data != 'heartbeat')
+            patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: JSON.parse(event.data) });
+    };
+    socket.addEventListener('message', init);
     bal.slv({ intBit: { idx: "init-clientsocket" } });
     return cpy;
 };
 exports.initClientsocket = initClientsocket;
-const updateClientsocket = (cpy, bal, ste) => {
-    console.log(JSON.stringify(bal));
+const updateClientsocket = async (cpy, bal, ste) => {
+    if (bal == null)
+        bal = { idx, dat: {} };
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bal) });
     if (bal.slv != null)
         bal.slv({ cskBit: { idx: "update-clientsocket" } });
     return cpy;
@@ -1196,7 +1203,7 @@ const updateClientsocket = (cpy, bal, ste) => {
 exports.updateClientsocket = updateClientsocket;
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
-},{"../../96.clientsocket.unit/clientsocket.action":45}],45:[function(require,module,exports){
+},{"../../01.rpgstage.unit/rpgstage.action":9,"../../96.clientsocket.unit/clientsocket.action":45}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateClientsocket = exports.UPDATE_CLIENTSOCKET = exports.InitClientsocket = exports.INIT_CLIENTSOCKET = void 0;

@@ -1,4 +1,6 @@
 import * as ActMnu from "../../98.menu.unit/menu.action";
+import * as ActRps from "../../01.rpgstage.unit/rpgstage.action";
+
 
 import * as ActCsk from "../../96.clientsocket.unit/clientsocket.action";
 import * as ActBld from "../../00.blender.unit/blender.action";
@@ -18,25 +20,40 @@ export const initClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, s
     const currentUrl = window.location.origin;
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
 
-    var intBit = { intBit: { idx: bal.idx }}
-    socket.send( JSON.stringify( intBit ));
+    var init = async (event) => {
 
-    socket.addEventListener('message', (event)=> {
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
 
-        
-        if (event.data) patch( ste, ActCsk.UPDATE_CLIENTSOCKET, {dat:event.data} )
-    });
+        var intBit = { intBit: { idx: bal.idx, dat: bal.dat } }
+        socket.send(JSON.stringify(intBit));
+
+        socket.removeEventListener('message', init);
+        socket.addEventListener('message', update);
+
+    }
+
+    var update = async (event) => {
+
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'updating the client socket' });
+
+
+        if (event.data != 'heartbeat') patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: JSON.parse(event.data) })
+
+    }
+
+    socket.addEventListener('message', init);
 
     bal.slv({ intBit: { idx: "init-clientsocket" } });
     return cpy;
 };
 
-export const updateClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, ste: State) => {
-    
-    console.log( JSON.stringify( bal )  )
+export const updateClientsocket = async (cpy: ClientsocketModel, bal: ClientsocketBit, ste: State) => {
 
-    if ( bal.slv != null ) bal.slv({ cskBit: { idx: "update-clientsocket" } });
+    if ( bal == null ) bal = {idx, dat:{}}
 
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bal) });
+
+    if (bal.slv != null) bal.slv({ cskBit: { idx: "update-clientsocket" } });
     return cpy;
 };
 
