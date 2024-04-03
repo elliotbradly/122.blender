@@ -27,6 +27,16 @@ export const initClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, s
         var intBit = { intBit: { idx: bal.idx, dat: bal.dat } }
         socket.send(JSON.stringify(intBit));
 
+        var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} }
+
+        setInterval( ()=>{
+
+            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
+            socket.send(JSON.stringify(  sighBit  ));
+
+        }, 3333 )
+
+        
         socket.removeEventListener('message', init);
         socket.addEventListener('message', update);
 
@@ -35,7 +45,6 @@ export const initClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, s
     var update = async (event) => {
 
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'updating the client socket' });
-
 
         if (event.data != 'heartbeat') patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: JSON.parse(event.data) })
 
