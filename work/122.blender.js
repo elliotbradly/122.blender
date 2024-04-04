@@ -1143,6 +1143,7 @@ const initActivity = (cpy, bal, ste) => {
         var user = auth.user;
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'user:----' });
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(user) });
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'open client socket' });
         bit = await ste.hunt(ActCsk.INIT_CLIENTSOCKET, { idx: code, dat: auth });
         //const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
         //  headers: {
@@ -1171,20 +1172,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateClientsocket = exports.initClientsocket = void 0;
 const ActRps = require("../../01.rpgstage.unit/rpgstage.action");
 const ActCsk = require("../../96.clientsocket.unit/clientsocket.action");
-const ActEng = require("../../act/engine.action");
 var bit, val, idx, dex, lst, dat, src;
-const initClientsocket = (cpy, bal, ste) => {
+const initClientsocket = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
     const currentUrl = window.location.origin;
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
     var init = async (event) => {
-        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
         var intBit = { intBit: { idx: bal.idx, dat: bal.dat } };
         socket.send(JSON.stringify(intBit));
-        var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} };
-        setInterval(() => {
-            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
-            socket.send(JSON.stringify(sighBit));
-        }, 3333);
+        //var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} }
+        //setInterval( ()=>{
+        //    ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
+        //    socket.send(JSON.stringify(  sighBit  ));
+        //}, 3333 )
         socket.removeEventListener('message', init);
         socket.addEventListener('message', update);
     };
@@ -1192,6 +1192,8 @@ const initClientsocket = (cpy, bal, ste) => {
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'updating the client socket' });
         if (event.data != 'heartbeat')
             patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: JSON.parse(event.data) });
+        else
+            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'beating heart' });
     };
     socket.addEventListener('message', init);
     bal.slv({ intBit: { idx: "init-clientsocket" } });
@@ -1209,7 +1211,7 @@ const updateClientsocket = async (cpy, bal, ste) => {
 exports.updateClientsocket = updateClientsocket;
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
-},{"../../01.rpgstage.unit/rpgstage.action":9,"../../96.clientsocket.unit/clientsocket.action":45,"../../act/engine.action":74}],45:[function(require,module,exports){
+},{"../../01.rpgstage.unit/rpgstage.action":9,"../../96.clientsocket.unit/clientsocket.action":45}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateClientsocket = exports.UPDATE_CLIENTSOCKET = exports.InitClientsocket = exports.INIT_CLIENTSOCKET = void 0;

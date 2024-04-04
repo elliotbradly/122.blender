@@ -15,26 +15,28 @@ import * as ActEng from "../../act/engine.action";
 
 var bit, val, idx, dex, lst, dat, src;
 
-export const initClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, ste: State) => {
+export const initClientsocket = async (cpy: ClientsocketModel, bal: ClientsocketBit, ste: State) => {
+
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
 
     const currentUrl = window.location.origin;
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
 
+
     var init = async (event) => {
 
-        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
 
         var intBit = { intBit: { idx: bal.idx, dat: bal.dat } }
         socket.send(JSON.stringify(intBit));
 
-        var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} }
+        //var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} }
 
-        setInterval( ()=>{
+        //setInterval( ()=>{
 
-            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
-            socket.send(JSON.stringify(  sighBit  ));
+        //    ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
+        //    socket.send(JSON.stringify(  sighBit  ));
 
-        }, 3333 )
+        //}, 3333 )
 
         
         socket.removeEventListener('message', init);
@@ -47,6 +49,7 @@ export const initClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, s
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'updating the client socket' });
 
         if (event.data != 'heartbeat') patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: JSON.parse(event.data) })
+        else ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'beating heart' });
 
     }
 

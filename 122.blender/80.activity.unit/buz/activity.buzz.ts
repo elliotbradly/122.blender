@@ -71,6 +71,8 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'user:----' });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(user) });
 
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'open client socket' });
+    
     bit = await ste.hunt(ActCsk.INIT_CLIENTSOCKET, {idx:code, dat:auth});
 
 
