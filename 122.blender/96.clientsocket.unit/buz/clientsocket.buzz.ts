@@ -22,26 +22,21 @@ export const initClientsocket = async (cpy: ClientsocketModel, bal: Clientsocket
     const currentUrl = window.location.origin;
     var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
 
-
     var init = async (event) => {
-
-
         var intBit = { intBit: { idx: bal.idx, dat: bal.dat } }
         socket.send(JSON.stringify(intBit));
 
-        //var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} }
+        var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} }
 
-        //setInterval( ()=>{
+        setInterval( ()=>{
 
-        //    ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
-        //    socket.send(JSON.stringify(  sighBit  ));
+            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
+            socket.send(JSON.stringify(  sighBit  ));
 
-        //}, 3333 )
+        }, 3333 )
 
-        
         socket.removeEventListener('message', init);
         socket.addEventListener('message', update);
-
     }
 
     var update = async (event) => {
