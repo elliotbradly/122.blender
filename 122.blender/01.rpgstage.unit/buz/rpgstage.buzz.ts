@@ -25,6 +25,8 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     cpy.gameMap = dat.gameMap;
     cpy.gameSystem = dat.gameSystem;
     cpy.gameTemp = dat.gameTemp;
+    cpy.gameParty = dat.gameParty;
+    cpy.graphics = dat.graphics;
 
     cpy.sceneManager = dat.sceneManager;
 

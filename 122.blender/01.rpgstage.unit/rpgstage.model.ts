@@ -5,9 +5,12 @@ export class RpgstageModel implements Rpgstage {
 
     shade: any;
 
+    graphics:any;
+
     gameTemp: any;
     gameSystem: any;
     gameMap: any;
+    gameParty:any;
 
     sceneManager: any;
 

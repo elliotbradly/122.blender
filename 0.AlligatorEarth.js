@@ -64,13 +64,18 @@
       var initShade = window.SHADE.ActShd.INIT_SHADE;
       var initStage = window.BLENDER.ActRps.INIT_RPGSTAGE;
 
+      Graphics.frameCount = 11111;
+      
       var dat = {
         gameTemp:$gameTemp,
         gameSystem:$gameSystem,
         gameMap:$gameMap,
+        gameParty:$gameParty,
         sceneManager:SceneManager,
-        shade:window.SHADE
+        shade:window.SHADE,
+        graphics:Graphics
       }
+
 
       var bit;
 
