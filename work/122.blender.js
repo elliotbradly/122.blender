@@ -1034,9 +1034,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActivityModel = void 0;
 class ActivityModel {
     constructor() {
-        //idx:string;
-        //activityBitList: ActivityBit[] = [];
-        //activityBits: any = {};
         this.clientID = '1219668297763520664';
     }
 }
@@ -1137,10 +1134,10 @@ const initActivity = (cpy, bal, ste) => {
             }),
         });
         const { access_token } = await response.json();
-        auth = await discordSdk.commands.authenticate({
+        var auth = cpy.auth = await discordSdk.commands.authenticate({
             access_token,
         });
-        var user = auth.user;
+        var user = cpy.user = cpy.auth.user;
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'user:----' });
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(user) });
         bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'open client socket' });
@@ -1169,34 +1166,21 @@ const embedded_app_sdk_1 = require("@discord/embedded-app-sdk");
 },{"../../01.rpgstage.unit/rpgstage.action":9,"../../96.clientsocket.unit/clientsocket.action":45,"@discord/embedded-app-sdk":112}],44:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateClientsocket = exports.initClientsocket = void 0;
+exports.openClientsocket = exports.updateClientsocket = exports.initClientsocket = void 0;
 const ActRps = require("../../01.rpgstage.unit/rpgstage.action");
 const ActCsk = require("../../96.clientsocket.unit/clientsocket.action");
 const ActEng = require("../../act/engine.action");
 var bit, val, idx, dex, lst, dat, src;
+var init, update;
 const initClientsocket = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
     const currentUrl = window.location.origin;
-    var socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
-    var init = async (event) => {
-        var intBit = { intBit: { idx: bal.idx, dat: bal.dat } };
-        socket.send(JSON.stringify(intBit));
-        var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: {} };
-        setInterval(() => {
-            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
-            socket.send(JSON.stringify(sighBit));
-        }, 3333);
-        socket.removeEventListener('message', init);
-        socket.addEventListener('message', update);
+    cpy.socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
+    init = async (event) => {
+        var initBit = JSON.parse(event.data);
+        ste.hunt(initBit.idx, initBit.bal);
     };
-    var update = async (event) => {
-        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'updating the client socket' });
-        if (event.data != 'heartbeat')
-            patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: JSON.parse(event.data) });
-        else
-            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'beating heart' });
-    };
-    socket.addEventListener('message', init);
+    cpy.socket.addEventListener('message', init);
     bal.slv({ intBit: { idx: "init-clientsocket" } });
     return cpy;
 };
@@ -1211,11 +1195,33 @@ const updateClientsocket = async (cpy, bal, ste) => {
 };
 exports.updateClientsocket = updateClientsocket;
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
+const openClientsocket = (cpy, bal, ste) => {
+    var ActMod = ste.value.activity;
+    cpy.idx = bal.idx;
+    update = async (event) => {
+        bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'updating the client socket' });
+        if (event.data != 'heartbeat')
+            patch(ste, ActCsk.UPDATE_CLIENTSOCKET, { dat: JSON.parse(event.data) });
+        else
+            ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'beating heart' });
+    };
+    var intBit = { intBit: { idx: bal.idx, dat: bal.dat } };
+    cpy.socket.send(JSON.stringify(intBit));
+    var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: { idx: cpy.idx, auth: ActMod.auth } };
+    setInterval(() => {
+        ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
+        cpy.socket.send(JSON.stringify(sighBit));
+    }, 3333);
+    cpy.socket.removeEventListener('message', init);
+    cpy.socket.addEventListener('message', update);
+    return cpy;
+};
+exports.openClientsocket = openClientsocket;
 
 },{"../../01.rpgstage.unit/rpgstage.action":9,"../../96.clientsocket.unit/clientsocket.action":45,"../../act/engine.action":74}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateClientsocket = exports.UPDATE_CLIENTSOCKET = exports.InitClientsocket = exports.INIT_CLIENTSOCKET = void 0;
+exports.OpenClientsocket = exports.OPEN_CLIENTSOCKET = exports.UpdateClientsocket = exports.UPDATE_CLIENTSOCKET = exports.InitClientsocket = exports.INIT_CLIENTSOCKET = void 0;
 // Clientsocket actions
 exports.INIT_CLIENTSOCKET = "[Clientsocket action] Init Clientsocket";
 class InitClientsocket {
@@ -1233,15 +1239,25 @@ class UpdateClientsocket {
     }
 }
 exports.UpdateClientsocket = UpdateClientsocket;
+exports.OPEN_CLIENTSOCKET = "[Open action] Open Clientsocket";
+class OpenClientsocket {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.OPEN_CLIENTSOCKET;
+    }
+}
+exports.OpenClientsocket = OpenClientsocket;
 
 },{}],46:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateClientsocket = exports.initClientsocket = void 0;
+exports.openClientsocket = exports.updateClientsocket = exports.initClientsocket = void 0;
 var clientsocket_buzz_1 = require("./buz/clientsocket.buzz");
 Object.defineProperty(exports, "initClientsocket", { enumerable: true, get: function () { return clientsocket_buzz_1.initClientsocket; } });
 var clientsocket_buzz_2 = require("./buz/clientsocket.buzz");
 Object.defineProperty(exports, "updateClientsocket", { enumerable: true, get: function () { return clientsocket_buzz_2.updateClientsocket; } });
+var clientsocket_buzz_3 = require("./buz/clientsocket.buzz");
+Object.defineProperty(exports, "openClientsocket", { enumerable: true, get: function () { return clientsocket_buzz_3.openClientsocket; } });
 
 },{"./buz/clientsocket.buzz":44}],47:[function(require,module,exports){
 "use strict";
@@ -1265,6 +1281,8 @@ function reducer(model = new clientsocket_model_1.ClientsocketModel(), act, stat
             return Buzz.updateClientsocket(clone(model), act.bale, state);
         case Act.INIT_CLIENTSOCKET:
             return Buzz.initClientsocket(clone(model), act.bale, state);
+        case Act.OPEN_CLIENTSOCKET:
+            return Buzz.openClientsocket(clone(model), act.bale, state);
         default:
             return model;
     }

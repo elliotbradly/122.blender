@@ -13,6 +13,9 @@ export function reducer(model: ClientsocketModel = new ClientsocketModel(), act:
  case Act.INIT_CLIENTSOCKET:
  return Buzz.initClientsocket(clone(model), act.bale, state);
 
+case Act.OPEN_CLIENTSOCKET:
+ return Buzz.openClientsocket(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

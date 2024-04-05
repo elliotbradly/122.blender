@@ -15,4 +15,11 @@ export class UpdateClientsocket implements Action {
  constructor(public bale: ClientsocketBit) {}
 }
 
-export type Actions = | InitClientsocket | UpdateClientsocket ;
+export const OPEN_CLIENTSOCKET = "[Open action] Open Clientsocket";
+ export class OpenClientsocket implements Action {
+ readonly type = OPEN_CLIENTSOCKET;
+ constructor(public bale: ClientsocketBit) {}
+ }
+ 
+export type Actions = | InitClientsocket | UpdateClientsocket 
+| OpenClientsocket
