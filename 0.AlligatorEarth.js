@@ -63,8 +63,6 @@
       var initBlender = window.BLENDER.ActBld.INIT_BLENDER;
       var initShade = window.SHADE.ActShd.INIT_SHADE;
       var initStage = window.BLENDER.ActRps.INIT_RPGSTAGE;
-
-      Graphics.frameCount = 11111;
       
       var dat = {
         gameTemp:$gameTemp,
