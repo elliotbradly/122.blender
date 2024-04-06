@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.THEATRE = exports.CHURCH = exports.PATH = exports.STUDIO = exports.KEEP = exports.CROWN = exports.MOAT = exports.PORT = exports.LIBRARY = exports.HEIRLOOM = exports.MEMORIAL = exports.TOWER = exports.GARDEN = exports.HEXAGON = exports.CORINTH = exports.CLINIC = void 0;
+exports.CLINIC = `ambit of human health`;
+exports.CORINTH = "ambit of of shelter and urbanity";
+exports.HEXAGON = "ambit of justice";
+exports.GARDEN = "ambit of agricultural";
+exports.TOWER = "ambit of knowledge";
+exports.MEMORIAL = "ambit of ancient affairs";
+exports.HEIRLOOM = "ambit of treasure";
+exports.LIBRARY = "ambit of education";
+exports.PORT = "ambit of commerce";
+exports.MOAT = "ambit of defense";
+exports.CROWN = "ambit of principalities";
+exports.KEEP = "ambit of privacy";
+exports.STUDIO = "ambit of labor";
+exports.PATH = "ambit of transportation";
+exports.CHURCH = "ambit of energy";
+exports.THEATRE = "ambit of culture";
+//# sourceMappingURL=ambit.js.map
