@@ -486,21 +486,69 @@ exports.default = RpgstageUnit;
 },{"../99.core/state":68,"typescript-ioc":341}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRpgactor = exports.initRpgactor = void 0;
+exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
+const ActCol = require("../../97.collect.unit/collect.action");
+const ActRpa = require("../rpgactor.action");
+var bit, val, idx, dex, lst, dat, src;
 const initRpgactor = (cpy, bal, ste) => {
     debugger;
     return cpy;
 };
 exports.initRpgactor = initRpgactor;
-const updateRpgactor = (cpy, bal, ste) => {
+const updateRpgactor = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActRpa.READ_RPGACTOR, { idx: bal.idx });
+    dat = bit.rpaBit;
+    bal.slv({ rpaBit: { idx: "update-rpgactor", dat } });
     return cpy;
 };
 exports.updateRpgactor = updateRpgactor;
+const readRpgactor = async (cpy, bal, ste) => {
+    var slv = bal.slv;
+    if (bal.idx == null)
+        bal.idx = 'ply00';
+    bit = await ste.hunt(ActCol.READ_COLLECT, { idx: bal.idx, bit: ActRpa.CREATE_RPGACTOR });
+    var item = bit.clcBit.dat;
+    if (slv != null)
+        slv({ rpaBit: { idx: "read-rpgactor", dat: item } });
+    return cpy;
+};
+exports.readRpgactor = readRpgactor;
+const writeRpgactor = async (cpy, bal, ste) => {
+    var slv = bal.slv;
+    bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActRpa.CREATE_RPGACTOR });
+    var item = bit.clcBit.dat;
+    if (bit.clcBit.val == 1)
+        await ste.hunt(ActRpa.UPDATE_RPGACTOR, { idx: bal.idx, dat: bal.dat });
+    if (slv != null)
+        slv({ rpaBit: { idx: "write-rpgactor", dat: item } });
+    return cpy;
+};
+exports.writeRpgactor = writeRpgactor;
+const removeRpgactor = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActCol.REMOVE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActRpa.DELETE_RPGACTOR });
+    if (bal.slv != null)
+        bal.slv({ rpaBit: { idx: "remove-rpgactor", dat: bit.clcBit } });
+    return cpy;
+};
+exports.removeRpgactor = removeRpgactor;
+const createRpgactor = async (cpy, bal, ste) => {
+    if (bal.dat == null)
+        bal.dat = {};
+    var dat = {};
+    bal.slv({ rpaBit: { idx: "create-rpgactor", dat } });
+    return cpy;
+};
+exports.createRpgactor = createRpgactor;
+const deleteRpgactor = (cpy, bal, ste) => {
+    debugger;
+    return cpy;
+};
+exports.deleteRpgactor = deleteRpgactor;
 
-},{}],15:[function(require,module,exports){
+},{"../../97.collect.unit/collect.action":51,"../rpgactor.action":15}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateRpgactor = exports.UPDATE_RPGACTOR = exports.InitRpgactor = exports.INIT_RPGACTOR = void 0;
+exports.DeleteRpgactor = exports.DELETE_RPGACTOR = exports.CreateRpgactor = exports.CREATE_RPGACTOR = exports.RemoveRpgactor = exports.REMOVE_RPGACTOR = exports.WriteRpgactor = exports.WRITE_RPGACTOR = exports.ReadRpgactor = exports.READ_RPGACTOR = exports.UpdateRpgactor = exports.UPDATE_RPGACTOR = exports.InitRpgactor = exports.INIT_RPGACTOR = void 0;
 // Rpgactor actions
 exports.INIT_RPGACTOR = "[Rpgactor action] Init Rpgactor";
 class InitRpgactor {
@@ -518,15 +566,65 @@ class UpdateRpgactor {
     }
 }
 exports.UpdateRpgactor = UpdateRpgactor;
+exports.READ_RPGACTOR = "[Read action] Read Rpgactor";
+class ReadRpgactor {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.READ_RPGACTOR;
+    }
+}
+exports.ReadRpgactor = ReadRpgactor;
+exports.WRITE_RPGACTOR = "[Write action] Write Rpgactor";
+class WriteRpgactor {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.WRITE_RPGACTOR;
+    }
+}
+exports.WriteRpgactor = WriteRpgactor;
+exports.REMOVE_RPGACTOR = "[Remove action] Remove Rpgactor";
+class RemoveRpgactor {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.REMOVE_RPGACTOR;
+    }
+}
+exports.RemoveRpgactor = RemoveRpgactor;
+exports.CREATE_RPGACTOR = "[Create action] Create Rpgactor";
+class CreateRpgactor {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.CREATE_RPGACTOR;
+    }
+}
+exports.CreateRpgactor = CreateRpgactor;
+exports.DELETE_RPGACTOR = "[Delete action] Delete Rpgactor";
+class DeleteRpgactor {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.DELETE_RPGACTOR;
+    }
+}
+exports.DeleteRpgactor = DeleteRpgactor;
 
 },{}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRpgactor = exports.initRpgactor = void 0;
+exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
 var rpgactor_buzz_1 = require("./buz/rpgactor.buzz");
 Object.defineProperty(exports, "initRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_1.initRpgactor; } });
 var rpgactor_buzz_2 = require("./buz/rpgactor.buzz");
 Object.defineProperty(exports, "updateRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_2.updateRpgactor; } });
+var rpgactor_buzz_3 = require("./buz/rpgactor.buzz");
+Object.defineProperty(exports, "readRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_3.readRpgactor; } });
+var rpgactor_buzz_4 = require("./buz/rpgactor.buzz");
+Object.defineProperty(exports, "writeRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_4.writeRpgactor; } });
+var rpgactor_buzz_5 = require("./buz/rpgactor.buzz");
+Object.defineProperty(exports, "removeRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_5.removeRpgactor; } });
+var rpgactor_buzz_6 = require("./buz/rpgactor.buzz");
+Object.defineProperty(exports, "createRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_6.createRpgactor; } });
+var rpgactor_buzz_7 = require("./buz/rpgactor.buzz");
+Object.defineProperty(exports, "deleteRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_7.deleteRpgactor; } });
 
 },{"./buz/rpgactor.buzz":14}],17:[function(require,module,exports){
 "use strict";
@@ -550,6 +648,16 @@ function reducer(model = new rpgactor_model_1.RpgactorModel(), act, state) {
             return Buzz.updateRpgactor(clone(model), act.bale, state);
         case Act.INIT_RPGACTOR:
             return Buzz.initRpgactor(clone(model), act.bale, state);
+        case Act.READ_RPGACTOR:
+            return Buzz.readRpgactor(clone(model), act.bale, state);
+        case Act.WRITE_RPGACTOR:
+            return Buzz.writeRpgactor(clone(model), act.bale, state);
+        case Act.REMOVE_RPGACTOR:
+            return Buzz.removeRpgactor(clone(model), act.bale, state);
+        case Act.CREATE_RPGACTOR:
+            return Buzz.createRpgactor(clone(model), act.bale, state);
+        case Act.DELETE_RPGACTOR:
+            return Buzz.deleteRpgactor(clone(model), act.bale, state);
         default:
             return model;
     }

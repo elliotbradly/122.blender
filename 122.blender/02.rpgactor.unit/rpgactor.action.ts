@@ -15,4 +15,39 @@ export class UpdateRpgactor implements Action {
  constructor(public bale: RpgactorBit) {}
 }
 
-export type Actions = | InitRpgactor | UpdateRpgactor ;
+export const READ_RPGACTOR = "[Read action] Read Rpgactor";
+ export class ReadRpgactor implements Action {
+ readonly type = READ_RPGACTOR;
+ constructor(public bale: RpgactorBit) {}
+ }
+ 
+export const WRITE_RPGACTOR = "[Write action] Write Rpgactor";
+ export class WriteRpgactor implements Action {
+ readonly type = WRITE_RPGACTOR;
+ constructor(public bale: RpgactorBit) {}
+ }
+ 
+export const REMOVE_RPGACTOR = "[Remove action] Remove Rpgactor";
+ export class RemoveRpgactor implements Action {
+ readonly type = REMOVE_RPGACTOR;
+ constructor(public bale: RpgactorBit) {}
+ }
+ 
+export const CREATE_RPGACTOR = "[Create action] Create Rpgactor";
+ export class CreateRpgactor implements Action {
+ readonly type = CREATE_RPGACTOR;
+ constructor(public bale: RpgactorBit) {}
+ }
+ 
+export const DELETE_RPGACTOR = "[Delete action] Delete Rpgactor";
+ export class DeleteRpgactor implements Action {
+ readonly type = DELETE_RPGACTOR;
+ constructor(public bale: RpgactorBit) {}
+ }
+ 
+export type Actions = | InitRpgactor | UpdateRpgactor 
+| ReadRpgactor
+| WriteRpgactor
+| RemoveRpgactor
+| CreateRpgactor
+| DeleteRpgactor
