@@ -1,21 +1,48 @@
+import * as ActRpa from "../rpgactor.action";
+
 import * as ActMnu from "../../98.menu.unit/menu.action";
-
 import * as ActBld from "../../00.blender.unit/blender.action";
-
 import * as ActAtv from "../../80.activity.unit/activity.action";
-
 import * as ActHud from "../../10.hud.unit/hud.action";
-
 import * as ActCol from "../../97.collect.unit/collect.action";
 import * as ActBus from "../../99.bus.unit/bus.action";
 
 import * as ActTxt from "../../act/text.action";
-import * as ActRpa from "../rpgactor.action";
+
 
 var bit, val, idx, dex, lst, dat, src;
 
-export const initRpgactor = (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
-    debugger
+export const initRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
+
+    lst = bal.dat
+
+    var dex = lst.length-1;
+
+    var output = []
+    var lstMsg = []
+
+    var nextActor = async () => {
+
+        if (dex <= 0) {
+            output
+            bal.slv({ intBit: { idx: "init-rpgactor", dat, lst:lstMsg } });
+            return cpy;
+        }
+
+        var itm = lst[ dex ]
+        
+        bit = await ste.hunt( ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat:itm })
+
+        dat = bit.rpaBit.dat
+
+        lstMsg.push( 'actor added: ' + dat.name )
+        
+        dex -= 1
+        await nextActor()
+    }
+
+    await nextActor()
+
     return cpy;
 };
 
@@ -67,9 +94,14 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
 
     if (bal.dat == null) bal.dat = {}
 
+    bal.dat;
+    
     var dat: StarBit = {};
+    for ( var key in bal.dat){
+        dat[key ] = bal.dat[key]
+    }
 
-    bal.slv({ rpaBit: { idx: "create-rpgactor", dat } });
+    bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;
 };
 

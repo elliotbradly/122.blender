@@ -17,6 +17,8 @@ export class RpgstageModel implements Rpgstage {
     debugList: string[] = []
     debugListSize:number = 8; 
 
+    dataActors: any;
+
     //idx:string;
     //rpgstageBitList: RpgstageBit[] = [];
     //rpgstageBits: any = {};

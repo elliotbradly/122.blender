@@ -4,6 +4,7 @@ import * as ActMnu from "../../98.menu.unit/menu.action";
 import * as ActBld from "../../00.blender.unit/blender.action";
 
 import * as ActAtv from "../../80.activity.unit/activity.action";
+import * as ActRpa from "../../02.rpgactor.unit/rpgactor.action";
 
 import * as ActRps from "../rpgstage.action";
 
@@ -29,6 +30,8 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     cpy.graphics = dat.graphics;
 
     cpy.sceneManager = dat.sceneManager;
+
+    cpy.dataActors = dat.dataActors;
 
     var display = cpy.sceneManager._scene._spriteset;
     display = cpy.sceneManager._scene._ultraHudContainer;
@@ -67,6 +70,8 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+
+    bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
 
     //debugger
 

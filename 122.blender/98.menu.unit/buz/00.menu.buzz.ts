@@ -148,6 +148,9 @@ export const printMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   var itm = JSON.stringify(dat);
 
+  itm = itm.replace( '["', '\n' )
+  itm = itm.replace( ']}', '\n' )
+
   lst = itm.split(",");
   lst.forEach((a) => ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: a }));
   ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: "------------" });

@@ -71,9 +71,9 @@
         gameParty:$gameParty,
         sceneManager:SceneManager,
         shade:window.SHADE,
-        graphics:Graphics
+        graphics:Graphics,
+        dataActors:$dataActors
       }
-
 
       var bit;
 
