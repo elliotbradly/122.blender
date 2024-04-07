@@ -4,7 +4,6 @@ import * as ActBld from "../../00.blender.unit/blender.action";
 //import * as ActFoc from "../../01.focus.unit/focus.action";
 //import * as ActPvt from "../../96.pivot.unit/pivot.action";
 
-//import * as ActMap from "../../03.hexmap.unit/hexmap.action"
 
 import * as ActTrm from "../../act/terminal.action";
 import * as ActChc from "../../act/choice.action"; 111
@@ -46,7 +45,7 @@ var updateBlender = async (ste) => {
 
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-  lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActBld.COMMIT_BLENDER]
+  lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActBld.COMMIT_BLENDER, ActMnu.RPGACTOR_MENU]
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
 
@@ -54,10 +53,15 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   switch (src) {
 
-    case ActBld.OPEN_BLENDER:
-      bit = await ste.hunt(ActBld.OPEN_BLENDER, {})
-      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' })
+    case ActMnu.RPGACTOR_MENU:
+      bit = await ste.hunt(ActMnu.RPGACTOR_MENU, {})
+      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open rpg actor menu....' })
       break;
+
+      case ActBld.OPEN_BLENDER:
+        bit = await ste.hunt(ActBld.OPEN_BLENDER, {})
+        bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' })
+        break;
 
     case ActBld.COMMIT_BLENDER:
       bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'commit blender....' })
