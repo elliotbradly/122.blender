@@ -262,7 +262,7 @@ var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 },{"../../00.blender.unit/blender.action":2,"../../98.menu.unit/menu.action":58,"../../99.bus.unit/bus.action":63,"../../act/disk.action":74,"../../act/engine.action":75,"../../act/github.action":76,"../../act/pivot.action":78,"child_process":undefined}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
+exports.sceneRpgstage = exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
 const ActRps = require("../rpgstage.action");
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActTxt = require("../../act/text.action");
@@ -290,33 +290,7 @@ const initRpgstage = async (cpy, bal, ste) => {
     display = cpy.sceneManager._scene._ultraHudContainer;
     var hudData = { mainHUD: display._mainHUD };
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
-    bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
-    bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
-    var hud = bit.hudBit.dat.bit;
-    dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' };
-    bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat });
-    var text = bit.txtBit.dat.bit;
-    hud.addChild(text);
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
-    //bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
-    //cpy.mainHUD.visible = false
+    bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
     //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
     //var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
@@ -391,12 +365,45 @@ const debugRpgstage = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.debugRpgstage = debugRpgstage;
+const sceneRpgstage = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
+    //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
+    //var hud = bit.hudBit.dat.bit;
+    //dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
+    //bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat })
+    //var text = bit.txtBit.dat.bit
+    //hud.addChild(text)
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+    //bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
+    //cpy.mainHUD.visible = false
+    //can you clear it
+    bal.slv({ rpsBit: { idx: "scene-rpgstage" } });
+    return cpy;
+};
+exports.sceneRpgstage = sceneRpgstage;
 const HUD = require("../../val/hud");
 
 },{"../../10.hud.unit/hud.action":33,"../../act/text.action":80,"../../val/hud":84,"../rpgstage.action":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DebugRpgstage = exports.DEBUG_RPGSTAGE = exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
+exports.SceneRpgstage = exports.SCENE_RPGSTAGE = exports.DebugRpgstage = exports.DEBUG_RPGSTAGE = exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
 // Rpgstage actions
 exports.INIT_RPGSTAGE = "[Rpgstage action] Init Rpgstage";
 class InitRpgstage {
@@ -422,17 +429,27 @@ class DebugRpgstage {
     }
 }
 exports.DebugRpgstage = DebugRpgstage;
+exports.SCENE_RPGSTAGE = "[Scene action] Scene Rpgstage";
+class SceneRpgstage {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.SCENE_RPGSTAGE;
+    }
+}
+exports.SceneRpgstage = SceneRpgstage;
 
 },{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
+exports.sceneRpgstage = exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
 var rpgstage_buzz_1 = require("./buz/rpgstage.buzz");
 Object.defineProperty(exports, "initRpgstage", { enumerable: true, get: function () { return rpgstage_buzz_1.initRpgstage; } });
 var rpgstage_buzz_2 = require("./buz/rpgstage.buzz");
 Object.defineProperty(exports, "updateRpgstage", { enumerable: true, get: function () { return rpgstage_buzz_2.updateRpgstage; } });
 var rpgstage_buzz_3 = require("./buz/rpgstage.buzz");
 Object.defineProperty(exports, "debugRpgstage", { enumerable: true, get: function () { return rpgstage_buzz_3.debugRpgstage; } });
+var rpgstage_buzz_4 = require("./buz/rpgstage.buzz");
+Object.defineProperty(exports, "sceneRpgstage", { enumerable: true, get: function () { return rpgstage_buzz_4.sceneRpgstage; } });
 
 },{"./buz/rpgstage.buzz":8}],11:[function(require,module,exports){
 "use strict";
@@ -465,6 +482,8 @@ function reducer(model = new rpgstage_model_1.RpgstageModel(), act, state) {
             return Buzz.initRpgstage(clone(model), act.bale, state);
         case Act.DEBUG_RPGSTAGE:
             return Buzz.debugRpgstage(clone(model), act.bale, state);
+        case Act.SCENE_RPGSTAGE:
+            return Buzz.sceneRpgstage(clone(model), act.bale, state);
         default:
             return model;
     }

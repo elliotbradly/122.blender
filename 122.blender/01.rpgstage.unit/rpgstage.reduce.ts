@@ -16,6 +16,9 @@ export function reducer(model: RpgstageModel = new RpgstageModel(), act: Act.Act
 case Act.DEBUG_RPGSTAGE:
  return Buzz.debugRpgstage(clone(model), act.bale, state);
  
+case Act.SCENE_RPGSTAGE:
+ return Buzz.sceneRpgstage(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

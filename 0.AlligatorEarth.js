@@ -64,13 +64,13 @@
       var initShade = window.SHADE.ActShd.INIT_SHADE;
       var initStage = window.BLENDER.ActRps.INIT_RPGSTAGE;
       var debugStage = window.BLENDER.ActRps.DEBUG_RPGSTAGE;
+      var sceneStage = window.BLENDER.ActRps.SCENE_RPGSTAGE;
 
-  
       var dat = {
         gameTemp: $gameTemp,
         gameSystem: $gameSystem,
-        gameScreen: $gameScreen, 
-        gameTimer: $gameTimer, 
+        gameScreen: $gameScreen,
+        gameTimer: $gameTimer,
         gameMessage: $gameMessage,
         gameSwitches: $gameSwitches,
         gameVariables: $gameVariables,
@@ -80,7 +80,7 @@
         gameTroop: $gameTroop,
         gameMap: $gameMap,
         gamePlayer: $gamePlayer,
-        
+
         sceneManager: SceneManager,
         shade: window.SHADE,
         graphics: Graphics,
@@ -96,35 +96,70 @@
       bit = await window.BLENDER.hunt(initBlender, { val: 0 });
       bit = await window.BLENDER.hunt(initStage, { dat });
 
-      window.BLENDER.hunt( debugStage, { src: 'Scene Boot' });
-
+      window.BLENDER.hunt(debugStage, { src: 'Scene Boot' });
 
       var Scene_Map_create = Scene_Map.prototype.create;
-      Scene_Map.prototype.create = async function (){
-    
-        window.BLENDER.hunt( debugStage, { src: 'create scene map' });
-        
+      Scene_Map.prototype.create = async function () {
+
+        var newMapId = $gamePlayer.newMapId();
+        var datMapId = $dataMap.id
+        var oldMapId = $gameMap.mapId()
+
+        var dat = { datMapId, newMapId, oldMapId }
+
         Scene_Map_create.call(this);
+
+        setTimeout( ()=>{
+
+          window.BLENDER.hunt(sceneStage, { val: 5 });
+
+        }, 4111)
+
+        //window.BLENDER.hunt(sceneStage, { val: 1, dat });
       }
-    
+
+      //var Scene_Map_onMapLoaded = Scene_Map.prototype.onMapLoaded;
+     // Scene_Map.prototype.onMapLoaded = function () {
+     //   Scene_Map_onMapLoaded.call(this);
+     //   window.BLENDER.hunt(sceneStage, { val: 2 });
+     // };
+
+      //var Scene_Map_onTransfer = Scene_Map.prototype.onMapLoaded;
+      //Scene_Map.prototype.onTransfer = function () {
+      //  Scene_Map_onTransfer.call(this)
+      //  window.BLENDER.hunt(sceneStage, { val: 3 });
+      //};
+
+      //var Scene_Map_start = Scene_Map.prototype.start;
+      //Scene_Map.prototype.start = function () {
+      //  Scene_Map_start.call(this)
+      //  window.BLENDER.hunt(sceneStage, { val: 4 });
+      //};
+
+      var Scene_Map_onTransferEnd = Scene_Map.prototype.onTransferEnd;
+      Scene_Map.prototype.onTransferEnd = function () {
+        Scene_Map_onTransferEnd.call(this)
+
+        
+        
+      };
 
     }, 1011);
 
   };
 
 
+  // var Game_Player_executeMove = Game_Player.prototype.executeMove;
+  // Game_Player.prototype.executeMove = function (direction) {
+  //window.location = './vue.html'
 
-  var Game_Player_executeMove = Game_Player.prototype.executeMove;
-  Game_Player.prototype.executeMove = function (direction) {
-    //window.location = './vue.html'
-
-    console.log(JSON.stringify(direction));
-    //if (direction % 2 == 0) {
-    Game_Player_executeMove.call(this, direction);
-    //} else {
-    // const dirArray = Galv.DM.getHorzVertDirs(direction);
-    // this.moveDiagonally(dirArray[0], dirArray[1]);
-    //};
-  };
+  //  console.log(JSON.stringify(direction));
+  //if (direction % 2 == 0) {
+  //  Game_Player_executeMove.call(this, direction);
+  //} else {
+  // const dirArray = Galv.DM.getHorzVertDirs(direction);
+  // this.moveDiagonally(dirArray[0], dirArray[1]);
+  //};
+  //};
 
 })();
