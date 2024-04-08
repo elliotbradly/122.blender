@@ -45,7 +45,7 @@ var updateBlender = async (ste) => {
 
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-  lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActBld.COMMIT_BLENDER, ActMnu.RPGACTOR_MENU]
+  lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActMnu.RPGACTOR_MENU, ActBld.COMMIT_BLENDER ]
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
 

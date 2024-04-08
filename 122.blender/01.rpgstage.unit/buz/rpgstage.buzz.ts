@@ -23,10 +23,20 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.shade = dat.shade;
 
-    cpy.gameMap = dat.gameMap;
-    cpy.gameSystem = dat.gameSystem;
     cpy.gameTemp = dat.gameTemp;
+    cpy.gameSystem = dat.gameSystem;
+    cpy.gameScreen = dat.gameScreen;
+    cpy.gameTimer = dat.gameTimer;
+    cpy.gameMessage = dat.gameMessage;
+    cpy.gameSwitches = dat.gameSwitches;
+    cpy.gameVariables = dat.gameVariables;
+    cpy.gameSelfSwitches = dat.gameSelfSwitches;
+    cpy.gameActors = dat.gameActors;
     cpy.gameParty = dat.gameParty;
+    cpy.gameTroop = dat.gameTroop;
+    cpy.gameMap = dat.gameMap;
+    cpy.gamePlayer = dat.gamePlayer;
+
     cpy.graphics = dat.graphics;
 
     cpy.sceneManager = dat.sceneManager;
@@ -42,11 +52,11 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
 
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: true } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
 
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     var hud = bit.hudBit.dat.bit;
@@ -68,15 +78,11 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
 
-    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+    //bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+    //bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
 
-    bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
-
-    //debugger
-
-    //debugger
-
+    
     //cpy.mainHUD.visible = false
 
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;

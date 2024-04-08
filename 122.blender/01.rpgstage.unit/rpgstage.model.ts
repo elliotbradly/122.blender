@@ -9,8 +9,17 @@ export class RpgstageModel implements Rpgstage {
 
     gameTemp: any;
     gameSystem: any;
-    gameMap: any;
+    gameScreen: any;
+    gameTimer: any;
+    gameMessage: any;
+    gameSwitches:any;
+    gameVariables: any;
+    gameSelfSwitches :any;
+    gameActors:any;
     gameParty:any;
+    gameTroop:any;
+    gameMap: any;
+    gamePlayer: any;
 
     sceneManager: any;
 
@@ -18,6 +27,8 @@ export class RpgstageModel implements Rpgstage {
     debugListSize:number = 8; 
 
     dataActors: any;
+
+
 
     //idx:string;
     //rpgstageBitList: RpgstageBit[] = [];

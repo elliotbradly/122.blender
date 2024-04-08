@@ -19,7 +19,7 @@ var bit, lst, dex, idx, dat, src;
 
 export const rpgactorMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-  lst = [ ActRpa.INIT_RPGACTOR, ActRpa.WRITE_RPGACTOR, ActRpa.READ_RPGACTOR]
+  lst = [ ActRpa.INIT_RPGACTOR, ActRpa.WRITE_RPGACTOR, ActRpa.READ_RPGACTOR  ]
 
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })

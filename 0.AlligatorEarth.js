@@ -63,28 +63,56 @@
       var initBlender = window.BLENDER.ActBld.INIT_BLENDER;
       var initShade = window.SHADE.ActShd.INIT_SHADE;
       var initStage = window.BLENDER.ActRps.INIT_RPGSTAGE;
-      
+      var debugStage = window.BLENDER.ActRps.DEBUG_RPGSTAGE;
+
+  
       var dat = {
-        gameTemp:$gameTemp,
-        gameSystem:$gameSystem,
-        gameMap:$gameMap,
-        gameParty:$gameParty,
-        sceneManager:SceneManager,
-        shade:window.SHADE,
-        graphics:Graphics,
-        dataActors:$dataActors
+        gameTemp: $gameTemp,
+        gameSystem: $gameSystem,
+        gameScreen: $gameScreen, 
+        gameTimer: $gameTimer, 
+        gameMessage: $gameMessage,
+        gameSwitches: $gameSwitches,
+        gameVariables: $gameVariables,
+        gameSelfSwitches: $gameSelfSwitches,
+        gameActors: $gameActors,
+        gameParty: $gameParty,
+        gameTroop: $gameTroop,
+        gameMap: $gameMap,
+        gamePlayer: $gamePlayer,
+        
+        sceneManager: SceneManager,
+        shade: window.SHADE,
+        graphics: Graphics,
+
+        dataActors: $dataActors,
+        dataMapInfos: $dataMapInfos,
+        dataMap: $dataMap
       }
 
       var bit;
 
-      bit = await window.SHADE.hunt(initShade, { val:0 });
+      bit = await window.SHADE.hunt(initShade, { val: 0 });
       bit = await window.BLENDER.hunt(initBlender, { val: 0 });
       bit = await window.BLENDER.hunt(initStage, { dat });
-      
-      
+
+      window.BLENDER.hunt( debugStage, { src: 'Scene Boot' });
+
+
+      var Scene_Map_create = Scene_Map.prototype.create;
+      Scene_Map.prototype.create = async function (){
+    
+        window.BLENDER.hunt( debugStage, { src: 'create scene map' });
+        
+        Scene_Map_create.call(this);
+      }
+    
+
     }, 1011);
 
   };
+
+
 
   var Game_Player_executeMove = Game_Player.prototype.executeMove;
   Game_Player.prototype.executeMove = function (direction) {
@@ -98,4 +126,5 @@
     // this.moveDiagonally(dirArray[0], dirArray[1]);
     //};
   };
+
 })();

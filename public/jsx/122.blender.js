@@ -1,14 +1,18 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 window.BLENDER = require("../dist/122.blender/hunt");
 window.BLENDER.ActBld = require("../dist/122.blender/00.blender.unit/blender.action");
-window.BLENDER.ActAtv = require("../dist/122.blender/80.activity.unit/activity.action");
+
 window.BLENDER.ActRps = require("../dist/122.blender/01.rpgstage.unit/rpgstage.action");
 window.BLENDER.ActRpa = require("../dist/122.blender/02.rpgactor.unit/rpgactor.action");
 window.BLENDER.ActRpp = require("../dist/122.blender/03.rpgparty.unit/rpgparty.action");
 window.BLENDER.ActRpm = require("../dist/122.blender/04.rpgmap.unit/rpgmap.action");
 
+window.BLENDER.ActHud = require("../dist/122.blender/10.hud.unit/hud.action");
+window.BLENDER.ActAtv = require("../dist/122.blender/80.activity.unit/activity.action");
+window.BLENDER.ActCsk = require("../dist/122.blender/96.clientsocket.unit/clientsocket.action");
+
 window.BLENDER.MQTT = require("async-mqtt");
-},{"../dist/122.blender/00.blender.unit/blender.action":2,"../dist/122.blender/01.rpgstage.unit/rpgstage.action":9,"../dist/122.blender/02.rpgactor.unit/rpgactor.action":15,"../dist/122.blender/03.rpgparty.unit/rpgparty.action":21,"../dist/122.blender/04.rpgmap.unit/rpgmap.action":27,"../dist/122.blender/80.activity.unit/activity.action":38,"../dist/122.blender/hunt":81,"async-mqtt":148}],2:[function(require,module,exports){
+},{"../dist/122.blender/00.blender.unit/blender.action":2,"../dist/122.blender/01.rpgstage.unit/rpgstage.action":9,"../dist/122.blender/02.rpgactor.unit/rpgactor.action":15,"../dist/122.blender/03.rpgparty.unit/rpgparty.action":21,"../dist/122.blender/04.rpgmap.unit/rpgmap.action":27,"../dist/122.blender/10.hud.unit/hud.action":33,"../dist/122.blender/80.activity.unit/activity.action":38,"../dist/122.blender/96.clientsocket.unit/clientsocket.action":45,"../dist/122.blender/hunt":81,"async-mqtt":148}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommitBlender = exports.COMMIT_BLENDER = exports.WriteBlender = exports.WRITE_BLENDER = exports.ReloadBlender = exports.RELOAD_BLENDER = exports.CloseBlender = exports.CLOSE_BLENDER = exports.OpenBlender = exports.OPEN_BLENDER = exports.UpdateBlender = exports.UPDATE_BLENDER = exports.InitBlender = exports.INIT_BLENDER = void 0;
@@ -259,7 +263,6 @@ var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
-const ActAtv = require("../../80.activity.unit/activity.action");
 const ActRps = require("../rpgstage.action");
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActTxt = require("../../act/text.action");
@@ -267,22 +270,32 @@ var bit, val, idx, dex, lst, dat, src;
 const initRpgstage = async (cpy, bal, ste) => {
     var dat = bal.dat;
     cpy.shade = dat.shade;
-    cpy.gameMap = dat.gameMap;
-    cpy.gameSystem = dat.gameSystem;
     cpy.gameTemp = dat.gameTemp;
+    cpy.gameSystem = dat.gameSystem;
+    cpy.gameScreen = dat.gameScreen;
+    cpy.gameTimer = dat.gameTimer;
+    cpy.gameMessage = dat.gameMessage;
+    cpy.gameSwitches = dat.gameSwitches;
+    cpy.gameVariables = dat.gameVariables;
+    cpy.gameSelfSwitches = dat.gameSelfSwitches;
+    cpy.gameActors = dat.gameActors;
     cpy.gameParty = dat.gameParty;
+    cpy.gameTroop = dat.gameTroop;
+    cpy.gameMap = dat.gameMap;
+    cpy.gamePlayer = dat.gamePlayer;
     cpy.graphics = dat.graphics;
     cpy.sceneManager = dat.sceneManager;
+    cpy.dataActors = dat.dataActors;
     var display = cpy.sceneManager._scene._spriteset;
     display = cpy.sceneManager._scene._ultraHudContainer;
     var hudData = { mainHUD: display._mainHUD };
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: true } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     var hud = bit.hudBit.dat.bit;
     dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' };
@@ -300,10 +313,9 @@ const initRpgstage = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
-    //debugger
-    //debugger
+    //bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+    //bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
     //cpy.mainHUD.visible = false
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
     //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
@@ -381,7 +393,7 @@ const debugRpgstage = async (cpy, bal, ste) => {
 exports.debugRpgstage = debugRpgstage;
 const HUD = require("../../val/hud");
 
-},{"../../10.hud.unit/hud.action":33,"../../80.activity.unit/activity.action":38,"../../act/text.action":80,"../../val/hud":84,"../rpgstage.action":9}],9:[function(require,module,exports){
+},{"../../10.hud.unit/hud.action":33,"../../act/text.action":80,"../../val/hud":84,"../rpgstage.action":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DebugRpgstage = exports.DEBUG_RPGSTAGE = exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
@@ -487,11 +499,28 @@ exports.default = RpgstageUnit;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
-const ActCol = require("../../97.collect.unit/collect.action");
 const ActRpa = require("../rpgactor.action");
+const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
-const initRpgactor = (cpy, bal, ste) => {
-    debugger;
+const initRpgactor = async (cpy, bal, ste) => {
+    lst = bal.dat;
+    var dex = lst.length - 1;
+    var output = [];
+    var lstMsg = [];
+    var nextActor = async () => {
+        if (dex <= 0) {
+            output;
+            bal.slv({ intBit: { idx: "init-rpgactor", dat, lst: lstMsg } });
+            return cpy;
+        }
+        var itm = lst[dex];
+        bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm });
+        dat = bit.rpaBit.dat;
+        lstMsg.push('actor added: ' + dat.name);
+        dex -= 1;
+        await nextActor();
+    };
+    await nextActor();
     return cpy;
 };
 exports.initRpgactor = initRpgactor;
@@ -534,8 +563,12 @@ exports.removeRpgactor = removeRpgactor;
 const createRpgactor = async (cpy, bal, ste) => {
     if (bal.dat == null)
         bal.dat = {};
+    bal.dat;
     var dat = {};
-    bal.slv({ rpaBit: { idx: "create-rpgactor", dat } });
+    for (var key in bal.dat) {
+        dat[key] = bal.dat[key];
+    }
+    bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;
 };
 exports.createRpgactor = createRpgactor;
@@ -1916,7 +1949,7 @@ var updateBlender = async (ste) => {
     bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp);
 };
 const updateMenu = async (cpy, bal, ste) => {
-    lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActBld.COMMIT_BLENDER, ActMnu.RPGACTOR_MENU];
+    lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActMnu.RPGACTOR_MENU, ActBld.COMMIT_BLENDER];
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 });
     bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat });
     src = bit.chcBit.src;
@@ -1996,6 +2029,8 @@ const printMenu = async (cpy, bal, ste) => {
     if (dat == null)
         return bal.slv({ mnuBit: { idx: "print-menu", dat } });
     var itm = JSON.stringify(dat);
+    itm = itm.replace('["', '\n');
+    itm = itm.replace(']}', '\n');
     lst = itm.split(",");
     lst.forEach((a) => ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: a }));
     ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: "------------" });
@@ -2018,13 +2053,21 @@ const ActTrm = require("../../act/terminal.action");
 const ActChc = require("../../act/choice.action");
 111;
 const ActGrd = require("../../act/grid.action");
+const ActDsk = require("../../act/disk.action");
 var bit, lst, dex, idx, dat, src;
 const rpgactorMenu = async (cpy, bal, ste) => {
-    lst = [ActRpa.WRITE_RPGACTOR, ActRpa.READ_RPGACTOR];
+    lst = [ActRpa.INIT_RPGACTOR, ActRpa.WRITE_RPGACTOR, ActRpa.READ_RPGACTOR];
     bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 });
     bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat });
     src = bit.chcBit.src;
     switch (src) {
+        case ActRpa.INIT_RPGACTOR:
+            bit = await ste.hunt(ActMnu.PRINT_MENU, { src: "init rpg actor" });
+            bit = await ste.bus(ActDsk.READ_DISK, { src: "./data/actor/000.Actors.json" });
+            var actors = JSON.parse(bit.dskBit.dat);
+            bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { dat: actors });
+            bit = await ste.hunt(ActMnu.PRINT_MENU, bit);
+            break;
         case ActRpa.WRITE_RPGACTOR:
             bit = await ste.hunt(ActMnu.PRINT_MENU, { src: "write rpg actor" });
             bit = await ste.hunt(ActMnu.UPDATE_MENU, {});
@@ -2044,7 +2087,7 @@ var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 const Align = require("../../val/align");
 const Color = require("../../val/console-color");
 
-},{"../../02.rpgactor.unit/rpgactor.action":15,"../../act/choice.action":72,"../../act/grid.action":77,"../../act/terminal.action":79,"../../val/align":82,"../../val/console-color":83,"../menu.action":58}],58:[function(require,module,exports){
+},{"../../02.rpgactor.unit/rpgactor.action":15,"../../act/choice.action":72,"../../act/disk.action":74,"../../act/grid.action":77,"../../act/terminal.action":79,"../../val/align":82,"../../val/console-color":83,"../menu.action":58}],58:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrintMenu = exports.PRINT_MENU = exports.RPGactorMenu = exports.RPGACTOR_MENU = exports.VisageMenu = exports.VISAGE_MENU = exports.ShadeMenu = exports.SHADE_MENU = exports.CloseMenu = exports.CLOSE_MENU = exports.TestMenu = exports.TEST_MENU = exports.UpdateMenu = exports.UPDATE_MENU = exports.InitMenu = exports.INIT_MENU = void 0;
