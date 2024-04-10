@@ -34,7 +34,7 @@ export const initHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
         var ui = cpy.mainHUD.children[dex]
         var data = ui._data;
         var name = data.Name;
-        bit = await ste.hunt(ActHud.WRITE_HUD, { idx: name, dat:ui });
+        bit = await ste.hunt(ActHud.WRITE_HUD, { idx: name, dat: ui });
 
         dex -= 1
         await next()
@@ -46,18 +46,18 @@ export const initHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 };
 
 export const createHud = (cpy: HudModel, bal: HudBit, ste: State) => {
- 
-    var comp:any = bal;
 
-    if ( bal.src == null ) bal.src = 'sprite-ultrahudcomponent-window'; 
-    var dat: HBit = { idx: bal.idx, src: bal.src  };
+    var comp: any = bal;
 
-    var bit:Sprite_UltraHUDComponent_Window = comp.dat as Sprite_UltraHUDComponent_Window
+    if (bal.src == null) bal.src = 'sprite-ultrahudcomponent-window';
+    var dat: HBit = { idx: bal.idx, src: bal.src };
+
+    var bit: Sprite_UltraHUDComponent_Window = comp.dat as Sprite_UltraHUDComponent_Window
     dat.bit = bit;
     dat.dat = bit._data;
 
     //debugger
-    
+
     //var dat = { idx: bal.idx, src: bal.src, bit, dat: bit._data };
     bal.slv({ hudBit: { idx: "create-hud", dat } });
     return cpy;
@@ -69,9 +69,9 @@ export const updateHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
     bit = await ste.hunt(ActHud.READ_HUD, { idx: bal.idx });
     dat = bit.hudBit.dat;
-    
-    if ( data.visible != null ) dat.bit.visible = data.visible
-    
+
+    if (data.visible != null) dat.bit.visible = data.visible
+
     bal.slv({ hudBit: { idx: "update-hud", dat } });
 
     return cpy;
@@ -85,7 +85,7 @@ export const readHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
     bit = await ste.hunt(ActCol.READ_COLLECT, { idx: bal.idx, bit: ActHud.CREATE_HUD });
 
     var item = bit.clcBit.dat;
-    
+
     if (slv != null) slv({ hudBit: { idx: "read-hud", dat: item } });
 
     return cpy;
@@ -93,13 +93,11 @@ export const readHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
 
 export const writeHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
-    
+
     bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActHud.CREATE_HUD });
     var item = bit.clcBit.dat;
 
-    if ( bit.clcBit.val == 1 ) await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, dat: bal.dat });
-    
-    
+    if (bit.clcBit.val == 1) await ste.hunt(ActHud.UPDATE_HUD, { idx: bal.idx, dat: bal.dat });
 
     bal.slv({ hudBit: { idx: "write-hud", dat: item } });
 
@@ -114,6 +112,16 @@ export const removeHud = (cpy: HudModel, bal: HudBit, ste: State) => {
 
 export const deleteHud = (cpy: HudModel, bal: HudBit, ste: State) => {
     debugger
+    return cpy;
+};
+
+export const finHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
+
+    bit = await ste.hunt(ActCol.LIST_COLLECT, { bit: ActHud.CREATE_HUD });
+    debugger
+
+    bal.slv({ hudBit: { idx: "fin-hud", lst } });
+    
     return cpy;
 };
 

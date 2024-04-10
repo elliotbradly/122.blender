@@ -28,6 +28,9 @@ case Act.DELETE_HUD:
 case Act.CREATE_HUD:
  return Buzz.createHud(clone(model), act.bale, state);
  
+case Act.FIN_HUD:
+ return Buzz.finHud(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

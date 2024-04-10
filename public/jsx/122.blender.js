@@ -263,6 +263,8 @@ var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sceneRpgstage = exports.debugRpgstage = exports.updateRpgstage = exports.initRpgstage = void 0;
+const ActAtv = require("../../80.activity.unit/activity.action");
+const ActRpa = require("../../02.rpgactor.unit/rpgactor.action");
 const ActRps = require("../rpgstage.action");
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActTxt = require("../../act/text.action");
@@ -286,11 +288,7 @@ const initRpgstage = async (cpy, bal, ste) => {
     cpy.graphics = dat.graphics;
     cpy.sceneManager = dat.sceneManager;
     cpy.dataActors = dat.dataActors;
-    var display = cpy.sceneManager._scene._spriteset;
-    display = cpy.sceneManager._scene._ultraHudContainer;
-    var hudData = { mainHUD: display._mainHUD };
-    bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
-    bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
+    //bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val:0});
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
     //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
     //var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
@@ -365,33 +363,43 @@ const debugRpgstage = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.debugRpgstage = debugRpgstage;
+var first = true;
 const sceneRpgstage = async (cpy, bal, ste) => {
+    if (first == true) {
+        first = false;
+        return;
+    }
+    var display = cpy.sceneManager._scene._spriteset;
+    display = cpy.sceneManager._scene._ultraHudContainer;
+    var hudData = { mainHUD: display._mainHUD };
+    bit = await ste.hunt(ActHud.FIN_HUD, {});
+    bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
-    //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
+    bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     //var hud = bit.hudBit.dat.bit;
     //dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
     //bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat })
     //var text = bit.txtBit.dat.bit
     //hud.addChild(text)
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    //bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
-    //bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+    bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
     //cpy.mainHUD.visible = false
     //can you clear it
     bal.slv({ rpsBit: { idx: "scene-rpgstage" } });
@@ -400,7 +408,7 @@ const sceneRpgstage = async (cpy, bal, ste) => {
 exports.sceneRpgstage = sceneRpgstage;
 const HUD = require("../../val/hud");
 
-},{"../../10.hud.unit/hud.action":33,"../../act/text.action":80,"../../val/hud":84,"../rpgstage.action":9}],9:[function(require,module,exports){
+},{"../../02.rpgactor.unit/rpgactor.action":15,"../../10.hud.unit/hud.action":33,"../../80.activity.unit/activity.action":38,"../../act/text.action":80,"../../val/hud":84,"../rpgstage.action":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SceneRpgstage = exports.SCENE_RPGSTAGE = exports.DebugRpgstage = exports.DEBUG_RPGSTAGE = exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
@@ -937,7 +945,7 @@ exports.default = RpgmapUnit;
 },{"../99.core/state":69,"typescript-ioc":342}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteHud = exports.removeHud = exports.writeHud = exports.readHud = exports.updateHud = exports.createHud = exports.initHud = void 0;
+exports.finHud = exports.deleteHud = exports.removeHud = exports.writeHud = exports.readHud = exports.updateHud = exports.createHud = exports.initHud = void 0;
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
@@ -1016,11 +1024,18 @@ const deleteHud = (cpy, bal, ste) => {
     return cpy;
 };
 exports.deleteHud = deleteHud;
+const finHud = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActCol.LIST_COLLECT, { bit: ActHud.CREATE_HUD });
+    debugger;
+    bal.slv({ hudBit: { idx: "fin-hud", lst } });
+    return cpy;
+};
+exports.finHud = finHud;
 
 },{"../../10.hud.unit/hud.action":33,"../../97.collect.unit/collect.action":51}],33:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateHud = exports.CREATE_HUD = exports.DeleteHud = exports.DELETE_HUD = exports.WriteHud = exports.WRITE_HUD = exports.RemoveHud = exports.REMOVE_HUD = exports.ReadHud = exports.READ_HUD = exports.UpdateHud = exports.UPDATE_HUD = exports.InitHud = exports.INIT_HUD = void 0;
+exports.FinHud = exports.FIN_HUD = exports.CreateHud = exports.CREATE_HUD = exports.DeleteHud = exports.DELETE_HUD = exports.WriteHud = exports.WRITE_HUD = exports.RemoveHud = exports.REMOVE_HUD = exports.ReadHud = exports.READ_HUD = exports.UpdateHud = exports.UPDATE_HUD = exports.InitHud = exports.INIT_HUD = void 0;
 // Hud actions
 exports.INIT_HUD = "[Hud action] Init Hud";
 class InitHud {
@@ -1078,11 +1093,19 @@ class CreateHud {
     }
 }
 exports.CreateHud = CreateHud;
+exports.FIN_HUD = "[Fin action] Fin Hud";
+class FinHud {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.FIN_HUD;
+    }
+}
+exports.FinHud = FinHud;
 
 },{}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createHud = exports.deleteHud = exports.writeHud = exports.removeHud = exports.readHud = exports.updateHud = exports.initHud = void 0;
+exports.finHud = exports.createHud = exports.deleteHud = exports.writeHud = exports.removeHud = exports.readHud = exports.updateHud = exports.initHud = void 0;
 var hud_buzz_1 = require("./buz/hud.buzz");
 Object.defineProperty(exports, "initHud", { enumerable: true, get: function () { return hud_buzz_1.initHud; } });
 var hud_buzz_2 = require("./buz/hud.buzz");
@@ -1097,6 +1120,8 @@ var hud_buzz_6 = require("./buz/hud.buzz");
 Object.defineProperty(exports, "deleteHud", { enumerable: true, get: function () { return hud_buzz_6.deleteHud; } });
 var hud_buzz_7 = require("./buz/hud.buzz");
 Object.defineProperty(exports, "createHud", { enumerable: true, get: function () { return hud_buzz_7.createHud; } });
+var hud_buzz_8 = require("./buz/hud.buzz");
+Object.defineProperty(exports, "finHud", { enumerable: true, get: function () { return hud_buzz_8.finHud; } });
 
 },{"./buz/hud.buzz":32}],35:[function(require,module,exports){
 "use strict";
@@ -1130,6 +1155,8 @@ function reducer(model = new hud_model_1.HudModel(), act, state) {
             return Buzz.deleteHud(clone(model), act.bale, state);
         case Act.CREATE_HUD:
             return Buzz.createHud(clone(model), act.bale, state);
+        case Act.FIN_HUD:
+            return Buzz.finHud(clone(model), act.bale, state);
         default:
             return model;
     }

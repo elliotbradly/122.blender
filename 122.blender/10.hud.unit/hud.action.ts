@@ -45,9 +45,16 @@ export const CREATE_HUD = "[Create action] Create Hud";
  constructor(public bale: HudBit) {}
  }
  
+export const FIN_HUD = "[Fin action] Fin Hud";
+ export class FinHud implements Action {
+ readonly type = FIN_HUD;
+ constructor(public bale: HudBit) {}
+ }
+ 
 export type Actions = | InitHud | UpdateHud 
 | ReadHud
 | RemoveHud
 | WriteHud
 | DeleteHud
 | CreateHud
+| FinHud
