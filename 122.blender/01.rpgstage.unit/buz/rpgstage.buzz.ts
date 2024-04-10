@@ -181,21 +181,21 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     //var text = bit.txtBit.dat.bit
     //hud.addChild(text)
 
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
 
-    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
-    bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
+    //bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+    //bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
 
     //cpy.mainHUD.visible = false
 

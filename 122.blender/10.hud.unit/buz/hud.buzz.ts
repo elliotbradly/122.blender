@@ -118,11 +118,27 @@ export const deleteHud = (cpy: HudModel, bal: HudBit, ste: State) => {
 export const finHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
     bit = await ste.hunt(ActCol.LIST_COLLECT, { bit: ActHud.CREATE_HUD });
-    debugger
+    lst = bit.clcBit.lst
+    var dex = lst.length - 1;
+ 
+    var output = []
+ 
+    var nextHud = async () => {
+ 
+       if (dex < 0) {
+        bal.slv({ hudBit: { idx: "fin-hud", lst } });
+        return cpy;
+       }
+ 
+       var now = lst[dex];
 
-    bal.slv({ hudBit: { idx: "fin-hud", lst } });
-    
-    return cpy;
+       await ste.hunt(ActHud.REMOVE_HUD, { idx: now });
+       
+       dex -= 1
+       await nextHud()
+    }
+ 
+    await nextHud()
 };
 
 
