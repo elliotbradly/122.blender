@@ -80,6 +80,8 @@ export const writeCollect = async (
 
   bal.idx;
 
+  val = 0;
+
   if (cabBit.bits[bal.idx] == null) {
     bit = await ste.hunt(bal.bit, { idx: bal.idx, src: bal.src, dat: bal.dat });
     var objDat = bit[Object.keys(bit)[0]];
@@ -101,6 +103,8 @@ export const writeCollect = async (
 
     bal.dat;
 
+    val = 1;
+
     for (var key in bal.dat) {
       if (cabDat == null) cabDat = {};
       cabDat[key] = bal.dat[key];
@@ -114,7 +118,7 @@ export const writeCollect = async (
   if (dat == null && bal.slv != null)
     bal.slv({ rskBit: { idx: 'write-collect-err', src: 'no-dat' } });
 
-  if (bal.slv != null) bal.slv({ clcBit: { idx: 'write-collect', dat } });
+  if (bal.slv != null) bal.slv({ clcBit: { idx: 'write-collect', val, dat } });
 
   return cpy;
 };

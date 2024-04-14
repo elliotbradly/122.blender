@@ -16,6 +16,8 @@ import * as ActTxt from "../../act/text.action";
 
 var bit, val, idx, dex, lst, dat, src;
 
+var display, hudData;
+
 export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
     var dat = bal.dat
@@ -42,10 +44,29 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.dataActors = dat.dataActors;
 
- 
-   
+    display = cpy.sceneManager._scene._spriteset;
+    display = cpy.sceneManager._scene._ultraHudContainer;
 
-    //bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val:0});
+    hudData = { mainHUD: display._mainHUD }
+
+   
+    
+    
+    
+    //setTimeout( ()=>{
+
+       
+        
+
+    //}, 3333 )
+
+    
+    
+
+
+
+
+    bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val:0});
 
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
     //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
@@ -148,32 +169,25 @@ export const debugRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
 };
 
 
-var first = true;
-
 export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
     
-    if ( first == true ){
-        first = false
-        return
-    }
 
-    var display = cpy.sceneManager._scene._spriteset;
-    display = cpy.sceneManager._scene._ultraHudContainer;
 
-    var hudData = { mainHUD: display._mainHUD }
-    
     bit = await ste.hunt(ActHud.FIN_HUD, {});
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
-
-    bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
+    
+    debugger
 
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
 
-    bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
+    //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
+
+    //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
+    //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
+    //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
+    //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
+
+    //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     //var hud = bit.hudBit.dat.bit;
 
     //dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
