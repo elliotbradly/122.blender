@@ -134,7 +134,13 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
     bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { lst: cpy.dataActors });
+
+    lst = bit.intBit.lst
+    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
+
     bit = await ste.hunt(ActRpm.INIT_RPGMAP, { lst: cpy.dataMapInfos });
+    lst = bit.intBit.lst
+    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
 
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
 
@@ -166,8 +172,6 @@ export const debugRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
 
 export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
-
-
     display = cpy.sceneManager._scene._spriteset;
     display = cpy.sceneManager._scene._ultraHudContainer;
 
@@ -189,7 +193,7 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     var hud = bit.hudBit.dat.bit;
 
-    dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
+    dat = { txt: '', x: -138, y: -140, sze: 12, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
     bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat })
     var text = bit.txtBit.dat.bit
     hud.addChild(text)

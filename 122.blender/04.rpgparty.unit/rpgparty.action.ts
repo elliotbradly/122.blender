@@ -15,4 +15,39 @@ export class UpdateRpgparty implements Action {
  constructor(public bale: RpgpartyBit) {}
 }
 
-export type Actions = | InitRpgparty | UpdateRpgparty ;
+export const READ_RPGPARTY = "[Read action] Read Rpgparty";
+ export class ReadRpgparty implements Action {
+ readonly type = READ_RPGPARTY;
+ constructor(public bale: RpgpartyBit) {}
+ }
+ 
+export const WRITE_RPGPARTY = "[Write action] Write Rpgparty";
+ export class WriteRpgparty implements Action {
+ readonly type = WRITE_RPGPARTY;
+ constructor(public bale: RpgpartyBit) {}
+ }
+ 
+export const REMOVE_RPGPARTY = "[Remove action] Remove Rpgparty";
+ export class RemoveRpgparty implements Action {
+ readonly type = REMOVE_RPGPARTY;
+ constructor(public bale: RpgpartyBit) {}
+ }
+ 
+export const DELETE_RPGPARTY = "[Delete action] Delete Rpgparty";
+ export class DeleteRpgparty implements Action {
+ readonly type = DELETE_RPGPARTY;
+ constructor(public bale: RpgpartyBit) {}
+ }
+ 
+export const CREATE_RPGPARTY = "[Create action] Create Rpgparty";
+ export class CreateRpgparty implements Action {
+ readonly type = CREATE_RPGPARTY;
+ constructor(public bale: RpgpartyBit) {}
+ }
+ 
+export type Actions = | InitRpgparty | UpdateRpgparty 
+| ReadRpgparty
+| WriteRpgparty
+| RemoveRpgparty
+| DeleteRpgparty
+| CreateRpgparty

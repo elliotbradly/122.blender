@@ -15,7 +15,7 @@ export const initRpgmap = async (cpy: RpgmapModel, bal: RpgmapBit, ste: State) =
 
     lst = bal.lst
 
-    debugger
+    
 
     var dex = lst.length - 1;
 
@@ -35,8 +35,9 @@ export const initRpgmap = async (cpy: RpgmapModel, bal: RpgmapBit, ste: State) =
         bit = await ste.hunt(ActRpm.WRITE_RPGMAP, { idx: itm.name, dat: itm })
 
         dat = bit.rpmBit.dat
+        
 
-        lstMsg.push('actor added: ' + dat.name)
+        lstMsg.push('map added: ' + dat.name)
 
         dex -= 1
         await nextMap()
@@ -48,7 +49,7 @@ export const initRpgmap = async (cpy: RpgmapModel, bal: RpgmapBit, ste: State) =
 
 
 export const createRpgmap = (cpy: RpgmapModel, bal: RpgmapBit, ste: State) => {
-    
+ 
     if (bal.dat == null) bal.dat = {}
 
     bal.dat;

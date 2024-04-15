@@ -353,7 +353,11 @@ const initRpgstage = async (cpy, bal, ste) => {
 exports.initRpgstage = initRpgstage;
 const openRpgstage = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { lst: cpy.dataActors });
+    lst = bit.intBit.lst;
+    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     bit = await ste.hunt(ActRpm.INIT_RPGMAP, { lst: cpy.dataMapInfos });
+    lst = bit.intBit.lst;
+    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
     return cpy;
 };
@@ -391,7 +395,7 @@ const sceneRpgstage = async (cpy, bal, ste) => {
     //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
     bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
     var hud = bit.hudBit.dat.bit;
-    dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' };
+    dat = { txt: '', x: -138, y: -140, sze: 12, clr: 0xFFFFFF, wrp: 280, aln: 'left' };
     bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat });
     var text = bit.txtBit.dat.bit;
     hud.addChild(text);
@@ -783,7 +787,6 @@ const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
 const initRpgmap = async (cpy, bal, ste) => {
     lst = bal.lst;
-    debugger;
     var dex = lst.length - 1;
     var output = [];
     var lstMsg = [];
@@ -796,7 +799,7 @@ const initRpgmap = async (cpy, bal, ste) => {
         var itm = lst[dex];
         bit = await ste.hunt(ActRpm.WRITE_RPGMAP, { idx: itm.name, dat: itm });
         dat = bit.rpmBit.dat;
-        lstMsg.push('actor added: ' + dat.name);
+        lstMsg.push('map added: ' + dat.name);
         dex -= 1;
         await nextMap();
     };

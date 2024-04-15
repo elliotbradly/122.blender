@@ -13,6 +13,21 @@ export function reducer(model: RpgpartyModel = new RpgpartyModel(), act: Act.Act
  case Act.INIT_RPGPARTY:
  return Buzz.initRpgparty(clone(model), act.bale, state);
 
+case Act.READ_RPGPARTY:
+ return Buzz.readRpgparty(clone(model), act.bale, state);
+ 
+case Act.WRITE_RPGPARTY:
+ return Buzz.writeRpgparty(clone(model), act.bale, state);
+ 
+case Act.REMOVE_RPGPARTY:
+ return Buzz.removeRpgparty(clone(model), act.bale, state);
+ 
+case Act.DELETE_RPGPARTY:
+ return Buzz.deleteRpgparty(clone(model), act.bale, state);
+ 
+case Act.CREATE_RPGPARTY:
+ return Buzz.createRpgparty(clone(model), act.bale, state);
+ 
  default:
  return model;
  }
