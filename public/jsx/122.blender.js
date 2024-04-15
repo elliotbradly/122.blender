@@ -266,6 +266,7 @@ exports.sceneRpgstage = exports.debugRpgstage = exports.updateRpgstage = exports
 const ActAtv = require("../../80.activity.unit/activity.action");
 const ActRpa = require("../../02.rpgactor.unit/rpgactor.action");
 const ActRpm = require("../../03.rpgmap.unit/rpgmap.action");
+const ActRpp = require("../../04.rpgparty.unit/rpgparty.action");
 const ActRps = require("../rpgstage.action");
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActTxt = require("../../act/text.action");
@@ -359,6 +360,9 @@ const openRpgstage = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRpm.INIT_RPGMAP, { lst: cpy.dataMapInfos });
     lst = bit.intBit.lst;
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
+    bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst: cpy.dataActors });
+    lst = bit.intBit.lst;
+    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
     return cpy;
 };
@@ -425,7 +429,7 @@ const sceneRpgstage = async (cpy, bal, ste) => {
 exports.sceneRpgstage = sceneRpgstage;
 const HUD = require("../../val/hud");
 
-},{"../../02.rpgactor.unit/rpgactor.action":15,"../../03.rpgmap.unit/rpgmap.action":21,"../../10.hud.unit/hud.action":35,"../../80.activity.unit/activity.action":40,"../../act/text.action":82,"../../val/hud":86,"../rpgstage.action":9}],9:[function(require,module,exports){
+},{"../../02.rpgactor.unit/rpgactor.action":15,"../../03.rpgmap.unit/rpgmap.action":21,"../../04.rpgparty.unit/rpgparty.action":29,"../../10.hud.unit/hud.action":35,"../../80.activity.unit/activity.action":40,"../../act/text.action":82,"../../val/hud":86,"../rpgstage.action":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OpenRpgstage = exports.OPEN_RPGSTAGE = exports.SceneRpgstage = exports.SCENE_RPGSTAGE = exports.DebugRpgstage = exports.DEBUG_RPGSTAGE = exports.UpdateRpgstage = exports.UPDATE_RPGSTAGE = exports.InitRpgstage = exports.INIT_RPGSTAGE = void 0;
@@ -564,7 +568,7 @@ const initRpgactor = async (cpy, bal, ste) => {
     lst = bal.lst;
     var dex = lst.length - 1;
     var output = [];
-    var lstMsg = [];
+    var lstMsg = ['initizing rpg actor'];
     var nextActor = async () => {
         if (dex <= 0) {
             output;
@@ -790,7 +794,7 @@ const initRpgmap = async (cpy, bal, ste) => {
     lst = bal.lst;
     var dex = lst.length - 1;
     var output = [];
-    var lstMsg = [];
+    var lstMsg = ['initizing rpg map'];
     var nextMap = async () => {
         if (dex <= 0) {
             output;
@@ -1055,8 +1059,29 @@ exports.switchRpgparty = exports.deleteRpgparty = exports.removeRpgparty = expor
 const ActRpp = require("../rpgparty.action");
 const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
-const initRpgparty = (cpy, bal, ste) => {
-    debugger;
+const initRpgparty = async (cpy, bal, ste) => {
+    lst = bal.lst;
+    if (lst == null)
+        lst = [];
+    var dex = lst.length - 1;
+    var output = [];
+    var lstMsg = ['initizing rpg party'];
+    var nextParty = async () => {
+        if (dex <= 0) {
+            output;
+            bal.slv({ intBit: { idx: "init-rpgparty", dat, lst: lstMsg } });
+            return cpy;
+        }
+        var itm = lst[dex];
+        bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: itm.name, dat: itm });
+        dat = bit.rpaBit.dat;
+        lstMsg.push('party added: ' + dat.name);
+        dex -= 1;
+        await nextParty();
+    };
+    //await nextParty()
+    bal.slv({ intBit: { idx: "init-rpgparty", dat, lst: lstMsg } });
+    return cpy;
     return cpy;
 };
 exports.initRpgparty = initRpgparty;
@@ -1069,7 +1094,7 @@ const createRpgparty = async (cpy, bal, ste) => {
     for (var key in bal.dat) {
         dat[key] = bal.dat[key];
     }
-    stageMod.partyPlugin.create(bal.val);
+    //stageMod.partyPlugin.create( bal.val )
     bal.slv({ rppBit: { idx: 'create-rpgparty', dat } });
     return cpy;
 };

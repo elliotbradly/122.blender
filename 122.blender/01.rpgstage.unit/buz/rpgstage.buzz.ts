@@ -6,6 +6,7 @@ import * as ActBld from "../../00.blender.unit/blender.action";
 import * as ActAtv from "../../80.activity.unit/activity.action";
 import * as ActRpa from "../../02.rpgactor.unit/rpgactor.action";
 import * as ActRpm from "../../03.rpgmap.unit/rpgmap.action";
+import * as ActRpp from "../../04.rpgparty.unit/rpgparty.action";
 
 import * as ActRps from "../rpgstage.action";
 
@@ -141,6 +142,10 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
 
     bit = await ste.hunt(ActRpm.INIT_RPGMAP, { lst: cpy.dataMapInfos });
+    lst = bit.intBit.lst
+    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
+
+    bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst: cpy.dataActors });
     lst = bit.intBit.lst
     lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
 

@@ -18,7 +18,7 @@ export const initRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: St
     var dex = lst.length-1;
 
     var output = []
-    var lstMsg = []
+    var lstMsg = ['initizing rpg actor']
 
     var nextActor = async () => {
 

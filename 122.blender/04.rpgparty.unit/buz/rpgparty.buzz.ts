@@ -12,9 +12,43 @@ import * as ActTxt from "../../act/text.action";
 
 var bit, val, idx, dex, lst, dat, src;
 
+export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
+    
+    lst = bal.lst
 
-export const initRpgparty = (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
-    debugger
+    if ( lst == null ) lst = []
+
+    var dex = lst.length-1;
+
+    var output = []
+    var lstMsg = [ 'initizing rpg party' ]
+
+    var nextParty = async () => {
+
+        if (dex <= 0) {
+            output
+            bal.slv({ intBit: { idx: "init-rpgparty", dat, lst:lstMsg } });
+            return cpy;
+        }
+
+        var itm = lst[ dex ]
+        
+        bit = await ste.hunt( ActRpp.WRITE_RPGPARTY, { idx: itm.name, dat:itm })
+
+        dat = bit.rpaBit.dat
+
+        lstMsg.push( 'party added: ' + dat.name )
+        
+        dex -= 1
+        await nextParty()
+    }
+
+    //await nextParty()
+
+    bal.slv({ intBit: { idx: "init-rpgparty", dat, lst:lstMsg } });
+    return cpy;
+
+
     return cpy;
 };
 
@@ -33,7 +67,7 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
     }
 
 
-    stageMod.partyPlugin.create( bal.val )
+    //stageMod.partyPlugin.create( bal.val )
 
     
 

@@ -15,12 +15,10 @@ export const initRpgmap = async (cpy: RpgmapModel, bal: RpgmapBit, ste: State) =
 
     lst = bal.lst
 
-    
-
     var dex = lst.length - 1;
 
     var output = []
-    var lstMsg = []
+    var lstMsg = [ 'initizing rpg map' ]
 
     var nextMap = async () => {
 
