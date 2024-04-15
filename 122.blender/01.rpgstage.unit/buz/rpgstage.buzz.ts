@@ -44,11 +44,7 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.dataActors = dat.dataActors;
 
-    display = cpy.sceneManager._scene._spriteset;
-    display = cpy.sceneManager._scene._ultraHudContainer;
-
-    hudData = { mainHUD: display._mainHUD }
-
+    
    
     
     
@@ -170,14 +166,16 @@ export const debugRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
 
 
 export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
+
+    display = cpy.sceneManager._scene._spriteset;
+    display = cpy.sceneManager._scene._ultraHudContainer;
+
+    hudData = { mainHUD: display._mainHUD }
+
     
-
-
     bit = await ste.hunt(ActHud.FIN_HUD, {});
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
     
-    debugger
-
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
 
     //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });

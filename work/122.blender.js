@@ -287,9 +287,6 @@ const initRpgstage = async (cpy, bal, ste) => {
     cpy.graphics = dat.graphics;
     cpy.sceneManager = dat.sceneManager;
     cpy.dataActors = dat.dataActors;
-    display = cpy.sceneManager._scene._spriteset;
-    display = cpy.sceneManager._scene._ultraHudContainer;
-    hudData = { mainHUD: display._mainHUD };
     //setTimeout( ()=>{
     //}, 3333 )
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
@@ -368,9 +365,11 @@ const debugRpgstage = async (cpy, bal, ste) => {
 };
 exports.debugRpgstage = debugRpgstage;
 const sceneRpgstage = async (cpy, bal, ste) => {
+    display = cpy.sceneManager._scene._spriteset;
+    display = cpy.sceneManager._scene._ultraHudContainer;
+    hudData = { mainHUD: display._mainHUD };
     bit = await ste.hunt(ActHud.FIN_HUD, {});
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
-    debugger;
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
     //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
     //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });

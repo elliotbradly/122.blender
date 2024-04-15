@@ -135,7 +135,7 @@
 
         setTimeout(() => {
           window.BLENDER.hunt(sceneStage, { val: 4 });
-        }, 3111)
+        }, 111)
 
       };
 
