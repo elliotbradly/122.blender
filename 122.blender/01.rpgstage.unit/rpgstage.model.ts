@@ -3,6 +3,8 @@ import RpgstageBit from "./fce/rpgstage.interface";
 
 export class RpgstageModel implements Rpgstage {
 
+    live:Boolean = true;
+
     shade: any;
 
     graphics:any;
@@ -22,11 +24,14 @@ export class RpgstageModel implements Rpgstage {
     gamePlayer: any;
 
     sceneManager: any;
+    sceneChangeCount:number = 0;
 
     debugList: string[] = []
-    debugListSize:number = 8; 
+    debugListSize:number = 10; 
 
     dataActors: any;
+    dataMapInfos: any;
+    dataMap:any;
 
 
 

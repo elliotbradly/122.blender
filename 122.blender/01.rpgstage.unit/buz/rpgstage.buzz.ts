@@ -1,9 +1,11 @@
+
 import * as ActMnu from "../../98.menu.unit/menu.action";
 
 import * as ActBld from "../../00.blender.unit/blender.action";
 
 import * as ActAtv from "../../80.activity.unit/activity.action";
 import * as ActRpa from "../../02.rpgactor.unit/rpgactor.action";
+import * as ActRpm from "../../03.rpgmap.unit/rpgmap.action";
 
 import * as ActRps from "../rpgstage.action";
 
@@ -36,33 +38,20 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     cpy.gameParty = dat.gameParty;
     cpy.gameTroop = dat.gameTroop;
     cpy.gameMap = dat.gameMap;
+
     cpy.gamePlayer = dat.gamePlayer;
-
     cpy.graphics = dat.graphics;
-
     cpy.sceneManager = dat.sceneManager;
 
     cpy.dataActors = dat.dataActors;
+    cpy.dataMapInfos = dat.dataMapInfos;
+    cpy.dataMap = dat.dataMap;
 
-    
-   
-    
-    
-    
     //setTimeout( ()=>{
-
-       
-        
 
     //}, 3333 )
 
-    
-    
-
-
-
-
-    bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val:0});
+    bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
 
     //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
     //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
@@ -142,6 +131,16 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     return cpy;
 };
 
+export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
+
+    bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { lst: cpy.dataActors });
+    bit = await ste.hunt(ActRpm.INIT_RPGMAP, { lst: cpy.dataMapInfos });
+
+    bal.slv({ rpsBit: { idx: "open-rpgstage" } });
+
+    return cpy;
+};
+
 export const updateRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
     return cpy;
 };
@@ -167,15 +166,17 @@ export const debugRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
 
 export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
+
+
     display = cpy.sceneManager._scene._spriteset;
     display = cpy.sceneManager._scene._ultraHudContainer;
 
     hudData = { mainHUD: display._mainHUD }
 
-    
+    bit = await cpy.shade.hunt(ActTxt.REMOVE_TEXT, { idx: 'txt00' })
     bit = await ste.hunt(ActHud.FIN_HUD, {});
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
-    
+
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
 
     //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
@@ -185,15 +186,15 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.WELCOME_WINDOW, dat: { visible: false } });
     //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
 
-    //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
-    //var hud = bit.hudBit.dat.bit;
+    bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.DEBUG_WINDOW, dat: {} });
+    var hud = bit.hudBit.dat.bit;
 
-    //dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
-    //bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat })
-    //var text = bit.txtBit.dat.bit
-    //hud.addChild(text)
+    dat = { txt: '', x: -138, y: -140, sze: 16, clr: 0xFFFFFF, wrp: 280, aln: 'left' }
+    bit = await cpy.shade.hunt(ActTxt.WRITE_TEXT, { idx: 'txt00', dat })
+    var text = bit.txtBit.dat.bit
+    hud.addChild(text)
 
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'Welcome to Alligator Earth' });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bal.dat) });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'init rpg stage' });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
@@ -205,14 +206,23 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
 
-    //bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
-    //bit = await ste.hunt( ActRpa.INIT_RPGACTOR, { dat: cpy.dataActors });
+
+    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+
+
+    if (cpy.sceneChangeCount == 0) {
+        await ste.hunt(ActRps.OPEN_RPGSTAGE, {});
+    }
+
+    cpy.sceneChangeCount += 1;
+
+
 
     //cpy.mainHUD.visible = false
 
     //can you clear it
-    
+
     bal.slv({ rpsBit: { idx: "scene-rpgstage" } });
 
     return cpy;

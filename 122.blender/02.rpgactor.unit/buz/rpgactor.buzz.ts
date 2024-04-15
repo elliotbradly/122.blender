@@ -9,12 +9,11 @@ import * as ActBus from "../../99.bus.unit/bus.action";
 
 import * as ActTxt from "../../act/text.action";
 
-
 var bit, val, idx, dex, lst, dat, src;
 
 export const initRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
 
-    lst = bal.dat
+    lst = bal.lst
 
     var dex = lst.length-1;
 

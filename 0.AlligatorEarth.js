@@ -134,7 +134,7 @@
         Scene_Map_start.call(this)
 
         setTimeout(() => {
-          window.BLENDER.hunt(sceneStage, { val: 4 });
+          window.BLENDER.hunt(sceneStage, { val: 4, dat });
         }, 111)
 
       };

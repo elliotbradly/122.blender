@@ -3,8 +3,8 @@ import Model from "./99.core/interface/model.interface";
 import BlenderUnit from "./00.blender.unit/blender.unit";
 import RpgstageUnit from "./01.rpgstage.unit/rpgstage.unit";
 import RpgactorUnit from "./02.rpgactor.unit/rpgactor.unit";
-import RpgpartyUnit from "./03.rpgparty.unit/rpgparty.unit";
-import RpgmapUnit from "./04.rpgmap.unit/rpgmap.unit";
+import RpgmapUnit from "./03.rpgmap.unit/rpgmap.unit";
+import RpgpartyUnit from "./04.rpgparty.unit/rpgparty.unit";
 import HudUnit from "./10.hud.unit/hud.unit";
 import ActivityUnit from "./80.activity.unit/activity.unit";
 import ClientsocketUnit from "./96.clientsocket.unit/clientsocket.unit";
@@ -19,10 +19,10 @@ import Rpgstage from "./01.rpgstage.unit/fce/rpgstage.interface";
 import { RpgstageModel } from "./01.rpgstage.unit/rpgstage.model";
 import Rpgactor from "./02.rpgactor.unit/fce/rpgactor.interface";
 import { RpgactorModel } from "./02.rpgactor.unit/rpgactor.model";
-import Rpgparty from "./03.rpgparty.unit/fce/rpgparty.interface";
-import { RpgpartyModel } from "./03.rpgparty.unit/rpgparty.model";
-import Rpgmap from "./04.rpgmap.unit/fce/rpgmap.interface";
-import { RpgmapModel } from "./04.rpgmap.unit/rpgmap.model";
+import Rpgmap from "./03.rpgmap.unit/fce/rpgmap.interface";
+import { RpgmapModel } from "./03.rpgmap.unit/rpgmap.model";
+import Rpgparty from "./04.rpgparty.unit/fce/rpgparty.interface";
+import { RpgpartyModel } from "./04.rpgparty.unit/rpgparty.model";
 import Hud from "./10.hud.unit/fce/hud.interface";
 import { HudModel } from "./10.hud.unit/hud.model";
 import Activity from "./80.activity.unit/fce/activity.interface";
@@ -37,13 +37,13 @@ import Bus from "./99.bus.unit/fce/bus.interface";
 import { BusModel } from "./99.bus.unit/bus.model";
 
 
-export const list: Array<any> = [BlenderUnit,RpgstageUnit,RpgactorUnit,RpgpartyUnit,RpgmapUnit,HudUnit,ActivityUnit,ClientsocketUnit,CollectUnit,MenuUnit,BusUnit];
+export const list: Array<any> = [BlenderUnit,RpgstageUnit,RpgactorUnit,RpgmapUnit,RpgpartyUnit,HudUnit,ActivityUnit,ClientsocketUnit,CollectUnit,MenuUnit,BusUnit];
 
 import * as reduceFromBlender from "./00.blender.unit/blender.reduce";
 import * as reduceFromRpgstage from "./01.rpgstage.unit/rpgstage.reduce";
 import * as reduceFromRpgactor from "./02.rpgactor.unit/rpgactor.reduce";
-import * as reduceFromRpgparty from "./03.rpgparty.unit/rpgparty.reduce";
-import * as reduceFromRpgmap from "./04.rpgmap.unit/rpgmap.reduce";
+import * as reduceFromRpgmap from "./03.rpgmap.unit/rpgmap.reduce";
+import * as reduceFromRpgparty from "./04.rpgparty.unit/rpgparty.reduce";
 import * as reduceFromHud from "./10.hud.unit/hud.reduce";
 import * as reduceFromActivity from "./80.activity.unit/activity.reduce";
 import * as reduceFromClientsocket from "./96.clientsocket.unit/clientsocket.reduce";
@@ -56,8 +56,8 @@ export const reducer: any = {
  blender : reduceFromBlender.reducer, 
 rpgstage : reduceFromRpgstage.reducer, 
 rpgactor : reduceFromRpgactor.reducer, 
-rpgparty : reduceFromRpgparty.reducer, 
 rpgmap : reduceFromRpgmap.reducer, 
+rpgparty : reduceFromRpgparty.reducer, 
 hud : reduceFromHud.reducer, 
 activity : reduceFromActivity.reducer, 
 clientsocket : reduceFromClientsocket.reducer, 
@@ -72,8 +72,8 @@ export default class UnitData implements Model {
  blender : Blender = new BlenderModel();
 rpgstage : Rpgstage = new RpgstageModel();
 rpgactor : Rpgactor = new RpgactorModel();
-rpgparty : Rpgparty = new RpgpartyModel();
 rpgmap : Rpgmap = new RpgmapModel();
+rpgparty : Rpgparty = new RpgpartyModel();
 hud : Hud = new HudModel();
 activity : Activity = new ActivityModel();
 clientsocket : Clientsocket = new ClientsocketModel();

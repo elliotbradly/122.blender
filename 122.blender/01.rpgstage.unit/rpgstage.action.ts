@@ -27,6 +27,13 @@ export const SCENE_RPGSTAGE = "[Scene action] Scene Rpgstage";
  constructor(public bale: RpgstageBit) {}
  }
  
+export const OPEN_RPGSTAGE = "[Open action] Open Rpgstage";
+ export class OpenRpgstage implements Action {
+ readonly type = OPEN_RPGSTAGE;
+ constructor(public bale: RpgstageBit) {}
+ }
+ 
 export type Actions = | InitRpgstage | UpdateRpgstage 
 | DebugRpgstage
 | SceneRpgstage
+| OpenRpgstage
