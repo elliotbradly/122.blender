@@ -21,6 +21,8 @@ export const initRpgparty = (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) =
 
 export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
 
+    var stageMod:RpgstageModel = ste.value.rpgstage
+
     if (bal.dat == null) bal.dat = {}
 
     bal.dat;
@@ -30,6 +32,11 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
         dat[key] = bal.dat[key]
     }
 
+
+    stageMod.partyPlugin.create( bal.val )
+
+    
+
     bal.slv({ rppBit: { idx: 'create-rpgparty', dat } });
     return cpy;
 
@@ -38,6 +45,10 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
 export const updateRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
     bit = await ste.hunt(ActRpp.READ_RPGPARTY, { idx: bal.idx });
     dat = bit.rpmBit;
+
+    //Party.addActor(3, 4);
+    //Party.setLocation(3, 15, 15, 5);
+
 
     bal.slv({ rppBit: { idx: "update-rpgparty", dat } });
     return cpy;
@@ -55,12 +66,12 @@ export const readRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
 
     if (slv != null) slv({ rppBit: { idx: "read-rpgparty", dat: item } });
     return cpy;
-    
+
 };
 
 
 export const writeRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
-    
+
     var slv = bal.slv;
 
     bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActRpp.CREATE_RPGPARTY });
@@ -76,9 +87,9 @@ export const writeRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: S
 
 
 export const removeRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
-    
+
     bit = await ste.hunt(ActCol.REMOVE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActRpp.DELETE_RPGPARTY })
-    if (bal.slv != null) bal.slv({ rpmBit: { idx: "remove-rpgparty", dat: bit.clcBit } });
+    if (bal.slv != null) bal.slv({ rppBit: { idx: "remove-rpgparty", dat: bit.clcBit } });
 
     return cpy;
 };
@@ -91,7 +102,20 @@ export const deleteRpgparty = (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State)
 
 
 
+export const switchRpgparty = (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
+    
+    var stageMod:RpgstageModel = ste.value.rpgstage
+    stageMod.partyPlugin.switch( bal.val )
+
+    if (bal.slv != null) bal.slv({ rppBit: { idx: "switch-rpgparty", dat: bit.clcBit } });
+
+    return cpy;
+};
+
+
 import { RpgpartyModel } from "../rpgparty.model";
 import RpgpartyBit from "../fce/rpgparty.bit";
 import State from "../../99.core/state";
 import PartyBit from "../fce/party.bit";
+import { RpgstageModel } from "122.blender/01.rpgstage.unit/rpgstage.model";
+

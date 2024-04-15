@@ -292,6 +292,7 @@ const initRpgstage = async (cpy, bal, ste) => {
     cpy.dataActors = dat.dataActors;
     cpy.dataMapInfos = dat.dataMapInfos;
     cpy.dataMap = dat.dataMap;
+    cpy.partyPlugin = dat.partyPlugin;
     //setTimeout( ()=>{
     //}, 3333 )
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
@@ -1050,27 +1051,172 @@ exports.UpdateRpgmap = UpdateRpgmap;
 },{}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRpgparty = exports.initRpgparty = void 0;
+exports.switchRpgparty = exports.deleteRpgparty = exports.removeRpgparty = exports.writeRpgparty = exports.readRpgparty = exports.updateRpgparty = exports.createRpgparty = exports.initRpgparty = void 0;
+const ActRpp = require("../rpgparty.action");
+const ActCol = require("../../97.collect.unit/collect.action");
+var bit, val, idx, dex, lst, dat, src;
 const initRpgparty = (cpy, bal, ste) => {
     debugger;
     return cpy;
 };
 exports.initRpgparty = initRpgparty;
-const updateRpgparty = (cpy, bal, ste) => {
+const createRpgparty = async (cpy, bal, ste) => {
+    var stageMod = ste.value.rpgstage;
+    if (bal.dat == null)
+        bal.dat = {};
+    bal.dat;
+    var dat = { idx };
+    for (var key in bal.dat) {
+        dat[key] = bal.dat[key];
+    }
+    stageMod.partyPlugin.create(bal.val);
+    bal.slv({ rppBit: { idx: 'create-rpgparty', dat } });
+    return cpy;
+};
+exports.createRpgparty = createRpgparty;
+const updateRpgparty = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActRpp.READ_RPGPARTY, { idx: bal.idx });
+    dat = bit.rpmBit;
+    //Party.addActor(3, 4);
+    //Party.setLocation(3, 15, 15, 5);
+    bal.slv({ rppBit: { idx: "update-rpgparty", dat } });
     return cpy;
 };
 exports.updateRpgparty = updateRpgparty;
+const readRpgparty = async (cpy, bal, ste) => {
+    var slv = bal.slv;
+    if (bal.idx == null)
+        bal.idx = 'pty00';
+    bit = await ste.hunt(ActCol.READ_COLLECT, { idx: bal.idx, bit: ActRpp.CREATE_RPGPARTY });
+    var item = bit.clcBit.dat;
+    if (slv != null)
+        slv({ rppBit: { idx: "read-rpgparty", dat: item } });
+    return cpy;
+};
+exports.readRpgparty = readRpgparty;
+const writeRpgparty = async (cpy, bal, ste) => {
+    var slv = bal.slv;
+    bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActRpp.CREATE_RPGPARTY });
+    var item = bit.clcBit.dat;
+    if (bit.clcBit.val == 1)
+        await ste.hunt(ActRpp.UPDATE_RPGPARTY, { idx: bal.idx, dat: bal.dat });
+    if (slv != null)
+        slv({ rppBit: { idx: "write-rpgparty", dat: item } });
+    return cpy;
+    return cpy;
+};
+exports.writeRpgparty = writeRpgparty;
+const removeRpgparty = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActCol.REMOVE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActRpp.DELETE_RPGPARTY });
+    if (bal.slv != null)
+        bal.slv({ rppBit: { idx: "remove-rpgparty", dat: bit.clcBit } });
+    return cpy;
+};
+exports.removeRpgparty = removeRpgparty;
+const deleteRpgparty = (cpy, bal, ste) => {
+    debugger;
+    return cpy;
+};
+exports.deleteRpgparty = deleteRpgparty;
+const switchRpgparty = (cpy, bal, ste) => {
+    var stageMod = ste.value.rpgstage;
+    stageMod.partyPlugin.switch(bal.val);
+    if (bal.slv != null)
+        bal.slv({ rppBit: { idx: "switch-rpgparty", dat: bit.clcBit } });
+    return cpy;
+};
+exports.switchRpgparty = switchRpgparty;
 
-},{}],29:[function(require,module,exports){
-arguments[4][26][0].apply(exports,arguments)
-},{"dup":26}],30:[function(require,module,exports){
+},{"../../97.collect.unit/collect.action":53,"../rpgparty.action":29}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRpgparty = exports.initRpgparty = void 0;
+exports.SwitchRpgparty = exports.SWITCH_RPGPARTY = exports.CreateRpgparty = exports.CREATE_RPGPARTY = exports.DeleteRpgparty = exports.DELETE_RPGPARTY = exports.RemoveRpgparty = exports.REMOVE_RPGPARTY = exports.WriteRpgparty = exports.WRITE_RPGPARTY = exports.ReadRpgparty = exports.READ_RPGPARTY = exports.UpdateRpgparty = exports.UPDATE_RPGPARTY = exports.InitRpgparty = exports.INIT_RPGPARTY = void 0;
+// Rpgparty actions
+exports.INIT_RPGPARTY = "[Rpgparty action] Init Rpgparty";
+class InitRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.INIT_RPGPARTY;
+    }
+}
+exports.InitRpgparty = InitRpgparty;
+exports.UPDATE_RPGPARTY = "[Rpgparty action] Update Rpgparty";
+class UpdateRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.UPDATE_RPGPARTY;
+    }
+}
+exports.UpdateRpgparty = UpdateRpgparty;
+exports.READ_RPGPARTY = "[Read action] Read Rpgparty";
+class ReadRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.READ_RPGPARTY;
+    }
+}
+exports.ReadRpgparty = ReadRpgparty;
+exports.WRITE_RPGPARTY = "[Write action] Write Rpgparty";
+class WriteRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.WRITE_RPGPARTY;
+    }
+}
+exports.WriteRpgparty = WriteRpgparty;
+exports.REMOVE_RPGPARTY = "[Remove action] Remove Rpgparty";
+class RemoveRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.REMOVE_RPGPARTY;
+    }
+}
+exports.RemoveRpgparty = RemoveRpgparty;
+exports.DELETE_RPGPARTY = "[Delete action] Delete Rpgparty";
+class DeleteRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.DELETE_RPGPARTY;
+    }
+}
+exports.DeleteRpgparty = DeleteRpgparty;
+exports.CREATE_RPGPARTY = "[Create action] Create Rpgparty";
+class CreateRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.CREATE_RPGPARTY;
+    }
+}
+exports.CreateRpgparty = CreateRpgparty;
+exports.SWITCH_RPGPARTY = "[Switch action] Switch Rpgparty";
+class SwitchRpgparty {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.SWITCH_RPGPARTY;
+    }
+}
+exports.SwitchRpgparty = SwitchRpgparty;
+
+},{}],30:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.switchRpgparty = exports.createRpgparty = exports.deleteRpgparty = exports.removeRpgparty = exports.writeRpgparty = exports.readRpgparty = exports.updateRpgparty = exports.initRpgparty = void 0;
 var rpgparty_buzz_1 = require("./buz/rpgparty.buzz");
 Object.defineProperty(exports, "initRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_1.initRpgparty; } });
 var rpgparty_buzz_2 = require("./buz/rpgparty.buzz");
 Object.defineProperty(exports, "updateRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_2.updateRpgparty; } });
+var rpgparty_buzz_3 = require("./buz/rpgparty.buzz");
+Object.defineProperty(exports, "readRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_3.readRpgparty; } });
+var rpgparty_buzz_4 = require("./buz/rpgparty.buzz");
+Object.defineProperty(exports, "writeRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_4.writeRpgparty; } });
+var rpgparty_buzz_5 = require("./buz/rpgparty.buzz");
+Object.defineProperty(exports, "removeRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_5.removeRpgparty; } });
+var rpgparty_buzz_6 = require("./buz/rpgparty.buzz");
+Object.defineProperty(exports, "deleteRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_6.deleteRpgparty; } });
+var rpgparty_buzz_7 = require("./buz/rpgparty.buzz");
+Object.defineProperty(exports, "createRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_7.createRpgparty; } });
+var rpgparty_buzz_8 = require("./buz/rpgparty.buzz");
+Object.defineProperty(exports, "switchRpgparty", { enumerable: true, get: function () { return rpgparty_buzz_8.switchRpgparty; } });
 
 },{"./buz/rpgparty.buzz":28}],31:[function(require,module,exports){
 "use strict";
@@ -1094,6 +1240,18 @@ function reducer(model = new rpgparty_model_1.RpgpartyModel(), act, state) {
             return Buzz.updateRpgparty(clone(model), act.bale, state);
         case Act.INIT_RPGPARTY:
             return Buzz.initRpgparty(clone(model), act.bale, state);
+        case Act.READ_RPGPARTY:
+            return Buzz.readRpgparty(clone(model), act.bale, state);
+        case Act.WRITE_RPGPARTY:
+            return Buzz.writeRpgparty(clone(model), act.bale, state);
+        case Act.REMOVE_RPGPARTY:
+            return Buzz.removeRpgparty(clone(model), act.bale, state);
+        case Act.DELETE_RPGPARTY:
+            return Buzz.deleteRpgparty(clone(model), act.bale, state);
+        case Act.CREATE_RPGPARTY:
+            return Buzz.createRpgparty(clone(model), act.bale, state);
+        case Act.SWITCH_RPGPARTY:
+            return Buzz.switchRpgparty(clone(model), act.bale, state);
         default:
             return model;
     }

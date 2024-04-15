@@ -80,6 +80,8 @@
         gameTroop: $gameTroop,
         gameMap: $gameMap,
         gamePlayer: $gamePlayer,
+        
+        partyPlugin: Party,
 
         sceneManager: SceneManager,
         shade: window.SHADE,
@@ -121,6 +123,9 @@
       //  Scene_Map_onTransfer.call(this)
       //  window.BLENDER.hunt(sceneStage, { val: 3 });
       //};
+
+      Party
+      debugger
 
       var Scene_Map_start = Scene_Map.prototype.start;
       Scene_Map.prototype.start = function () {

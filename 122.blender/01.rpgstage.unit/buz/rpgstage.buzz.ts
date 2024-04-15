@@ -47,6 +47,8 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     cpy.dataMapInfos = dat.dataMapInfos;
     cpy.dataMap = dat.dataMap;
 
+    cpy.partyPlugin = dat.partyPlugin;
+    
     //setTimeout( ()=>{
 
     //}, 3333 )

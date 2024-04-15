@@ -33,6 +33,8 @@ export class RpgstageModel implements Rpgstage {
     dataMapInfos: any;
     dataMap:any;
 
+    partyPlugin:any;
+
 
 
     //idx:string;

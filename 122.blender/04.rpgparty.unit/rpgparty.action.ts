@@ -45,9 +45,16 @@ export const CREATE_RPGPARTY = "[Create action] Create Rpgparty";
  constructor(public bale: RpgpartyBit) {}
  }
  
+export const SWITCH_RPGPARTY = "[Switch action] Switch Rpgparty";
+ export class SwitchRpgparty implements Action {
+ readonly type = SWITCH_RPGPARTY;
+ constructor(public bale: RpgpartyBit) {}
+ }
+ 
 export type Actions = | InitRpgparty | UpdateRpgparty 
 | ReadRpgparty
 | WriteRpgparty
 | RemoveRpgparty
 | DeleteRpgparty
 | CreateRpgparty
+| SwitchRpgparty
