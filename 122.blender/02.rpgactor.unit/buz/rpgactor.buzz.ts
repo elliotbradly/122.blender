@@ -100,6 +100,15 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
         dat[key ] = bal.dat[key]
     }
 
+    if ( dat.note != null ) dat.note.replace( '↵', '\n')
+
+    bit = await  ste.hunt(ActCol.HASH_COLLECT, { src: dat.note })
+    
+    var hash = bit.clcBit.dat
+    debugger
+
+    
+
     bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;
 };

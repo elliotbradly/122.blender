@@ -95,6 +95,12 @@ export const LIST_COLLECT = "[List action] List Collect";
  constructor(public bale: CollectBit) {}
  }
  
+export const HASH_COLLECT = "[Hash action] Hash Collect";
+ export class HashCollect implements Action {
+ readonly type = HASH_COLLECT;
+ constructor(public bale: CollectBit) {}
+ }
+ 
 export type Actions = | InitCollect | UpdateCollect 
 | ReadCollect
 | WriteCollect
@@ -109,3 +115,4 @@ export type Actions = | InitCollect | UpdateCollect
 | FormatCollect
 | DotCollect
 | ListCollect
+| HashCollect

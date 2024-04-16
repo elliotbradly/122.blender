@@ -1,3 +1,4 @@
+
 import * as ActCol from '../../97.collect.unit/collect.action';
 
 var bit, lst, dat, idx, val, src, dex;
@@ -282,6 +283,38 @@ export const listCollect = (cpy: CollectModel, bal: CollectBit, ste: State) => {
   });
 
   bal.slv({ clcBit: { idx: 'list-collect', lst } });
+
+  return cpy;
+};
+
+export const hashCollect = (cpy: CollectModel, bal: CollectBit, ste: State) => {
+
+  if (bal.src == null) bal.src = ''
+  lst = bal.src.split('\n')
+
+  dat = {}
+
+  lst.forEach((a) => {
+
+    a = S(a).collapseWhitespace().s
+    if (a.length < 3) return
+
+    var hold = a.split(':')
+
+    var dom = hold[0]
+    var sub = hold[1]
+
+    var now = sub.split(',')
+
+    now.forEach( ( b,c )=>{
+      now[c] = S(b).collapseWhitespace().s
+    })
+
+    dat[dom] = now
+
+  })
+
+  bal.slv({ clcBit: { idx: 'hash-collect', dat } });
 
   return cpy;
 };
