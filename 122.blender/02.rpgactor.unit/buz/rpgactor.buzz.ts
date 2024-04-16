@@ -45,6 +45,32 @@ export const initRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: St
     return cpy;
 };
 
+export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
+
+    if (bal.dat == null) bal.dat = {}
+
+    var dat: StarBit = { idx:bal.idx.toLowerCase() };
+    for (var key in bal.dat) {
+        
+        if ( key == 'id' ) dat['dex'] = bal.dat[key]
+        else dat[key] = bal.dat[key]
+
+    }
+
+    if (dat.note != null) dat.note.replace('↵', '\n')
+
+    bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note })
+
+    var hash = bit.clcBit.dat
+
+    if (hash.map != null) dat.map = {idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2])  }
+
+    dat
+    
+    bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
+    return cpy;
+};
+
 export const updateRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
 
     bit = await ste.hunt(ActRpa.READ_RPGACTOR, { idx: bal.idx });
@@ -89,31 +115,6 @@ export const removeRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
     return cpy;
 };
 
-export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
-
-    if (bal.dat == null) bal.dat = {}
-
-    var dat: StarBit = { idx:bal.idx.toLowerCase() };
-    for (var key in bal.dat) {
-        
-        if ( key == 'id' ) dat['dex'] = bal.dat[key]
-        else dat[key] = bal.dat[key]
-
-    }
-
-    if (dat.note != null) dat.note.replace('↵', '\n')
-
-    bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note })
-
-    var hash = bit.clcBit.dat
-
-    if (hash.map != null) dat.map = {idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2])  }
-
-    dat
-    
-    bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
-    return cpy;
-};
 
 export const deleteRpgactor = (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
     debugger

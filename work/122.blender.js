@@ -563,7 +563,7 @@ exports.default = RpgstageUnit;
 },{"../99.core/state":71,"typescript-ioc":344}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listRpgactor = exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
+exports.listRpgactor = exports.deleteRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.createRpgactor = exports.initRpgactor = void 0;
 const ActRpa = require("../rpgactor.action");
 const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
@@ -589,6 +589,27 @@ const initRpgactor = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.initRpgactor = initRpgactor;
+const createRpgactor = async (cpy, bal, ste) => {
+    if (bal.dat == null)
+        bal.dat = {};
+    var dat = { idx: bal.idx.toLowerCase() };
+    for (var key in bal.dat) {
+        if (key == 'id')
+            dat['dex'] = bal.dat[key];
+        else
+            dat[key] = bal.dat[key];
+    }
+    if (dat.note != null)
+        dat.note.replace('↵', '\n');
+    bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note });
+    var hash = bit.clcBit.dat;
+    if (hash.map != null)
+        dat.map = { idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2]) };
+    dat;
+    bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
+    return cpy;
+};
+exports.createRpgactor = createRpgactor;
 const updateRpgactor = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRpa.READ_RPGACTOR, { idx: bal.idx });
     dat = bit.rpaBit;
@@ -625,27 +646,6 @@ const removeRpgactor = async (cpy, bal, ste) => {
     return cpy;
 };
 exports.removeRpgactor = removeRpgactor;
-const createRpgactor = async (cpy, bal, ste) => {
-    if (bal.dat == null)
-        bal.dat = {};
-    var dat = { idx: bal.idx.toLowerCase() };
-    for (var key in bal.dat) {
-        if (key == 'id')
-            dat['dex'] = bal.dat[key];
-        else
-            dat[key] = bal.dat[key];
-    }
-    if (dat.note != null)
-        dat.note.replace('↵', '\n');
-    bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note });
-    var hash = bit.clcBit.dat;
-    if (hash.map != null)
-        dat.map = { idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2]) };
-    dat;
-    bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
-    return cpy;
-};
-exports.createRpgactor = createRpgactor;
 const deleteRpgactor = (cpy, bal, ste) => {
     debugger;
     return cpy;
@@ -1088,11 +1088,11 @@ exports.UpdateRpgmap = UpdateRpgmap;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.switchRpgparty = exports.deleteRpgparty = exports.removeRpgparty = exports.writeRpgparty = exports.readRpgparty = exports.updateRpgparty = exports.createRpgparty = exports.initRpgparty = void 0;
 const ActRpp = require("../rpgparty.action");
+const ActRpa = require("../../02.rpgactor.unit/rpgactor.action");
 const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
 const initRpgparty = async (cpy, bal, ste) => {
     lst = bal.lst;
-    debugger;
     if (lst == null)
         lst = [];
     var dex = lst.length - 1;
@@ -1105,13 +1105,14 @@ const initRpgparty = async (cpy, bal, ste) => {
             return cpy;
         }
         var itm = lst[dex];
-        bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: itm.name, dat: itm });
+        bit = await ste.hunt(ActRpa.READ_RPGACTOR, { idx: itm });
         dat = bit.rpaBit.dat;
+        debugger;
         lstMsg.push('party added: ' + dat.name);
         dex -= 1;
         await nextParty();
     };
-    //await nextParty()
+    await nextParty();
     bal.slv({ intBit: { idx: "init-rpgparty", dat, lst: lstMsg } });
     return cpy;
     return cpy;
@@ -1184,7 +1185,7 @@ const switchRpgparty = (cpy, bal, ste) => {
 };
 exports.switchRpgparty = switchRpgparty;
 
-},{"../../97.collect.unit/collect.action":53,"../rpgparty.action":29}],29:[function(require,module,exports){
+},{"../../02.rpgactor.unit/rpgactor.action":15,"../../97.collect.unit/collect.action":53,"../rpgparty.action":29}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SwitchRpgparty = exports.SWITCH_RPGPARTY = exports.CreateRpgparty = exports.CREATE_RPGPARTY = exports.DeleteRpgparty = exports.DELETE_RPGPARTY = exports.RemoveRpgparty = exports.REMOVE_RPGPARTY = exports.WriteRpgparty = exports.WRITE_RPGPARTY = exports.ReadRpgparty = exports.READ_RPGPARTY = exports.UpdateRpgparty = exports.UPDATE_RPGPARTY = exports.InitRpgparty = exports.INIT_RPGPARTY = void 0;

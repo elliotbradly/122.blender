@@ -1,6 +1,8 @@
 
 import * as ActRpp from "../rpgparty.action";
 
+import * as ActRpa from "../../02.rpgactor.unit/rpgactor.action";
+
 import * as ActMnu from "../../98.menu.unit/menu.action";
 import * as ActBld from "../../00.blender.unit/blender.action";
 import * as ActAtv from "../../80.activity.unit/activity.action";
@@ -15,8 +17,6 @@ var bit, val, idx, dex, lst, dat, src;
 export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
     
     lst = bal.lst
-
-    debugger
 
     if ( lst == null ) lst = []
 
@@ -35,9 +35,10 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
 
         var itm = lst[ dex ]
         
-        bit = await ste.hunt( ActRpp.WRITE_RPGPARTY, { idx: itm.name, dat:itm })
-
+        bit = await ste.hunt( ActRpa.READ_RPGACTOR, { idx: itm })
         dat = bit.rpaBit.dat
+
+        debugger
 
         lstMsg.push( 'party added: ' + dat.name )
         
@@ -45,7 +46,7 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
         await nextParty()
     }
 
-    //await nextParty()
+    await nextParty()
 
     bal.slv({ intBit: { idx: "init-rpgparty", dat, lst:lstMsg } });
     return cpy;
