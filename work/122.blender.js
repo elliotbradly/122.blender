@@ -354,14 +354,19 @@ const initRpgstage = async (cpy, bal, ste) => {
 };
 exports.initRpgstage = initRpgstage;
 const openRpgstage = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
     bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { lst: cpy.dataActors });
     lst = bit.intBit.lst;
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     bit = await ste.hunt(ActRpm.INIT_RPGMAP, { lst: cpy.dataMapInfos });
     lst = bit.intBit.lst;
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
-    bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst: cpy.dataActors });
+    bit = await ste.hunt(ActRpa.LIST_RPGACTOR, {});
+    lst = bit.rpaBit.lst;
+    bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst;
+    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
     return cpy;
@@ -415,8 +420,6 @@ const sceneRpgstage = async (cpy, bal, ste) => {
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
-    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
     if (cpy.sceneChangeCount == 0) {
         await ste.hunt(ActRps.OPEN_RPGSTAGE, {});
     }
@@ -560,7 +563,7 @@ exports.default = RpgstageUnit;
 },{"../99.core/state":71,"typescript-ioc":344}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
+exports.listRpgactor = exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
 const ActRpa = require("../rpgactor.action");
 const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
@@ -625,16 +628,20 @@ exports.removeRpgactor = removeRpgactor;
 const createRpgactor = async (cpy, bal, ste) => {
     if (bal.dat == null)
         bal.dat = {};
-    bal.dat;
-    var dat = {};
+    var dat = { idx: bal.idx.toLowerCase() };
     for (var key in bal.dat) {
-        dat[key] = bal.dat[key];
+        if (key == 'id')
+            dat['dex'] = bal.dat[key];
+        else
+            dat[key] = bal.dat[key];
     }
     if (dat.note != null)
         dat.note.replace('↵', '\n');
     bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note });
     var hash = bit.clcBit.dat;
-    debugger;
+    if (hash.map != null)
+        dat.map = { idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2]) };
+    dat;
     bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;
 };
@@ -644,11 +651,18 @@ const deleteRpgactor = (cpy, bal, ste) => {
     return cpy;
 };
 exports.deleteRpgactor = deleteRpgactor;
+const listRpgactor = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActCol.LIST_COLLECT, { bit: ActRpa.CREATE_RPGACTOR });
+    lst = bit.clcBit.lst;
+    bal.slv({ rpaBit: { idx: 'list-rpgactor', lst } });
+    return cpy;
+};
+exports.listRpgactor = listRpgactor;
 
 },{"../../97.collect.unit/collect.action":53,"../rpgactor.action":15}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteRpgactor = exports.DELETE_RPGACTOR = exports.CreateRpgactor = exports.CREATE_RPGACTOR = exports.RemoveRpgactor = exports.REMOVE_RPGACTOR = exports.WriteRpgactor = exports.WRITE_RPGACTOR = exports.ReadRpgactor = exports.READ_RPGACTOR = exports.UpdateRpgactor = exports.UPDATE_RPGACTOR = exports.InitRpgactor = exports.INIT_RPGACTOR = void 0;
+exports.ListRpgactor = exports.LIST_RPGACTOR = exports.DeleteRpgactor = exports.DELETE_RPGACTOR = exports.CreateRpgactor = exports.CREATE_RPGACTOR = exports.RemoveRpgactor = exports.REMOVE_RPGACTOR = exports.WriteRpgactor = exports.WRITE_RPGACTOR = exports.ReadRpgactor = exports.READ_RPGACTOR = exports.UpdateRpgactor = exports.UPDATE_RPGACTOR = exports.InitRpgactor = exports.INIT_RPGACTOR = void 0;
 // Rpgactor actions
 exports.INIT_RPGACTOR = "[Rpgactor action] Init Rpgactor";
 class InitRpgactor {
@@ -706,11 +720,19 @@ class DeleteRpgactor {
     }
 }
 exports.DeleteRpgactor = DeleteRpgactor;
+exports.LIST_RPGACTOR = "[List action] List Rpgactor";
+class ListRpgactor {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.LIST_RPGACTOR;
+    }
+}
+exports.ListRpgactor = ListRpgactor;
 
 },{}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
+exports.listRpgactor = exports.deleteRpgactor = exports.createRpgactor = exports.removeRpgactor = exports.writeRpgactor = exports.readRpgactor = exports.updateRpgactor = exports.initRpgactor = void 0;
 var rpgactor_buzz_1 = require("./buz/rpgactor.buzz");
 Object.defineProperty(exports, "initRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_1.initRpgactor; } });
 var rpgactor_buzz_2 = require("./buz/rpgactor.buzz");
@@ -725,6 +747,8 @@ var rpgactor_buzz_6 = require("./buz/rpgactor.buzz");
 Object.defineProperty(exports, "createRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_6.createRpgactor; } });
 var rpgactor_buzz_7 = require("./buz/rpgactor.buzz");
 Object.defineProperty(exports, "deleteRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_7.deleteRpgactor; } });
+var rpgactor_buzz_8 = require("./buz/rpgactor.buzz");
+Object.defineProperty(exports, "listRpgactor", { enumerable: true, get: function () { return rpgactor_buzz_8.listRpgactor; } });
 
 },{"./buz/rpgactor.buzz":14}],17:[function(require,module,exports){
 "use strict";
@@ -758,6 +782,8 @@ function reducer(model = new rpgactor_model_1.RpgactorModel(), act, state) {
             return Buzz.createRpgactor(clone(model), act.bale, state);
         case Act.DELETE_RPGACTOR:
             return Buzz.deleteRpgactor(clone(model), act.bale, state);
+        case Act.LIST_RPGACTOR:
+            return Buzz.listRpgactor(clone(model), act.bale, state);
         default:
             return model;
     }
@@ -1066,6 +1092,7 @@ const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
 const initRpgparty = async (cpy, bal, ste) => {
     lst = bal.lst;
+    debugger;
     if (lst == null)
         lst = [];
     var dex = lst.length - 1;
@@ -2095,7 +2122,10 @@ const listCollect = (cpy, bal, ste) => {
     var cabBit = cpy.caboodleBitList[cpy.caboodleBits[type]];
     lst = [];
     cabBit.bitList.forEach((a) => {
-        lst.push(a.idx);
+        if (a.idx != null)
+            lst.push(a.idx);
+        if (a.id != null)
+            lst.push(a.id);
     });
     bal.slv({ clcBit: { idx: 'list-collect', lst } });
     return cpy;

@@ -16,6 +16,8 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
     
     lst = bal.lst
 
+    debugger
+
     if ( lst == null ) lst = []
 
     var dex = lst.length-1;

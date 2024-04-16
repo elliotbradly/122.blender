@@ -1,6 +1,6 @@
 
 export default interface StarBit {
-        id?: number
+        idx?: string
         battlerName?: string
         characterIndex?: number
         characterName?: string
@@ -15,10 +15,17 @@ export default interface StarBit {
         nickname?: string
         note?: string
         profile?: string
+        map?:Map
 }
 
 export interface Trait {
         code: number
         dataId: number
         value: number
+}
+
+export interface Map {
+        idx: number
+        x: number
+        y: number
 }

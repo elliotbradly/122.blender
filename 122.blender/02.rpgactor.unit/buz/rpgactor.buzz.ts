@@ -15,7 +15,7 @@ export const initRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: St
 
     lst = bal.lst
 
-    var dex = lst.length-1;
+    var dex = lst.length - 1;
 
     var output = []
     var lstMsg = ['initizing rpg actor']
@@ -24,18 +24,18 @@ export const initRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: St
 
         if (dex <= 0) {
             output
-            bal.slv({ intBit: { idx: "init-rpgactor", dat, lst:lstMsg } });
+            bal.slv({ intBit: { idx: "init-rpgactor", dat, lst: lstMsg } });
             return cpy;
         }
 
-        var itm = lst[ dex ]
-        
-        bit = await ste.hunt( ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat:itm })
+        var itm = lst[dex]
+
+        bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm })
 
         dat = bit.rpaBit.dat
 
-        lstMsg.push( 'actor added: ' + dat.name )
-        
+        lstMsg.push('actor added: ' + dat.name)
+
         dex -= 1
         await nextActor()
     }
@@ -93,22 +93,24 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
 
     if (bal.dat == null) bal.dat = {}
 
-    bal.dat;
-    
-    var dat: StarBit = {};
-    for ( var key in bal.dat){
-        dat[key ] = bal.dat[key]
+    var dat: StarBit = { idx:bal.idx.toLowerCase() };
+    for (var key in bal.dat) {
+        
+        if ( key == 'id' ) dat['dex'] = bal.dat[key]
+        else dat[key] = bal.dat[key]
+
     }
 
-    if ( dat.note != null ) dat.note.replace( '↵', '\n')
+    if (dat.note != null) dat.note.replace('↵', '\n')
 
-    bit = await  ste.hunt(ActCol.HASH_COLLECT, { src: dat.note })
-    
+    bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note })
+
     var hash = bit.clcBit.dat
-    debugger
 
+    if (hash.map != null) dat.map = {idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2])  }
+
+    dat
     
-
     bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;
 };
@@ -117,6 +119,18 @@ export const deleteRpgactor = (cpy: RpgactorModel, bal: RpgactorBit, ste: State)
     debugger
     return cpy;
 };
+
+export const listRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
+
+    bit = await ste.hunt(ActCol.LIST_COLLECT, { bit: ActRpa.CREATE_RPGACTOR });
+    
+    lst = bit.clcBit.lst
+    
+    bal.slv({ rpaBit: { idx: 'list-rpgactor', lst } });
+    return cpy;
+};
+
+
 
 import { RpgactorModel } from "../rpgactor.model";
 import RpgactorBit from "../fce/rpgactor.bit";

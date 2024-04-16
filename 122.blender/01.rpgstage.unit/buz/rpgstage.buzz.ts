@@ -136,6 +136,10 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
 export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
+    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
+    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+
+
     bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { lst: cpy.dataActors });
 
     lst = bit.intBit.lst
@@ -145,8 +149,15 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     lst = bit.intBit.lst
     lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
 
-    bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst: cpy.dataActors });
+    bit = await ste.hunt( ActRpa.LIST_RPGACTOR, {});
+    lst = bit.rpaBit.lst
+
+    bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst
+    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
+
+
+
     lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
 
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
@@ -218,8 +229,7 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
 
 
-    bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
-    bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
+   
 
 
     if (cpy.sceneChangeCount == 0) {

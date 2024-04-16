@@ -45,9 +45,16 @@ export const DELETE_RPGACTOR = "[Delete action] Delete Rpgactor";
  constructor(public bale: RpgactorBit) {}
  }
  
+export const LIST_RPGACTOR = "[List action] List Rpgactor";
+ export class ListRpgactor implements Action {
+ readonly type = LIST_RPGACTOR;
+ constructor(public bale: RpgactorBit) {}
+ }
+ 
 export type Actions = | InitRpgactor | UpdateRpgactor 
 | ReadRpgactor
 | WriteRpgactor
 | RemoveRpgactor
 | CreateRpgactor
 | DeleteRpgactor
+| ListRpgactor

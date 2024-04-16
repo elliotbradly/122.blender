@@ -28,6 +28,9 @@ case Act.CREATE_RPGACTOR:
 case Act.DELETE_RPGACTOR:
  return Buzz.deleteRpgactor(clone(model), act.bale, state);
  
+case Act.LIST_RPGACTOR:
+ return Buzz.listRpgactor(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

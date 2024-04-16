@@ -5,3 +5,4 @@ export { writeRpgactor  } from "./buz/rpgactor.buzz";
 export { removeRpgactor  } from "./buz/rpgactor.buzz";
 export { createRpgactor  } from "./buz/rpgactor.buzz";
 export { deleteRpgactor  } from "./buz/rpgactor.buzz";
+export { listRpgactor  } from "./buz/rpgactor.buzz";

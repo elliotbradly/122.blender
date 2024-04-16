@@ -279,7 +279,10 @@ export const listCollect = (cpy: CollectModel, bal: CollectBit, ste: State) => {
   lst = [];
 
   cabBit.bitList.forEach((a) => {
-    lst.push(a.idx);
+    
+    if ( a.idx != null ) lst.push(a.idx)
+    if ( a.id != null ) lst.push(a.id)
+
   });
 
   bal.slv({ clcBit: { idx: 'list-collect', lst } });
