@@ -294,61 +294,7 @@ const initRpgstage = async (cpy, bal, ste) => {
     cpy.dataMapInfos = dat.dataMapInfos;
     cpy.dataMap = dat.dataMap;
     cpy.partyPlugin = dat.partyPlugin;
-    //setTimeout( ()=>{
-    //}, 3333 )
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
-    //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
-    //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
-    //var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
-    //var bit = await window.BLENDER.hunt(initAtv, { val: 0 });
-    //var bit = await window.BLENDER.hunt(initBld, { val: 0, dat: MQTT, src: local });
-    //window.BLENDER.hunt(openBld, { idx: "simo-beeing" });
-    //var display = SceneManager._scene._spriteset._characterSprites[6];
-    //var display = SceneManager._scene._spriteset._destinationSprite;
-    //display.alpha = 0.5;
-    //debugger
-    //_spriteset
-    //debugger;
-    //Spriteset_Map;
-    //var base = new Sprite(ImageManager.loadPicture("Actor1_1"));
-    //Graphics.app.stage.children[0].addChild(base);
-    //display.addChild(base);
-    //$gameTemp._pkdJoyStick.base.addChild(base);
-    //this.addChild(base);
-    //this.addChildToBack(base);
-    // var count = 0;
-    //Party.create(2);
-    //Party.addActor(2, 3);
-    //Party.setLocation(2, 12, 12, 5);
-    //Party.create(3);
-    //Party.addActor(3, 4);
-    //Party.setLocation(3, 15, 15, 5);
-    //setTimeout(() => {
-    //  Party.switch(2);
-    //}, 2222);
-    //setTimeout(() => {
-    //  Party.switch(3);
-    //}, 12222);
-    //setTimeout(() => {
-    //  Party.switch(1);
-    //}, 32222);
-    // setInterval(() => {
-    //   count += 1;
-    // document.dispatchEvent(
-    //   new KeyboardEvent("keydown", {
-    //     key: "e",
-    //     keyCode: 39, // example values.
-    //     code: "ArrowRight", // put everything you need in this object.
-    //     which: 69,
-    //     shiftKey: false, // you don't need to include values
-    //     ctrlKey: false, // if you aren't going to use them.
-    //     metaKey: false, // these are here for example's sake.
-    //   })
-    // );
-    //$gameMessage.add('\SEPLAY[]  ' + count );
-    //Game_Player_executeMove.call(this, 8);
-    //console.log('go')
-    // }, 1444);
     bal.slv({ intBit: { idx: "init-rpgstage" } });
     return cpy;
 };
@@ -366,7 +312,6 @@ const openRpgstage = async (cpy, bal, ste) => {
     lst = bit.rpaBit.lst;
     bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst;
-    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
     return cpy;
@@ -421,7 +366,7 @@ const sceneRpgstage = async (cpy, bal, ste) => {
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     if (cpy.sceneChangeCount == 0) {
-        await ste.hunt(ActRps.OPEN_RPGSTAGE, {});
+        ste.hunt(ActRps.OPEN_RPGSTAGE, {});
     }
     cpy.sceneChangeCount += 1;
     //cpy.mainHUD.visible = false
@@ -1099,7 +1044,7 @@ const initRpgparty = async (cpy, bal, ste) => {
     var output = [];
     var lstMsg = ['initizing rpg party'];
     var nextParty = async () => {
-        if (dex <= 0) {
+        if (dex < 0) {
             output;
             bal.slv({ intBit: { idx: "init-rpgparty", dat, lst: lstMsg } });
             return cpy;
@@ -1117,9 +1062,6 @@ const initRpgparty = async (cpy, bal, ste) => {
         await nextParty();
     };
     await nextParty();
-    bal.slv({ intBit: { idx: "init-rpgparty", dat, lst: lstMsg } });
-    return cpy;
-    return cpy;
 };
 exports.initRpgparty = initRpgparty;
 const createRpgparty = async (cpy, bal, ste) => {
@@ -1131,9 +1073,11 @@ const createRpgparty = async (cpy, bal, ste) => {
     //    dat[key] = bal.dat[key]
     //}
     var map = bal.dat.map;
-    stageMod.partyPlugin.create(dat.dex);
-    stageMod.partyPlugin.addActor(dat.dex, bal.dat.dex);
-    stageMod.partyPlugin.setLocation(dat.dex, map.x, map.y, map.idx);
+    var index = bal.dat.characterIndex + 1;
+    //debugger
+    stageMod.partyPlugin.create(index);
+    stageMod.partyPlugin.addActor(index, bal.dat.dex);
+    stageMod.partyPlugin.setLocation(index, map.x, map.y, map.idx);
     cpy.partyCount += 1;
     bal.slv({ rppBit: { idx: 'create-rpgparty', dat } });
     return cpy;

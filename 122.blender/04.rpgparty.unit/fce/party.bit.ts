@@ -1,6 +1,6 @@
 
 export default interface PartyBit {
     idx: string;
-    dex: Number;
+    dex: number;
     name:string;
 }

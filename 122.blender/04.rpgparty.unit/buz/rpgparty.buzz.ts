@@ -27,7 +27,7 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
 
     var nextParty = async () => {
 
-        if (dex <= 0) {
+        if (dex < 0) {
             output
             bal.slv({ intBit: { idx: "init-rpgparty", dat, lst:lstMsg } });
             return cpy;
@@ -37,6 +37,7 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
         
         bit = await ste.hunt( ActRpa.READ_RPGACTOR, { idx: itm })
         dat = bit.rpaBit.dat
+        
 
         if ( dat.map == null ){
             bal.slv({ intBit: { idx: "init-rpgparty-errorr" } });
@@ -47,17 +48,13 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
         
         lstMsg.push( 'party added: ' + dat.name )
         
+        
         dex -= 1
         await nextParty()
     }
 
     await nextParty()
 
-    bal.slv({ intBit: { idx: "init-rpgparty", dat, lst:lstMsg } });
-    return cpy;
-
-
-    return cpy;
 };
 
 
@@ -75,10 +72,14 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
 
 
     var map:Map = bal.dat.map;
+
+    var index = bal.dat.characterIndex + 1;
+
+    //debugger
     
-    stageMod.partyPlugin.create( dat.dex )
-    stageMod.partyPlugin.addActor( dat.dex,  bal.dat.dex );
-    stageMod.partyPlugin.setLocation( dat.dex, map.x, map.y, map.idx);
+    stageMod.partyPlugin.create( index )
+    stageMod.partyPlugin.addActor( index,  bal.dat.dex );
+    stageMod.partyPlugin.setLocation( index, map.x, map.y, map.idx);
 
     cpy.partyCount += 1
 

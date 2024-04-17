@@ -50,84 +50,7 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.partyPlugin = dat.partyPlugin;
     
-    //setTimeout( ()=>{
-
-    //}, 3333 )
-
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
-
-    //var openBld = window.BLENDER.ActBld.OPEN_BLENDER;
-    //var initAtv = window.BLENDER.ActAtv.INIT_ACTIVITY;
-    //var initMap = window.BLENDER.ActRpm.INIT_RPGMAP;
-
-    //var bit = await window.BLENDER.hunt(initAtv, { val: 0 });
-    //var bit = await window.BLENDER.hunt(initBld, { val: 0, dat: MQTT, src: local });
-    //window.BLENDER.hunt(openBld, { idx: "simo-beeing" });
-
-    //var display = SceneManager._scene._spriteset._characterSprites[6];
-    //var display = SceneManager._scene._spriteset._destinationSprite;
-
-    //display.alpha = 0.5;
-
-    //debugger
-
-    //_spriteset
-    //debugger;
-    //Spriteset_Map;
-
-    //var base = new Sprite(ImageManager.loadPicture("Actor1_1"));
-
-    //Graphics.app.stage.children[0].addChild(base);
-
-    //display.addChild(base);
-
-    //$gameTemp._pkdJoyStick.base.addChild(base);
-
-    //this.addChild(base);
-    //this.addChildToBack(base);
-    // var count = 0;
-
-    //Party.create(2);
-    //Party.addActor(2, 3);
-    //Party.setLocation(2, 12, 12, 5);
-
-    //Party.create(3);
-    //Party.addActor(3, 4);
-    //Party.setLocation(3, 15, 15, 5);
-
-    //setTimeout(() => {
-    //  Party.switch(2);
-    //}, 2222);
-
-    //setTimeout(() => {
-    //  Party.switch(3);
-    //}, 12222);
-
-    //setTimeout(() => {
-    //  Party.switch(1);
-    //}, 32222);
-
-    // setInterval(() => {
-    //   count += 1;
-
-    // document.dispatchEvent(
-    //   new KeyboardEvent("keydown", {
-    //     key: "e",
-    //     keyCode: 39, // example values.
-    //     code: "ArrowRight", // put everything you need in this object.
-    //     which: 69,
-    //     shiftKey: false, // you don't need to include values
-    //     ctrlKey: false, // if you aren't going to use them.
-    //     metaKey: false, // these are here for example's sake.
-    //   })
-    // );
-
-    //$gameMessage.add('\SEPLAY[]  ' + count );
-
-    //Game_Player_executeMove.call(this, 8);
-    //console.log('go')
-    // }, 1444);
-
 
     bal.slv({ intBit: { idx: "init-rpgstage" } });
 
@@ -138,7 +61,6 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     bit = await ste.hunt(ActAtv.INIT_ACTIVITY, { val: 0 });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bit) });
-
 
     bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { lst: cpy.dataActors });
 
@@ -154,11 +76,9 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst
-    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
-
-
 
     lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
+
 
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
 
@@ -229,12 +149,8 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
 
 
-   
 
-
-    if (cpy.sceneChangeCount == 0) {
-        await ste.hunt(ActRps.OPEN_RPGSTAGE, {});
-    }
+    if (cpy.sceneChangeCount == 0) { ste.hunt(ActRps.OPEN_RPGSTAGE, {}) }
 
     cpy.sceneChangeCount += 1;
 

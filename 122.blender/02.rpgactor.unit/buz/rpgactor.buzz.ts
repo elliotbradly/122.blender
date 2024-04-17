@@ -66,6 +66,7 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
     if (hash.map != null) dat.map = {idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2])  }
 
     dat
+    
 
     bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;
