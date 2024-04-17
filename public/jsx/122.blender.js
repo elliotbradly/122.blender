@@ -592,7 +592,7 @@ exports.initRpgactor = initRpgactor;
 const createRpgactor = async (cpy, bal, ste) => {
     if (bal.dat == null)
         bal.dat = {};
-    var dat = { idx: bal.idx.toLowerCase() };
+    var dat = { idx: bal.idx };
     for (var key in bal.dat) {
         if (key == 'id')
             dat['dex'] = bal.dat[key];
@@ -1107,7 +1107,11 @@ const initRpgparty = async (cpy, bal, ste) => {
         var itm = lst[dex];
         bit = await ste.hunt(ActRpa.READ_RPGACTOR, { idx: itm });
         dat = bit.rpaBit.dat;
-        debugger;
+        if (dat.map == null) {
+            bal.slv({ intBit: { idx: "init-rpgparty-errorr" } });
+            return cpy;
+        }
+        bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat });
         lstMsg.push('party added: ' + dat.name);
         dex -= 1;
         await nextParty();
@@ -1122,12 +1126,15 @@ const createRpgparty = async (cpy, bal, ste) => {
     var stageMod = ste.value.rpgstage;
     if (bal.dat == null)
         bal.dat = {};
-    bal.dat;
-    var dat = { idx };
-    for (var key in bal.dat) {
-        dat[key] = bal.dat[key];
-    }
-    //stageMod.partyPlugin.create( bal.val )
+    var dat = { idx, dex: cpy.partyCount, name: bal.dat.name };
+    //for (var key in bal.dat) {
+    //    dat[key] = bal.dat[key]
+    //}
+    var map = bal.dat.map;
+    stageMod.partyPlugin.create(dat.dex);
+    stageMod.partyPlugin.addActor(dat.dex, bal.dat.dex);
+    stageMod.partyPlugin.setLocation(dat.dex, map.x, map.y, map.idx);
+    cpy.partyCount += 1;
     bal.slv({ rppBit: { idx: 'create-rpgparty', dat } });
     return cpy;
 };
@@ -1135,8 +1142,6 @@ exports.createRpgparty = createRpgparty;
 const updateRpgparty = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRpp.READ_RPGPARTY, { idx: bal.idx });
     dat = bit.rpmBit;
-    //Party.addActor(3, 4);
-    //Party.setLocation(3, 15, 15, 5);
     bal.slv({ rppBit: { idx: "update-rpgparty", dat } });
     return cpy;
 };
@@ -1281,6 +1286,12 @@ Object.defineProperty(exports, "switchRpgparty", { enumerable: true, get: functi
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RpgpartyModel = void 0;
 class RpgpartyModel {
+    constructor() {
+        this.partyCount = 0;
+        //idx:string;
+        //rpgpartyBitList: RpgpartyBit[] = [];
+        //rpgpartyBits: any = {};
+    }
 }
 exports.RpgpartyModel = RpgpartyModel;
 

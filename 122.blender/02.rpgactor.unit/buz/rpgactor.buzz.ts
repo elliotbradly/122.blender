@@ -49,7 +49,7 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
 
     if (bal.dat == null) bal.dat = {}
 
-    var dat: StarBit = { idx:bal.idx.toLowerCase() };
+    var dat: StarBit = { idx:bal.idx };
     for (var key in bal.dat) {
         
         if ( key == 'id' ) dat['dex'] = bal.dat[key]
@@ -66,7 +66,7 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
     if (hash.map != null) dat.map = {idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2])  }
 
     dat
-    
+
     bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;
 };

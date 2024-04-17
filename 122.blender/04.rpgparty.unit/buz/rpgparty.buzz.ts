@@ -38,8 +38,13 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
         bit = await ste.hunt( ActRpa.READ_RPGACTOR, { idx: itm })
         dat = bit.rpaBit.dat
 
-        debugger
+        if ( dat.map == null ){
+            bal.slv({ intBit: { idx: "init-rpgparty-errorr" } });
+            return cpy;
+        }
 
+        bit = await ste.hunt( ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat })
+        
         lstMsg.push( 'party added: ' + dat.name )
         
         dex -= 1
@@ -58,21 +63,24 @@ export const initRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: St
 
 export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
 
+
     var stageMod:RpgstageModel = ste.value.rpgstage
 
     if (bal.dat == null) bal.dat = {}
 
-    bal.dat;
-
-    var dat: PartyBit = { idx };
-    for (var key in bal.dat) {
-        dat[key] = bal.dat[key]
-    }
+    var dat: PartyBit = { idx, dex: cpy.partyCount, name:bal.dat.name };
+    //for (var key in bal.dat) {
+    //    dat[key] = bal.dat[key]
+    //}
 
 
-    //stageMod.partyPlugin.create( bal.val )
-
+    var map:Map = bal.dat.map;
     
+    stageMod.partyPlugin.create( dat.dex )
+    stageMod.partyPlugin.addActor( dat.dex,  bal.dat.dex );
+    stageMod.partyPlugin.setLocation( dat.dex, map.x, map.y, map.idx);
+
+    cpy.partyCount += 1
 
     bal.slv({ rppBit: { idx: 'create-rpgparty', dat } });
     return cpy;
@@ -83,8 +91,8 @@ export const updateRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
     bit = await ste.hunt(ActRpp.READ_RPGPARTY, { idx: bal.idx });
     dat = bit.rpmBit;
 
-    //Party.addActor(3, 4);
-    //Party.setLocation(3, 15, 15, 5);
+    
+    
 
 
     bal.slv({ rppBit: { idx: "update-rpgparty", dat } });
@@ -155,4 +163,5 @@ import RpgpartyBit from "../fce/rpgparty.bit";
 import State from "../../99.core/state";
 import PartyBit from "../fce/party.bit";
 import { RpgstageModel } from "122.blender/01.rpgstage.unit/rpgstage.model";
+import { Map } from "122.blender/02.rpgactor.unit/fce/star.bit";
 
