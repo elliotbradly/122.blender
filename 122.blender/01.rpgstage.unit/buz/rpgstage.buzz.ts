@@ -150,7 +150,18 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
 
 
 
-    if (cpy.sceneChangeCount == 0) { ste.hunt(ActRps.OPEN_RPGSTAGE, {}) }
+    if (cpy.sceneChangeCount == 0) { 
+   
+        setTimeout( ()=>{
+
+            ste.hunt(ActRps.OPEN_RPGSTAGE, {})
+
+        }, 3333 )
+        
+
+        
+    
+    }
 
     cpy.sceneChangeCount += 1;
 

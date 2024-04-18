@@ -73,12 +73,12 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
 
     var map:Map = bal.dat.map;
 
-    var index = bal.dat.characterIndex + 1;
-
+    var index = bal.dat.dex + 1;
+    
     //debugger
     
     stageMod.partyPlugin.create( index )
-    stageMod.partyPlugin.addActor( index,  bal.dat.dex );
+    stageMod.partyPlugin.addActor( index,  index );
     stageMod.partyPlugin.setLocation( index, map.x, map.y, map.idx);
 
     cpy.partyCount += 1
