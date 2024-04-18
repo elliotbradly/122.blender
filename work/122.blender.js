@@ -313,6 +313,15 @@ const openRpgstage = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst;
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
+    setTimeout(async () => {
+        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val: 2 });
+    }, 11111);
+    setTimeout(async () => {
+        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val: 3 });
+    }, 31111);
+    setTimeout(async () => {
+        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val: 1 });
+    }, 71111);
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
     return cpy;
 };
