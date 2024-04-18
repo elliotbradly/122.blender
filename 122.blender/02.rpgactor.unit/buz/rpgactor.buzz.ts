@@ -47,6 +47,8 @@ export const initRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: St
 
 export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: State) => {
 
+    var stageMod:RpgstageModel = ste.value.rpgstage;
+
     if (bal.dat == null) bal.dat = {}
 
     var dat: StarBit = { idx:bal.idx };
@@ -62,6 +64,36 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
     bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note })
 
     var hash = bit.clcBit.dat
+
+    //check and see if it is in the game object
+
+    var exits = false
+
+    stageMod.dataActors.forEach( (a=>{
+        if ( a == null ) return
+        if ( a.name == null ) return
+        if ( exits == true) return 
+        if ( a.name == bal.idx ) exits = true
+
+    }))
+
+    
+
+    if ( exits == false ){
+        stageMod.dataActors.push( dat )
+
+    
+        stageMod.gameActors.actor( dat.id )
+       
+
+        //remove gameActorClass
+
+
+    }
+    
+
+    //i think you will need to attach this to the $gameData object
+
 
     if (hash.map != null) dat.map = {idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2])  }
 
@@ -137,4 +169,5 @@ export const listRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: St
 import { RpgactorModel } from "../rpgactor.model";
 import RpgactorBit from "../fce/rpgactor.bit";
 import State from "../../99.core/state";
-import StarBit from "../fce/star.bit";
+import StarBit from "../fce/star.bit";import { RpgstageModel } from "122.blender/01.rpgstage.unit/rpgstage.model";
+

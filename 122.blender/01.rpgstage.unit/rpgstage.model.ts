@@ -35,6 +35,8 @@ export class RpgstageModel implements Rpgstage {
 
     partyPlugin:any;
 
+    gameActorClass:any;
+
 
 
     //idx:string;

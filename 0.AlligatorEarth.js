@@ -87,6 +87,8 @@
         shade: window.SHADE,
         graphics: Graphics,
 
+        gameActorClass:Game_Actor,
+
         dataActors: $dataActors,
         dataMapInfos: $dataMapInfos,
         dataMap: $dataMap

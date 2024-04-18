@@ -1,6 +1,7 @@
 
 export default interface StarBit {
         idx?: string
+        id?: string
         battlerName?: string
         characterIndex?: number
         characterName?: string

@@ -307,6 +307,14 @@ export const hashCollect = (cpy: CollectModel, bal: CollectBit, ste: State) => {
     var dom = hold[0]
     var sub = hold[1]
 
+    if ( dom == null ){
+      return
+    }
+
+    if ( sub == null ){
+      return
+    }
+
     var now = sub.split(',')
 
     now.forEach( ( b,c )=>{

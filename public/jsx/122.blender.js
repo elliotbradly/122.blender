@@ -294,6 +294,7 @@ const initRpgstage = async (cpy, bal, ste) => {
     cpy.dataMapInfos = dat.dataMapInfos;
     cpy.dataMap = dat.dataMap;
     cpy.partyPlugin = dat.partyPlugin;
+    cpy.gameActorClass = dat.gameActorClass;
     cpy.gamePlayer._moveSpeed = 7;
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
     bal.slv({ intBit: { idx: "init-rpgstage" } });
@@ -314,9 +315,49 @@ const openRpgstage = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst;
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
-    setTimeout(async () => {
-        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val: 3 });
-    }, 31111);
+    var itm = {
+        "id": 4,
+        "battlerName": "Actor1_3",
+        "characterIndex": 3,
+        "characterName": "Actor1",
+        "classId": 1,
+        "equips": [0, 0, 0, 0, 0],
+        "faceIndex": 2,
+        "faceName": "Actor1",
+        "traits": [],
+        "initialLevel": 1,
+        "maxLevel": 99,
+        "name": "Ryan",
+        "nickname": "",
+        "note": "map: 3, 3, 3\ndetail: tall",
+        "profile": ""
+    };
+    bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm });
+    dat = bit.rpaBit.dat;
+    bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat });
+    var itm = {
+        "id": 5,
+        "battlerName": "Actor1_3",
+        "characterIndex": 4,
+        "characterName": "Actor1",
+        "classId": 1,
+        "equips": [0, 0, 0, 0, 0],
+        "faceIndex": 2,
+        "faceName": "Actor1",
+        "traits": [],
+        "initialLevel": 1,
+        "maxLevel": 99,
+        "name": "Jordan",
+        "nickname": "",
+        "note": "map: 3, 5, 3\ndetail: tall",
+        "profile": ""
+    };
+    bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm });
+    dat = bit.rpaBit.dat;
+    bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat });
+    //setTimeout ( async ()=>{
+    //    bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val:3 });
+    //}, 31111)
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
     return cpy;
 };
@@ -539,6 +580,7 @@ const initRpgactor = async (cpy, bal, ste) => {
 };
 exports.initRpgactor = initRpgactor;
 const createRpgactor = async (cpy, bal, ste) => {
+    var stageMod = ste.value.rpgstage;
     if (bal.dat == null)
         bal.dat = {};
     var dat = { idx: bal.idx };
@@ -552,6 +594,24 @@ const createRpgactor = async (cpy, bal, ste) => {
         dat.note.replace('↵', '\n');
     bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note });
     var hash = bit.clcBit.dat;
+    //check and see if it is in the game object
+    var exits = false;
+    stageMod.dataActors.forEach((a => {
+        if (a == null)
+            return;
+        if (a.name == null)
+            return;
+        if (exits == true)
+            return;
+        if (a.name == bal.idx)
+            exits = true;
+    }));
+    if (exits == false) {
+        stageMod.dataActors.push(dat);
+        stageMod.gameActors.actor(dat.id);
+        //remove gameActorClass
+    }
+    //i think you will need to attach this to the $gameData object
     if (hash.map != null)
         dat.map = { idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2]) };
     dat;
@@ -2107,6 +2167,12 @@ const hashCollect = (cpy, bal, ste) => {
         var hold = a.split(':');
         var dom = hold[0];
         var sub = hold[1];
+        if (dom == null) {
+            return;
+        }
+        if (sub == null) {
+            return;
+        }
         var now = sub.split(',');
         now.forEach((b, c) => {
             now[c] = S(b).collapseWhitespace().s;

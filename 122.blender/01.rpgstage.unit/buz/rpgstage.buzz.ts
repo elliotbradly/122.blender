@@ -50,6 +50,7 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.partyPlugin = dat.partyPlugin;
 
+    cpy.gameActorClass = dat.gameActorClass;
 
     cpy.gamePlayer._moveSpeed = 7;
 
@@ -83,17 +84,57 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }) })
 
 
- 
+    var itm = {
+        "id": 4,
+        "battlerName": "Actor1_3",
+        "characterIndex": 3,
+        "characterName": "Actor1",
+        "classId": 1,
+        "equips": [0, 0, 0, 0, 0],
+        "faceIndex": 2,
+        "faceName": "Actor1",
+        "traits": [],
+        "initialLevel": 1,
+        "maxLevel": 99,
+        "name": "Ryan",
+        "nickname": "",
+        "note": "map: 3, 3, 3\ndetail: tall",
+        "profile": ""
+    }
 
-    setTimeout ( async ()=>{
 
-        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val:3 });
+    bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm })
+    dat = bit.rpaBit.dat
+    bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat })
 
-    }, 31111)
+    var itm = {
+        "id": 5,
+        "battlerName": "Actor1_3",
+        "characterIndex": 4,
+        "characterName": "Actor1",
+        "classId": 1,
+        "equips": [0, 0, 0, 0, 0],
+        "faceIndex": 2,
+        "faceName": "Actor1",
+        "traits": [],
+        "initialLevel": 1,
+        "maxLevel": 99,
+        "name": "Jordan",
+        "nickname": "",
+        "note": "map: 3, 5, 3\ndetail: tall",
+        "profile": ""
+    }
+
+    bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm })
+    dat = bit.rpaBit.dat
+    bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat })
 
 
 
 
+    //setTimeout ( async ()=>{
+    //    bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val:3 });
+    //}, 31111)
 
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
 
