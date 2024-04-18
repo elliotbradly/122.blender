@@ -50,6 +50,9 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.partyPlugin = dat.partyPlugin;
 
+
+    cpy.gamePlayer._moveSpeed = 7;
+
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
 
     bal.slv({ intBit: { idx: "init-rpgstage" } });
@@ -80,12 +83,7 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }) })
 
 
-    setTimeout ( async ()=>{
-
-        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val:2 });
-    
-    }, 11111)
-
+ 
 
     setTimeout ( async ()=>{
 
@@ -95,11 +93,6 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
 
 
-    setTimeout ( async ()=>{
-
-        bit = await ste.hunt( ActRpp.SWITCH_RPGPARTY, { val:1 });
-
-    }, 71111)
 
 
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });

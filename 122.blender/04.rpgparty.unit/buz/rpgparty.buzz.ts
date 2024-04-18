@@ -148,6 +148,14 @@ export const switchRpgparty = (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State)
     var stageMod:RpgstageModel = ste.value.rpgstage
     stageMod.partyPlugin.switch( bal.val )
 
+    window.requestAnimationFrame( ()=>{
+
+        stageMod.gamePlayer
+        debugger
+
+    })
+    
+
     if (bal.slv != null) bal.slv({ rppBit: { idx: "switch-rpgparty", dat: bit.clcBit } });
 
     return cpy;

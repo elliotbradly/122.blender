@@ -294,6 +294,7 @@ const initRpgstage = async (cpy, bal, ste) => {
     cpy.dataMapInfos = dat.dataMapInfos;
     cpy.dataMap = dat.dataMap;
     cpy.partyPlugin = dat.partyPlugin;
+    cpy.gamePlayer._moveSpeed = 7;
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
     bal.slv({ intBit: { idx: "init-rpgstage" } });
     return cpy;
@@ -314,14 +315,8 @@ const openRpgstage = async (cpy, bal, ste) => {
     lst = bit.intBit.lst;
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
     setTimeout(async () => {
-        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val: 2 });
-    }, 11111);
-    setTimeout(async () => {
         bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val: 3 });
     }, 31111);
-    setTimeout(async () => {
-        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val: 1 });
-    }, 71111);
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
     return cpy;
 };
@@ -1137,6 +1132,10 @@ exports.deleteRpgparty = deleteRpgparty;
 const switchRpgparty = (cpy, bal, ste) => {
     var stageMod = ste.value.rpgstage;
     stageMod.partyPlugin.switch(bal.val);
+    window.requestAnimationFrame(() => {
+        stageMod.gamePlayer;
+        debugger;
+    });
     if (bal.slv != null)
         bal.slv({ rppBit: { idx: "switch-rpgparty", dat: bit.clcBit } });
     return cpy;
