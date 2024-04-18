@@ -366,9 +366,7 @@ const sceneRpgstage = async (cpy, bal, ste) => {
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
     if (cpy.sceneChangeCount == 0) {
-        setTimeout(() => {
-            ste.hunt(ActRps.OPEN_RPGSTAGE, {});
-        }, 3333);
+        ste.hunt(ActRps.OPEN_RPGSTAGE, {});
     }
     cpy.sceneChangeCount += 1;
     //cpy.mainHUD.visible = false
@@ -1075,7 +1073,7 @@ const createRpgparty = async (cpy, bal, ste) => {
     //    dat[key] = bal.dat[key]
     //}
     var map = bal.dat.map;
-    var index = bal.dat.dex + 1;
+    var index = bal.dat.characterIndex + 1;
     //debugger
     stageMod.partyPlugin.create(index);
     stageMod.partyPlugin.addActor(index, index);

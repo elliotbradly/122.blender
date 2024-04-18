@@ -49,7 +49,7 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     cpy.dataMap = dat.dataMap;
 
     cpy.partyPlugin = dat.partyPlugin;
-    
+
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
 
     bal.slv({ intBit: { idx: "init-rpgstage" } });
@@ -65,19 +65,19 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     bit = await ste.hunt(ActRpa.INIT_RPGACTOR, { lst: cpy.dataActors });
 
     lst = bit.intBit.lst
-    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
+    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }) })
 
     bit = await ste.hunt(ActRpm.INIT_RPGMAP, { lst: cpy.dataMapInfos });
     lst = bit.intBit.lst
-    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
+    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }) })
 
-    bit = await ste.hunt( ActRpa.LIST_RPGACTOR, {});
+    bit = await ste.hunt(ActRpa.LIST_RPGACTOR, {});
     lst = bit.rpaBit.lst
 
     bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst
 
-    lst.forEach( (a)=>{ ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a })})
+    lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }) })
 
 
     bal.slv({ rpsBit: { idx: "open-rpgstage" } });
@@ -149,18 +149,8 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     //bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: '----------' });
 
 
-
-    if (cpy.sceneChangeCount == 0) { 
-   
-        setTimeout( ()=>{
-
-            ste.hunt(ActRps.OPEN_RPGSTAGE, {})
-
-        }, 3333 )
-        
-
-        
-    
+    if (cpy.sceneChangeCount == 0) {
+        ste.hunt(ActRps.OPEN_RPGSTAGE, {})
     }
 
     cpy.sceneChangeCount += 1;

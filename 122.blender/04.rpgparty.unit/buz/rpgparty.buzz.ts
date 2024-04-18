@@ -70,11 +70,10 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
     //    dat[key] = bal.dat[key]
     //}
 
-
     var map:Map = bal.dat.map;
 
-    var index = bal.dat.dex + 1;
-    
+    var index = bal.dat.characterIndex + 1;
+
     //debugger
     
     stageMod.partyPlugin.create( index )
@@ -91,10 +90,6 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
 export const updateRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State) => {
     bit = await ste.hunt(ActRpp.READ_RPGPARTY, { idx: bal.idx });
     dat = bit.rpmBit;
-
-    
-    
-
 
     bal.slv({ rppBit: { idx: "update-rpgparty", dat } });
     return cpy;
