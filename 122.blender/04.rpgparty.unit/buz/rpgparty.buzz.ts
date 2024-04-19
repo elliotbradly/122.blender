@@ -72,7 +72,7 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
 
     var map:Map = bal.dat.map;
 
-    var index = bal.dat.characterIndex + 1;
+    var index = bal.dat.dex + 1;
 
     //debugger
     

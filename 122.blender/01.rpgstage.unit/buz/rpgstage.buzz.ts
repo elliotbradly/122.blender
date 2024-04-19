@@ -46,11 +46,14 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.dataActors = dat.dataActors;
     cpy.dataMapInfos = dat.dataMapInfos;
+    
+    
+
     cpy.dataMap = dat.dataMap;
 
     cpy.partyPlugin = dat.partyPlugin;
 
-    cpy.gameActorClass = dat.gameActorClass;
+
 
     cpy.gamePlayer._moveSpeed = 7;
 
@@ -86,19 +89,19 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     var itm = {
         "id": 4,
-        "battlerName": "Actor1_3",
+        "characterName": "Actor2",
         "characterIndex": 3,
-        "characterName": "Actor1",
+        "faceName": "Actor1",
+        "faceIndex": 2,
+        "battlerName": "Actor1_3",
         "classId": 1,
         "equips": [0, 0, 0, 0, 0],
-        "faceIndex": 2,
-        "faceName": "Actor1",
         "traits": [],
         "initialLevel": 1,
         "maxLevel": 99,
         "name": "Ryan",
         "nickname": "",
-        "note": "map: 3, 3, 3\ndetail: tall",
+        "note": "map: 1, 9, 3\ndetail: tall",
         "profile": ""
     }
 
@@ -109,19 +112,19 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     var itm = {
         "id": 5,
-        "battlerName": "Actor1_3",
+        "characterName": "Monster",
         "characterIndex": 4,
-        "characterName": "Actor1",
+        "battlerName": "Actor1_3",
+        "faceName": "Actor1",
+        "faceIndex": 2,
         "classId": 1,
         "equips": [0, 0, 0, 0, 0],
-        "faceIndex": 2,
-        "faceName": "Actor1",
         "traits": [],
         "initialLevel": 1,
         "maxLevel": 99,
         "name": "Jordan",
         "nickname": "",
-        "note": "map: 3, 5, 3\ndetail: tall",
+        "note": "map: 1, 8, 3\ndetail: tall",
         "profile": ""
     }
 
