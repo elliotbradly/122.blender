@@ -380,6 +380,10 @@ const openRpgstage = async (cpy, bal, ste) => {
         await next();
     };
     await next();
+    setInterval(async () => {
+        val = getRandomInt(800);
+        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val });
+    }, 13333);
 };
 exports.openRpgstage = openRpgstage;
 const updateRpgstage = (cpy, bal, ste) => {
@@ -1222,7 +1226,6 @@ const switchRpgparty = (cpy, bal, ste) => {
     stageMod.partyPlugin.switch(bal.val);
     window.requestAnimationFrame(() => {
         stageMod.gamePlayer;
-        debugger;
     });
     if (bal.slv != null)
         bal.slv({ rppBit: { idx: "switch-rpgparty", dat: bit.clcBit } });

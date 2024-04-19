@@ -168,6 +168,14 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     await next()
 
+
+    setInterval( async ()=>{
+
+        val = getRandomInt(800)
+        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val })
+
+    }, 13333)
+
 };
 
 export const updateRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {

@@ -151,7 +151,7 @@ export const switchRpgparty = (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State)
     window.requestAnimationFrame( ()=>{
 
         stageMod.gamePlayer
-        debugger
+        
 
     })
     
