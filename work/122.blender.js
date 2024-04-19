@@ -339,7 +339,7 @@ const openRpgstage = async (cpy, bal, ste) => {
     var w = cpy.dataMap.width;
     var h = cpy.dataMap.width;
     lst = [];
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 888; i++) {
         lst.push("actor-" + i);
     }
     var dex = lst.length - 1;
@@ -369,7 +369,7 @@ const openRpgstage = async (cpy, bal, ste) => {
             "maxLevel": 99,
             "name": now,
             "nickname": "",
-            "map": 1,
+            "map": getRandomInt(10),
             "xpos": x,
             "ypos": y
         };
