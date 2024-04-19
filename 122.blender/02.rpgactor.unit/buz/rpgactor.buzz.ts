@@ -59,6 +59,7 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
 
     }
 
+    
     if (dat.note != null) dat.note.replace('↵', '\n')
 
     bit = await ste.hunt(ActCol.HASH_COLLECT, { src: dat.note })
@@ -84,11 +85,15 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
     
     //i think you will need to attach this to the $gameData object
 
-
-    if (hash.map != null) dat.map = {idx: Number(hash.map[0]), x: Number(hash.map[1]), y: Number(hash.map[2])  }
-
-    dat
+    if (hash.map != null && dat.map == null){
+        dat.map = Number(hash.map[0]);
+        dat.xpos = Number(hash.map[1]);
+        dat.ypos = Number(hash.map[2]);
+    }
     
+
+    dat.map;
+
 
     bal.slv({ rpaBit: { idx: 'create-rpgactor', dat } });
     return cpy;

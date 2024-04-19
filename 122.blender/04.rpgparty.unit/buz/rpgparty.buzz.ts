@@ -65,20 +65,20 @@ export const createRpgparty = async (cpy: RpgpartyModel, bal: RpgpartyBit, ste: 
 
     if (bal.dat == null) bal.dat = {}
 
+    var star:StarBit = bal.dat
+
     var dat: PartyBit = { idx, dex: cpy.partyCount, name:bal.dat.name };
     //for (var key in bal.dat) {
     //    dat[key] = bal.dat[key]
     //}
-
-    var map:Map = bal.dat.map;
-
-    var index = bal.dat.dex + 1;
+   
+    var index = star.dex + 1;
 
     //debugger
     
     stageMod.partyPlugin.create( index )
     stageMod.partyPlugin.addActor( index,  index );
-    stageMod.partyPlugin.setLocation( index, map.x, map.y, map.idx);
+    stageMod.partyPlugin.setLocation( index, star.xpos, star.ypos, star.map);
 
     cpy.partyCount += 1
 
@@ -167,5 +167,5 @@ import RpgpartyBit from "../fce/rpgparty.bit";
 import State from "../../99.core/state";
 import PartyBit from "../fce/party.bit";
 import { RpgstageModel } from "122.blender/01.rpgstage.unit/rpgstage.model";
-import { Map } from "122.blender/02.rpgactor.unit/fce/star.bit";
+import StarBit from "122.blender/02.rpgactor.unit/fce/star.bit";
 

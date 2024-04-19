@@ -86,9 +86,6 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }) })
 
-
-    //debugger
-
     var itm = {
         "characterName": "Monster",
         "characterIndex": 4,
@@ -103,24 +100,74 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
         "name": "Jordan",
         "nickname": "",
         "map": 1,
-        "xpos": 8,
-        "ypos": 3,
+        "xpos": 10,
+        "ypos": 4,
         "note": "map: 1, 8, 3\ndetail: tall",
         "profile": ""
-   }
+    }
 
     bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm })
     dat = bit.rpaBit.dat
     bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat })
 
-    bal.slv({ rpsBit: { idx: "open-rpgstage" } });
-    return cpy;
+    var w = cpy.dataMap.width;
+    var h = cpy.dataMap.width;
 
-    //setTimeout ( async ()=>{
-    //    bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val:3 });
-    //}, 31111)
+    lst = [];
 
-    
+    for (var i = 0; i < 4; i++) {
+        lst.push("actor-" + i)
+    }
+
+    var dex = lst.length - 1;
+
+    var output = []
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    var next = async () => {
+
+        if (dex < 0) {
+            bal.slv({ rpsBit: { idx: "open-rpgstage" } });
+            return cpy;
+        }
+
+        var now = lst[dex];
+
+        var x = getRandomInt( w )
+        var y = getRandomInt( h )
+
+        var itm = {
+            "id": 4,
+            "characterName": "Actor2",
+            "characterIndex": 3,
+            "faceName": "Actor1",
+            "faceIndex": 2,
+            "battlerName": "Actor1_3",
+            "classId": 1,
+            "equips": [0, 0, 0, 0, 0],
+            "traits": [],
+            "initialLevel": 1,
+            "maxLevel": 99,
+            "name": now,
+            "nickname": "",
+            "map": 1,
+            "xpos": x,
+            "ypos": y
+        }
+
+        bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm })
+        dat = bit.rpaBit.dat
+        bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat })
+
+        dex -= 1
+        await next()
+    }
+
+    await next()
+
 };
 
 export const updateRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {

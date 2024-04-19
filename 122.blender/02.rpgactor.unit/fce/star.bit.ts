@@ -2,6 +2,7 @@
 export default interface StarBit {
         idx?: string
         id?: number
+        dex?:number
         battlerName?: string
         characterIndex?: number
         characterName?: string
@@ -16,7 +17,9 @@ export default interface StarBit {
         nickname?: string
         note?: string
         profile?: string
-        map?:Map
+        map?:number
+        xpos?:number
+        ypos?:number
 }
 
 export interface Trait {
@@ -25,8 +28,4 @@ export interface Trait {
         value: number
 }
 
-export interface Map {
-        idx: number
-        x: number
-        y: number
-}
+
