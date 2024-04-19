@@ -46,8 +46,8 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.dataActors = dat.dataActors;
     cpy.dataMapInfos = dat.dataMapInfos;
-    
-    
+
+
 
     cpy.dataMap = dat.dataMap;
 
@@ -87,31 +87,9 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }) })
 
 
-    var itm = {
-        "id": 4,
-        "characterName": "Actor2",
-        "characterIndex": 3,
-        "faceName": "Actor1",
-        "faceIndex": 2,
-        "battlerName": "Actor1_3",
-        "classId": 1,
-        "equips": [0, 0, 0, 0, 0],
-        "traits": [],
-        "initialLevel": 1,
-        "maxLevel": 99,
-        "name": "Ryan",
-        "nickname": "",
-        "note": "map: 1, 9, 3\ndetail: tall",
-        "profile": ""
-    }
-
-
-    bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm })
-    dat = bit.rpaBit.dat
-    bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat })
+    //debugger
 
     var itm = {
-        "id": 5,
         "characterName": "Monster",
         "characterIndex": 4,
         "battlerName": "Actor1_3",
@@ -124,24 +102,25 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
         "maxLevel": 99,
         "name": "Jordan",
         "nickname": "",
+        "map": 1,
+        "xpos": 8,
+        "ypos": 3,
         "note": "map: 1, 8, 3\ndetail: tall",
         "profile": ""
-    }
+   }
 
     bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm })
     dat = bit.rpaBit.dat
     bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat })
 
-
-
+    bal.slv({ rpsBit: { idx: "open-rpgstage" } });
+    return cpy;
 
     //setTimeout ( async ()=>{
     //    bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val:3 });
     //}, 31111)
 
-    bal.slv({ rpsBit: { idx: "open-rpgstage" } });
-
-    return cpy;
+    
 };
 
 export const updateRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {

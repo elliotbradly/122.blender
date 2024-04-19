@@ -77,21 +77,11 @@ export const createRpgactor = async (cpy: RpgactorModel, bal: RpgactorBit, ste: 
 
     }))
 
-    
-
     if ( exits == false ){
-        stageMod.dataActors.push( dat )
-
-    
+        stageMod.dataActors.push( dat )    
         stageMod.gameActors.actor( dat.id )
-       
-
-        //remove gameActorClass
-
-
     }
     
-
     //i think you will need to attach this to the $gameData object
 
 

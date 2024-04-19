@@ -314,28 +314,8 @@ const openRpgstage = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRpp.INIT_RPGPARTY, { lst });
     lst = bit.intBit.lst;
     lst.forEach((a) => { ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: a }); });
+    //debugger
     var itm = {
-        "id": 4,
-        "characterName": "Actor2",
-        "characterIndex": 3,
-        "faceName": "Actor1",
-        "faceIndex": 2,
-        "battlerName": "Actor1_3",
-        "classId": 1,
-        "equips": [0, 0, 0, 0, 0],
-        "traits": [],
-        "initialLevel": 1,
-        "maxLevel": 99,
-        "name": "Ryan",
-        "nickname": "",
-        "note": "map: 1, 9, 3\ndetail: tall",
-        "profile": ""
-    };
-    bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm });
-    dat = bit.rpaBit.dat;
-    bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat });
-    var itm = {
-        "id": 5,
         "characterName": "Monster",
         "characterIndex": 4,
         "battlerName": "Actor1_3",
@@ -348,17 +328,20 @@ const openRpgstage = async (cpy, bal, ste) => {
         "maxLevel": 99,
         "name": "Jordan",
         "nickname": "",
+        "map": 1,
+        "xpos": 8,
+        "ypos": 3,
         "note": "map: 1, 8, 3\ndetail: tall",
         "profile": ""
     };
     bit = await ste.hunt(ActRpa.WRITE_RPGACTOR, { idx: itm.name, dat: itm });
     dat = bit.rpaBit.dat;
     bit = await ste.hunt(ActRpp.WRITE_RPGPARTY, { idx: dat.idx, dat });
+    bal.slv({ rpsBit: { idx: "open-rpgstage" } });
+    return cpy;
     //setTimeout ( async ()=>{
     //    bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val:3 });
     //}, 31111)
-    bal.slv({ rpsBit: { idx: "open-rpgstage" } });
-    return cpy;
 };
 exports.openRpgstage = openRpgstage;
 const updateRpgstage = (cpy, bal, ste) => {
@@ -608,7 +591,6 @@ const createRpgactor = async (cpy, bal, ste) => {
     if (exits == false) {
         stageMod.dataActors.push(dat);
         stageMod.gameActors.actor(dat.id);
-        //remove gameActorClass
     }
     //i think you will need to attach this to the $gameData object
     if (hash.map != null)
