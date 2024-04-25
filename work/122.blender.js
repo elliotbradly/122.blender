@@ -2059,7 +2059,7 @@ const writeCollect = async (cpy, bal, ste) => {
             cabDat[key] = bal.dat[key];
         }
         cabBit.bitList[cabBit.bits[bal.idx]] = cabDat;
-        dat = cabBit;
+        dat = cabDat;
         //!!! SUPER IMPORTANT
     }
     if (dat == null && bal.slv != null)
@@ -2198,12 +2198,6 @@ const hashCollect = (cpy, bal, ste) => {
         var hold = a.split(':');
         var dom = hold[0];
         var sub = hold[1];
-        if (dom == null) {
-            return;
-        }
-        if (sub == null) {
-            return;
-        }
         var now = sub.split(',');
         now.forEach((b, c) => {
             now[c] = S(b).collapseWhitespace().s;

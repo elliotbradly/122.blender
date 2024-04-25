@@ -58,6 +58,9 @@
 
     Window_TitleCommand.initCommandPosition();
 
+
+    $gameSystem.disableMenu()
+
     setTimeout(async () => {
 
       var initBlender = window.BLENDER.ActBld.INIT_BLENDER;
