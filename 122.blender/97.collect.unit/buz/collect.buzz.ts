@@ -1,4 +1,3 @@
-
 import * as ActCol from '../../97.collect.unit/collect.action';
 
 var bit, lst, dat, idx, val, src, dex;
@@ -112,7 +111,7 @@ export const writeCollect = async (
     }
 
     cabBit.bitList[cabBit.bits[bal.idx]] = cabDat;
-    dat = cabBit;
+    dat = cabDat;
     //!!! SUPER IMPORTANT
   }
 
@@ -279,10 +278,8 @@ export const listCollect = (cpy: CollectModel, bal: CollectBit, ste: State) => {
   lst = [];
 
   cabBit.bitList.forEach((a) => {
-    
-    if ( a.idx != null ) lst.push(a.idx)
-    if ( a.id != null ) lst.push(a.id)
-
+    if (a.idx != null) lst.push(a.idx);
+    if (a.id != null) lst.push(a.id);
   });
 
   bal.slv({ clcBit: { idx: 'list-collect', lst } });
@@ -291,39 +288,28 @@ export const listCollect = (cpy: CollectModel, bal: CollectBit, ste: State) => {
 };
 
 export const hashCollect = (cpy: CollectModel, bal: CollectBit, ste: State) => {
+  if (bal.src == null) bal.src = '';
+  lst = bal.src.split('\n');
 
-  if (bal.src == null) bal.src = ''
-  lst = bal.src.split('\n')
-
-  dat = {}
+  dat = {};
 
   lst.forEach((a) => {
+    a = S(a).collapseWhitespace().s;
+    if (a.length < 3) return;
 
-    a = S(a).collapseWhitespace().s
-    if (a.length < 3) return
+    var hold = a.split(':');
 
-    var hold = a.split(':')
+    var dom = hold[0];
+    var sub = hold[1];
 
-    var dom = hold[0]
-    var sub = hold[1]
+    var now = sub.split(',');
 
-    if ( dom == null ){
-      return
-    }
+    now.forEach((b, c) => {
+      now[c] = S(b).collapseWhitespace().s;
+    });
 
-    if ( sub == null ){
-      return
-    }
-
-    var now = sub.split(',')
-
-    now.forEach( ( b,c )=>{
-      now[c] = S(b).collapseWhitespace().s
-    })
-
-    dat[dom] = now
-
-  })
+    dat[dom] = now;
+  });
 
   bal.slv({ clcBit: { idx: 'hash-collect', dat } });
 
