@@ -58,7 +58,6 @@
 
     Window_TitleCommand.initCommandPosition();
 
-
     $gameSystem.disableMenu()
 
     setTimeout(async () => {
