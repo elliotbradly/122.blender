@@ -169,12 +169,12 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     await next()
 
 
-    setInterval( async ()=>{
+    //setInterval( async ()=>{
 
-        val = getRandomInt(800)
-        bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val })
+    //    val = getRandomInt(800)
+    //    bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val })
 
-    }, 13333)
+    //}, 13333)
 
 };
 
@@ -213,8 +213,8 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     bit = await ste.hunt(ActHud.INIT_HUD, { dat: hudData });
 
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.TIME_BAR, dat: { visible: true } });
-    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: true } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.CLOCK_BAR, dat: { visible: true } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
 
     //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
 
@@ -249,6 +249,8 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     }
 
     cpy.sceneChangeCount += 1;
+
+    window['TIMECODE'] = cpy.sceneChangeCount
 
 
 

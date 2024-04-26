@@ -36,6 +36,9 @@ export class RpgstageModel implements Rpgstage {
     partyPlugin:any;
 
 
+    timecode:string = 'timecode : '
+
+
 
 
     //idx:string;
