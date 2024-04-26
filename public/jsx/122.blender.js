@@ -274,6 +274,7 @@ var bit, val, idx, dex, lst, dat, src;
 var display, hudData;
 const initRpgstage = async (cpy, bal, ste) => {
     var dat = bal.dat;
+    dat.gameVariables.TIMECODE = 'now';
     cpy.shade = dat.shade;
     cpy.gameTemp = dat.gameTemp;
     cpy.gameSystem = dat.gameSystem;

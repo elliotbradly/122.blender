@@ -25,6 +25,8 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     var dat = bal.dat
 
+    dat.gameVariables.TIMECODE = 'now'
+
     cpy.shade = dat.shade;
 
     cpy.gameTemp = dat.gameTemp;
@@ -47,13 +49,9 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     cpy.dataActors = dat.dataActors;
     cpy.dataMapInfos = dat.dataMapInfos;
 
-
-
     cpy.dataMap = dat.dataMap;
 
     cpy.partyPlugin = dat.partyPlugin;
-
-
 
     cpy.gamePlayer._moveSpeed = 7;
 
