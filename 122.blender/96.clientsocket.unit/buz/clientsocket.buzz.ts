@@ -22,7 +22,11 @@ export const initClientsocket = async (cpy: ClientsocketModel, bal: Clientsocket
 
     const currentUrl = window.location.origin;
 
-    cpy.socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
+    var socketLocation = currentUrl.replace('http', 'ws') + '/socket/';
+
+    if ( bal.val == 1 ) socketLocation = 'ws://localhost:1000/'
+
+    cpy.socket = new WebSocket(  socketLocation );
 
     init = async (event) => {
         var initBit = JSON.parse(event.data)

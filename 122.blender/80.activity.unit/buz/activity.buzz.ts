@@ -16,6 +16,9 @@ export const initActivity = (cpy: ActivityModel, bal: ActivityBit, ste: State) =
     discordSdk = new DiscordSDK(cpy.clientID);
   } catch (error) {
     console.log("Discord SDK is not present");
+
+    bit = ste.hunt(ActCsk.INIT_CLIENTSOCKET, { val:1 });
+
     bal.slv({ intBit: { idx: "init-activity", val: 0, src: 'discord sdk not present' } });
     return cpy;
   }

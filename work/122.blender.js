@@ -1761,6 +1761,7 @@ const initActivity = (cpy, bal, ste) => {
     }
     catch (error) {
         console.log("Discord SDK is not present");
+        bit = ste.hunt(ActCsk.INIT_CLIENTSOCKET, { val: 1 });
         bal.slv({ intBit: { idx: "init-activity", val: 0, src: 'discord sdk not present' } });
         return cpy;
     }
@@ -1837,7 +1838,10 @@ var init, update;
 const initClientsocket = async (cpy, bal, ste) => {
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'initing the client socket' });
     const currentUrl = window.location.origin;
-    cpy.socket = new WebSocket(currentUrl.replace('http', 'ws') + '/socket/');
+    var socketLocation = currentUrl.replace('http', 'ws') + '/socket/';
+    if (bal.val == 1)
+        socketLocation = 'ws://localhost:1000/';
+    cpy.socket = new WebSocket(socketLocation);
     init = async (event) => {
         var initBit = JSON.parse(event.data);
         ste.hunt(initBit.idx, initBit.bal);
