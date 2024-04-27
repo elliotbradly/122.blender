@@ -1,4 +1,5 @@
 
+
 import * as ActMnu from "../../98.menu.unit/menu.action";
 
 import * as ActBld from "../../00.blender.unit/blender.action";
@@ -26,6 +27,9 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     var dat = bal.dat
 
     dat.gameVariables.TIMECODE = 'now'
+    dat.gameVariables.ERROR_MESSAGE = 'error-message'	
+
+    var val = "---";
 
     cpy.shade = dat.shade;
 
@@ -260,6 +264,30 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
 
     return cpy;
 };
+
+export const writeRpgstage = (cpy: RpgstageModel, bal:RpgstageBit, ste: State) => {
+
+    
+
+    if ( bal.dat == null ) bal.dat = {}
+
+    switch ( bal.val ){
+
+        case 1 :
+
+        
+
+        for ( var key in bal.dat){
+            cpy.gameVariables[ key ] = bal.dat[ key]
+        }
+
+        break
+    }
+
+    bal.slv({ rpsBit: { idx: "write-rpgstage", src:'game-variables' } });
+    
+    return cpy;
+    };
 
 
 import { RpgstageModel } from "../rpgstage.model";

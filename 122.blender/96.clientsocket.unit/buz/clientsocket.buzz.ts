@@ -1,8 +1,11 @@
 import * as ActMnu from "../../98.menu.unit/menu.action";
 import * as ActRps from "../../01.rpgstage.unit/rpgstage.action";
 
+
+
 import * as ActCsk from "../../96.clientsocket.unit/clientsocket.action";
 import * as ActBld from "../../00.blender.unit/blender.action";
+import * as ActHud from "../../10.hud.unit/hud.action";
 
 import * as ActCol from "../../97.collect.unit/collect.action";
 import * as ActBus from "../../99.bus.unit/bus.action";
@@ -34,6 +37,12 @@ export const initClientsocket = async (cpy: ClientsocketModel, bal: Clientsocket
     }
 
     cpy.socket.addEventListener('message', init);
+    cpy.socket.addEventListener("error", (event) => {
+
+        ste.hunt( ActRps.WRITE_RPGSTAGE, { val:1, dat:{ERROR_MESSAGE:'cannot connect to the socket'} });
+        ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ERROR_MESSAGE, dat: { visible: true } });
+        
+    });
 
     bal.slv({ intBit: { idx: "init-clientsocket" } });
     return cpy;
@@ -90,3 +99,5 @@ import { ClientsocketModel } from "../clientsocket.model";
 import ClientsocketBit from "../fce/clientsocket.bit";
 import State from "../../99.core/state";
 import { ActivityModel } from "../../80.activity.unit/activity.model";
+
+import * as HUD from "../../val/hud"
