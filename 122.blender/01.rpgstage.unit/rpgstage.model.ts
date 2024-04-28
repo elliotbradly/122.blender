@@ -37,8 +37,7 @@ export class RpgstageModel implements Rpgstage {
 
 
     timecode:string = 'timecode : '
-
-
+    now:number = 0;
 
 
     //idx:string;

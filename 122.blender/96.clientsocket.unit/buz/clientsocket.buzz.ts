@@ -52,6 +52,11 @@ export const updateClientsocket = async (cpy: ClientsocketModel, bal: Clientsock
 
     if (bal == null) bal = { idx, dat: {} }
 
+    var data = bal.dat.bal.dat;
+
+    var now = data.now;
+    ste.hunt( ActRps.WRITE_RPGSTAGE, { val:1, dat:{ TIMECODE:now} });
+        
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bal) });
 
     if (bal.slv != null) bal.slv({ cskBit: { idx: "update-clientsocket" } });
@@ -81,12 +86,12 @@ export const openClientsocket = (cpy: ClientsocketModel, bal: ClientsocketBit, s
 
     var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: { idx: cpy.idx, auth: ActMod.auth } }
 
-    setInterval(() => {
+    //setInterval(() => {
 
-        ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
-        cpy.socket.send(JSON.stringify(sighBit));
+    //    ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
+    //    cpy.socket.send(JSON.stringify(sighBit));
 
-    }, 3333)
+    //}, 3333)
 
     cpy.socket.removeEventListener('message', init);
     cpy.socket.addEventListener('message', update);

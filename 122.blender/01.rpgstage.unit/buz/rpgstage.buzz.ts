@@ -268,14 +268,11 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
 export const writeRpgstage = (cpy: RpgstageModel, bal:RpgstageBit, ste: State) => {
 
     
-
     if ( bal.dat == null ) bal.dat = {}
 
     switch ( bal.val ){
 
         case 1 :
-
-        
 
         for ( var key in bal.dat){
             cpy.gameVariables[ key ] = bal.dat[ key]

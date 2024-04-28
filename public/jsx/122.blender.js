@@ -1887,6 +1887,9 @@ exports.initClientsocket = initClientsocket;
 const updateClientsocket = async (cpy, bal, ste) => {
     if (bal == null)
         bal = { idx, dat: {} };
+    var data = bal.dat.bal.dat;
+    var now = data.now;
+    ste.hunt(ActRps.WRITE_RPGSTAGE, { val: 1, dat: { TIMECODE: now } });
     bit = await ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: JSON.stringify(bal) });
     if (bal.slv != null)
         bal.slv({ cskBit: { idx: "update-clientsocket" } });
@@ -1907,10 +1910,10 @@ const openClientsocket = (cpy, bal, ste) => {
     var intBit = { intBit: { idx: bal.idx, dat: bal.dat } };
     cpy.socket.send(JSON.stringify(intBit));
     var sighBit = { idx: ActEng.UPDATE_ENGINE, dat: { idx: cpy.idx, auth: ActMod.auth } };
-    setInterval(() => {
-        ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
-        cpy.socket.send(JSON.stringify(sighBit));
-    }, 3333);
+    //setInterval(() => {
+    //    ste.hunt(ActRps.DEBUG_RPGSTAGE, { src: 'set interval' });
+    //    cpy.socket.send(JSON.stringify(sighBit));
+    //}, 3333)
     cpy.socket.removeEventListener('message', init);
     cpy.socket.addEventListener('message', update);
     return cpy;
