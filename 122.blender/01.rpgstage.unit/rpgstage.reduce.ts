@@ -25,6 +25,9 @@ case Act.OPEN_RPGSTAGE:
 case Act.WRITE_RPGSTAGE:
  return Buzz.writeRpgstage(clone(model), act.bale, state);
  
+case Act.TIME_RPGSTAGE:
+ return Buzz.timeRpgstage(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

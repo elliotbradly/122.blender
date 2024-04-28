@@ -39,8 +39,15 @@ export const WRITE_RPGSTAGE = "[Write action] Write Rpgstage";
  constructor(public bale: RpgstageBit) {}
  }
  
+export const TIME_RPGSTAGE = "[Time action] Time Rpgstage";
+ export class TimeRpgstage implements Action {
+ readonly type = TIME_RPGSTAGE;
+ constructor(public bale: RpgstageBit) {}
+ }
+ 
 export type Actions = | InitRpgstage | UpdateRpgstage 
 | DebugRpgstage
 | SceneRpgstage
 | OpenRpgstage
 | WriteRpgstage
+| TimeRpgstage

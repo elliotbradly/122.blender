@@ -1,5 +1,3 @@
-
-
 import * as ActMnu from "../../98.menu.unit/menu.action";
 
 import * as ActBld from "../../00.blender.unit/blender.action";
@@ -27,7 +25,7 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
     var dat = bal.dat
 
     dat.gameVariables.TIMECODE = 'now'
-    dat.gameVariables.ERROR_MESSAGE = 'error-message'	
+    dat.gameVariables.ERROR_MESSAGE = 'error-message'
 
     var val = "---";
 
@@ -138,8 +136,8 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
         var now = lst[dex];
 
-        var x = getRandomInt( w )
-        var y = getRandomInt( h )
+        var x = getRandomInt(w)
+        var y = getRandomInt(h)
 
         var itm = {
             "id": 4,
@@ -155,7 +153,7 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
             "maxLevel": 99,
             "name": now,
             "nickname": "",
-            "map": getRandomInt( 10 ),
+            "map": getRandomInt(10),
             "xpos": x,
             "ypos": y
         }
@@ -168,15 +166,18 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
         await next()
     }
 
+    setInterval( async () => { 
+
+        bit = await ste.hunt( ActRps.TIME_RPGSTAGE, { dex: 1 } )
+        
+    }
+    , 1000)
+
+    
+
     await next()
 
-
-    //setInterval( async ()=>{
-
-    //    val = getRandomInt(800)
-    //    bit = await ste.hunt(ActRpp.SWITCH_RPGPARTY, { val })
-
-    //}, 13333)
+    
 
 };
 
@@ -265,30 +266,58 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     return cpy;
 };
 
-export const writeRpgstage = (cpy: RpgstageModel, bal:RpgstageBit, ste: State) => {
+export const writeRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
-    
-    if ( bal.dat == null ) bal.dat = {}
 
-    switch ( bal.val ){
+    if (bal.dat == null) bal.dat = {}
 
-        case 1 :
+    switch (bal.val) {
 
-        for ( var key in bal.dat){
-            cpy.gameVariables[ key ] = bal.dat[ key]
-        }
+        case 1:
 
-        break
+            for (var key in bal.dat) {
+                cpy.gameVariables[key] = bal.dat[key]
+            }
+
+            break
     }
 
-    bal.slv({ rpsBit: { idx: "write-rpgstage", src:'game-variables' } });
-    
+    bal.slv({ rpsBit: { idx: "write-rpgstage", src: 'game-variables' } });
+
     return cpy;
-    };
+};
+
+
+export const timeRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
+
+    switch (bal.dex) {
+
+        case 1:
+            cpy.now += 1;
+            break
+
+        default:
+            cpy.now = bal.val
+            break
+    }
+
+    var dt = DateTime.fromSeconds(cpy.now)
+    cpy.timecode = dt.toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)
+    
+    bit = await ste.hunt( ActRps.WRITE_RPGSTAGE, { val:1, dat: { TIMECODE: cpy.timecode } } )
+
+    bal.slv({ rpsBit: { idx: "time-rpgstage", src: cpy.timecode } });
+    return cpy;
+};
+
+
+var patch = (ste, type, bale) => ste.dispatch({ type, bale });
 
 
 import { RpgstageModel } from "../rpgstage.model";
 import RpgstageBit from "../fce/rpgstage.bit";
 import State from "../../99.core/state";
+
+import { DateTime } from "luxon";
 
 import * as HUD from "../../val/hud"
