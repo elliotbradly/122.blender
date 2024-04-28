@@ -166,18 +166,16 @@ export const openRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
         await next()
     }
 
-    setInterval( async () => { 
-
-        bit = await ste.hunt( ActRps.TIME_RPGSTAGE, { dex: 1 } )
-        
+    setInterval(async () => {
+        bit = await ste.hunt(ActRps.TIME_RPGSTAGE, { val: 1 })
     }
-    , 1000)
+        , 1000)
 
-    
+
 
     await next()
 
-    
+
 
 };
 
@@ -290,21 +288,34 @@ export const writeRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State) 
 
 export const timeRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
-    switch (bal.dex) {
+
+    var next = 0
+
+    switch (bal.val) {
 
         case 1:
-            cpy.now += 1;
+            next = cpy.now += 1;
             break
 
         default:
-            cpy.now = bal.val
+
+            if (bal.dat.cde != cpy.cde) next = bal.dex
+            if (bal.dat.cde != cpy.cde) cpy.cde = bal.dat.cde
+
             break
     }
 
-    var dt = DateTime.fromSeconds(cpy.now)
-    cpy.timecode = dt.toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)
-    
-    bit = await ste.hunt( ActRps.WRITE_RPGSTAGE, { val:1, dat: { TIMECODE: cpy.timecode } } )
+    var onUpdate = () => {
+
+        var dt = DateTime.fromMillis(cpy.now)
+        cpy.timecode = dt.toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)
+        cpy.gameVariables.TIMECODE = cpy.timecode
+    }
+
+
+    gsap.to(cpy, { now: next, duration: 1, ease: "linear", onUpdate });
+
+    //bit = await ste.hunt(ActRps.WRITE_RPGSTAGE, { val: 1, dat: { TIMECODE: cpy.timecode } })
 
     bal.slv({ rpsBit: { idx: "time-rpgstage", src: cpy.timecode } });
     return cpy;
@@ -321,3 +332,4 @@ import State from "../../99.core/state";
 import { DateTime } from "luxon";
 
 import * as HUD from "../../val/hud"
+import gsap from "gsap";

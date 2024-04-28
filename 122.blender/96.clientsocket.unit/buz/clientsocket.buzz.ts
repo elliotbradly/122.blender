@@ -57,9 +57,7 @@ export const updateClientsocket = async (cpy: ClientsocketModel, bal: Clientsock
     var now = data.now;
     var cde = data.cde;
 
-
-
-    bit = await ste.hunt( ActRps.TIME_RPGSTAGE, { dex:0, val:now });
+    bit = await ste.hunt( ActRps.TIME_RPGSTAGE, { val:0, dex:now, dat:{ cde }  });
 
     
         
