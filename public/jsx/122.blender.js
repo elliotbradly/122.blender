@@ -465,11 +465,15 @@ const writeRpgstage = (cpy, bal, ste) => {
 };
 exports.writeRpgstage = writeRpgstage;
 const timeRpgstage = async (cpy, bal, ste) => {
+    if (bal.dat == null)
+        bal.dat = {};
+    if (bal.dat.cde == null)
+        bal.dat.cde = '';
     var next = 0;
     switch (bal.val) {
-        case 1:
-            next = cpy.now += 1;
-            break;
+        //case 1:
+        //    next = cpy.now += 1;
+        //    break
         default:
             if (bal.dat.cde != cpy.cde)
                 next = bal.dex;

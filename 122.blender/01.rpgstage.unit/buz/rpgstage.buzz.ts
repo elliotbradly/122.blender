@@ -288,14 +288,16 @@ export const writeRpgstage = (cpy: RpgstageModel, bal: RpgstageBit, ste: State) 
 
 export const timeRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: State) => {
 
+    if ( bal.dat == null ) bal.dat = {}
+    if ( bal.dat.cde == null ) bal.dat.cde = ''
 
     var next = 0
 
     switch (bal.val) {
 
-        case 1:
-            next = cpy.now += 1;
-            break
+        //case 1:
+        //    next = cpy.now += 1;
+        //    break
 
         default:
 
