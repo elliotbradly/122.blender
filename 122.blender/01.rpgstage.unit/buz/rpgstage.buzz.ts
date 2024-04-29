@@ -55,7 +55,7 @@ export const initRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     cpy.partyPlugin = dat.partyPlugin;
 
-    cpy.gamePlayer._moveSpeed = 7;
+    cpy.gamePlayer._moveSpeed = 4;
 
     bit = await ste.hunt(ActRps.SCENE_RPGSTAGE, { val: 0 });
 
@@ -307,7 +307,7 @@ export const timeRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: St
 
     var onUpdate = () => {
 
-        var dt = DateTime.fromMillis(cpy.now)
+        var dt = DateTime.fromMillis( Number( cpy.now ) )
         cpy.timecode = dt.toLocaleString(DateTime.DATETIME_HUGE_WITH_SECONDS)
         cpy.gameVariables.TIMECODE = cpy.timecode
     }

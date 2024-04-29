@@ -6,3 +6,4 @@ export { removeRpgparty  } from "./buz/rpgparty.buzz";
 export { deleteRpgparty  } from "./buz/rpgparty.buzz";
 export { createRpgparty  } from "./buz/rpgparty.buzz";
 export { switchRpgparty  } from "./buz/rpgparty.buzz";
+export { moveRpgparty  } from "./buz/rpgparty.buzz";

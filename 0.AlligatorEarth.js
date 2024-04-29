@@ -69,6 +69,9 @@
       var initStage = window.BLENDER.ActRps.INIT_RPGSTAGE;
       var debugStage = window.BLENDER.ActRps.DEBUG_RPGSTAGE;
       var sceneStage = window.BLENDER.ActRps.SCENE_RPGSTAGE;
+      var moveParty = window.BLENDER.ActRpp.MOVE_RPGPARTY;
+
+      debugger
 
       var dat = {
         gameTemp: $gameTemp,
@@ -84,13 +87,12 @@
         gameTroop: $gameTroop,
         gameMap: $gameMap,
         gamePlayer: $gamePlayer,
-        
+
         partyPlugin: Party,
 
         sceneManager: SceneManager,
         shade: window.SHADE,
         graphics: Graphics,
-
 
         dataActors: $dataActors,
         dataMapInfos: $dataMapInfos,
@@ -104,12 +106,6 @@
       bit = await window.BLENDER.hunt(initStage, { dat });
 
       //window.BLENDER.hunt(debugStage, { src: 'Scene Boot' });
-
-      
-
-
-      
-      
 
       //var Scene_Map_create = Scene_Map.prototype.create;
       //Scene_Map.prototype.create = async function () {
@@ -152,10 +148,15 @@
 
       };
 
-      //var Scene_Map_onTransferEnd = Scene_Map.prototype.onTransferEnd;
-      //Scene_Map.prototype.onTransferEnd = function () {
-      //  Scene_Map_onTransferEnd.call(this)
-      //};
+      var Game_Player_executeMove = Game_Player.prototype.executeMove;
+      Game_Player.prototype.executeMove = function (direction) {
+
+        window.BLENDER.hunt( moveParty, { val: direction });
+
+
+        Game_Player_executeMove.call(this, direction);
+
+      }
 
 
     }, 1011);
@@ -163,17 +164,7 @@
   };
 
 
-  // var Game_Player_executeMove = Game_Player.prototype.executeMove;
-  // Game_Player.prototype.executeMove = function (direction) {
-  //window.location = './vue.html'
 
-  //  console.log(JSON.stringify(direction));
-  //if (direction % 2 == 0) {
-  //  Game_Player_executeMove.call(this, direction);
-  //} else {
-  // const dirArray = Galv.DM.getHorzVertDirs(direction);
-  // this.moveDiagonally(dirArray[0], dirArray[1]);
-  //};
   //};
 
 })();

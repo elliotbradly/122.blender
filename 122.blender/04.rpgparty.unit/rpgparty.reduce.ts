@@ -31,6 +31,9 @@ case Act.CREATE_RPGPARTY:
 case Act.SWITCH_RPGPARTY:
  return Buzz.switchRpgparty(clone(model), act.bale, state);
  
+case Act.MOVE_RPGPARTY:
+ return Buzz.moveRpgparty(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

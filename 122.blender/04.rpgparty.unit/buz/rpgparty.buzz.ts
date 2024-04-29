@@ -162,6 +162,13 @@ export const switchRpgparty = (cpy: RpgpartyModel, bal: RpgpartyBit, ste: State)
 };
 
 
+export const moveRpgparty = (cpy: RpgpartyModel, bal:RpgpartyBit, ste: State) => {
+ debugger
+ return cpy;
+ };
+
+
+ 
 import { RpgpartyModel } from "../rpgparty.model";
 import RpgpartyBit from "../fce/rpgparty.bit";
 import State from "../../99.core/state";
