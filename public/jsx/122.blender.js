@@ -417,6 +417,8 @@ const sceneRpgstage = async (cpy, bal, ste) => {
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.DEBUG_WINDOW, dat: { visible: true } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.CLOCK_BAR, dat: { visible: true } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.COVER_SCREEN, dat: { visible: true } });
+    ste.hunt(ActHud.TWEEN_HUD, { idx: HUD.COVER_SCREEN, dat: {} });
     //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
     //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });
     //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.PLAY_DATA_GROUP, dat: { visible: false } });
@@ -1448,7 +1450,7 @@ exports.default = RpgpartyUnit;
 },{"../99.core/state":69,"typescript-ioc":344}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.finHud = exports.deleteHud = exports.removeHud = exports.writeHud = exports.readHud = exports.updateHud = exports.createHud = exports.initHud = void 0;
+exports.tweenHud = exports.finHud = exports.deleteHud = exports.removeHud = exports.writeHud = exports.readHud = exports.updateHud = exports.createHud = exports.initHud = void 0;
 const ActHud = require("../../10.hud.unit/hud.action");
 const ActCol = require("../../97.collect.unit/collect.action");
 var bit, val, idx, dex, lst, dat, src;
@@ -1549,11 +1551,22 @@ const finHud = async (cpy, bal, ste) => {
     await nextHud();
 };
 exports.finHud = finHud;
+const tweenHud = async (cpy, bal, ste) => {
+    bit = await ste.hunt(ActHud.READ_HUD, { idx: bal.idx });
+    dat = bit.hudBit.dat;
+    bit = dat.bit;
+    var onUpdate = () => { };
+    gsap_1.default.to(bit, { y: -1000, duration: 10, ease: "linear", onUpdate });
+    bal.slv({ hudBit: { idx: "tween-hud", lst } });
+    return cpy;
+};
+exports.tweenHud = tweenHud;
+const gsap_1 = require("gsap");
 
-},{"../../10.hud.unit/hud.action":33,"../../97.collect.unit/collect.action":51}],33:[function(require,module,exports){
+},{"../../10.hud.unit/hud.action":33,"../../97.collect.unit/collect.action":51,"gsap":245}],33:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FinHud = exports.FIN_HUD = exports.CreateHud = exports.CREATE_HUD = exports.DeleteHud = exports.DELETE_HUD = exports.WriteHud = exports.WRITE_HUD = exports.RemoveHud = exports.REMOVE_HUD = exports.ReadHud = exports.READ_HUD = exports.UpdateHud = exports.UPDATE_HUD = exports.InitHud = exports.INIT_HUD = void 0;
+exports.TweenHud = exports.TWEEN_HUD = exports.FinHud = exports.FIN_HUD = exports.CreateHud = exports.CREATE_HUD = exports.DeleteHud = exports.DELETE_HUD = exports.WriteHud = exports.WRITE_HUD = exports.RemoveHud = exports.REMOVE_HUD = exports.ReadHud = exports.READ_HUD = exports.UpdateHud = exports.UPDATE_HUD = exports.InitHud = exports.INIT_HUD = void 0;
 // Hud actions
 exports.INIT_HUD = "[Hud action] Init Hud";
 class InitHud {
@@ -1619,11 +1632,19 @@ class FinHud {
     }
 }
 exports.FinHud = FinHud;
+exports.TWEEN_HUD = "[Tween action] Tween Hud";
+class TweenHud {
+    constructor(bale) {
+        this.bale = bale;
+        this.type = exports.TWEEN_HUD;
+    }
+}
+exports.TweenHud = TweenHud;
 
 },{}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.finHud = exports.createHud = exports.deleteHud = exports.writeHud = exports.removeHud = exports.readHud = exports.updateHud = exports.initHud = void 0;
+exports.tweenHud = exports.finHud = exports.createHud = exports.deleteHud = exports.writeHud = exports.removeHud = exports.readHud = exports.updateHud = exports.initHud = void 0;
 var hud_buzz_1 = require("./buz/hud.buzz");
 Object.defineProperty(exports, "initHud", { enumerable: true, get: function () { return hud_buzz_1.initHud; } });
 var hud_buzz_2 = require("./buz/hud.buzz");
@@ -1640,6 +1661,8 @@ var hud_buzz_7 = require("./buz/hud.buzz");
 Object.defineProperty(exports, "createHud", { enumerable: true, get: function () { return hud_buzz_7.createHud; } });
 var hud_buzz_8 = require("./buz/hud.buzz");
 Object.defineProperty(exports, "finHud", { enumerable: true, get: function () { return hud_buzz_8.finHud; } });
+var hud_buzz_9 = require("./buz/hud.buzz");
+Object.defineProperty(exports, "tweenHud", { enumerable: true, get: function () { return hud_buzz_9.tweenHud; } });
 
 },{"./buz/hud.buzz":32}],35:[function(require,module,exports){
 "use strict";
@@ -1675,6 +1698,8 @@ function reducer(model = new hud_model_1.HudModel(), act, state) {
             return Buzz.createHud(clone(model), act.bale, state);
         case Act.FIN_HUD:
             return Buzz.finHud(clone(model), act.bale, state);
+        case Act.TWEEN_HUD:
+            return Buzz.tweenHud(clone(model), act.bale, state);
         default:
             return model;
     }
@@ -3452,7 +3477,7 @@ exports.BLUE = "blue";
 },{}],84:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ERROR_MESSAGE = exports.CLOCK_BAR = exports.ACTION_BAR = exports.DEBUG_WINDOW = exports.ICON_WINDOW = exports.PLAY_DATA_GROUP = exports.WELCOME_WINDOW = void 0;
+exports.COVER_SCREEN = exports.ERROR_MESSAGE = exports.CLOCK_BAR = exports.ACTION_BAR = exports.DEBUG_WINDOW = exports.ICON_WINDOW = exports.PLAY_DATA_GROUP = exports.WELCOME_WINDOW = void 0;
 exports.WELCOME_WINDOW = "welcomeWindow";
 exports.PLAY_DATA_GROUP = "playerDataGroup";
 exports.ICON_WINDOW = "iconWindow";
@@ -3460,6 +3485,7 @@ exports.DEBUG_WINDOW = "debugWindow";
 exports.ACTION_BAR = "actionBar";
 exports.CLOCK_BAR = "clockBar";
 exports.ERROR_MESSAGE = "errorMessage";
+exports.COVER_SCREEN = "coverScreen";
 
 },{}],85:[function(require,module,exports){
 'use strict';

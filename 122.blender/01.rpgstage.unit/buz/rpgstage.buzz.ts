@@ -217,6 +217,11 @@ export const sceneRpgstage = async (cpy: RpgstageModel, bal: RpgstageBit, ste: S
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.CLOCK_BAR, dat: { visible: true } });
     ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ACTION_BAR, dat: { visible: false } });
 
+    ste.hunt(ActHud.WRITE_HUD, { idx: HUD.COVER_SCREEN, dat: { visible: true } });
+
+    ste.hunt(ActHud.TWEEN_HUD, { idx: HUD.COVER_SCREEN, dat: {} });
+
+
     //bit = await ste.hunt(ActHud.READ_HUD, { idx: HUD.ICON_WINDOW });
 
     //ste.hunt(ActHud.WRITE_HUD, { idx: HUD.ICON_WINDOW, dat: { visible: false } });

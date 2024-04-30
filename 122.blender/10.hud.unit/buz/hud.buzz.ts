@@ -32,7 +32,7 @@ export const initHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
         }
 
         var ui = cpy.mainHUD.children[dex]
-        
+
         var data = ui._data;
         var name = data.Name;
         bit = await ste.hunt(ActHud.WRITE_HUD, { idx: name, dat: ui });
@@ -54,10 +54,10 @@ export const createHud = (cpy: HudModel, bal: HudBit, ste: State) => {
     var dat: HBit = { idx: bal.idx, src: bal.src };
 
     var bit: Sprite_UltraHUDComponent_Window = comp.dat as Sprite_UltraHUDComponent_Window
-    
-    if ( bit == null ){
+
+    if (bit == null) {
         bal.slv({ hudBit: { idx: "create-hud", dat } });
-        return 
+        return
     }
 
     dat.bit = bit;
@@ -112,15 +112,15 @@ export const writeHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
 
 export const removeHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
-    
+
     bit = await ste.hunt(ActCol.REMOVE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActHud.CREATE_HUD })
-    
+
     bal.slv({ hudBit: { idx: "remove-graphic", dat: bit.clcBit } });
     return cpy;
 };
 
 export const deleteHud = (cpy: HudModel, bal: HudBit, ste: State) => {
-    
+
     bal.slv({ hudBit: { idx: "delete-hud", dat: bit.clcBit } });
     return cpy;
 };
@@ -130,25 +130,40 @@ export const finHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
     bit = await ste.hunt(ActCol.LIST_COLLECT, { bit: ActHud.CREATE_HUD });
     lst = bit.clcBit.lst
     var dex = lst.length - 1;
- 
-    var output = []
- 
-    var nextHud = async () => {
- 
-       if (dex < 0) {
-        bal.slv({ hudBit: { idx: "fin-hud", lst } });
-        return cpy;
-       }
- 
-       var now = lst[dex];
 
-       await ste.hunt(ActHud.REMOVE_HUD, { idx: now });
-       
-       dex -= 1
-       await nextHud()
+    var output = []
+
+    var nextHud = async () => {
+
+        if (dex < 0) {
+            bal.slv({ hudBit: { idx: "fin-hud", lst } });
+            return cpy;
+        }
+
+        var now = lst[dex];
+
+        await ste.hunt(ActHud.REMOVE_HUD, { idx: now });
+
+        dex -= 1
+        await nextHud()
     }
- 
+
     await nextHud()
+};
+
+export const tweenHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
+
+    bit = await ste.hunt(ActHud.READ_HUD, { idx: bal.idx });
+    dat = bit.hudBit.dat;
+    bit = dat.bit
+
+    var onUpdate = () =>{}
+
+    gsap.to( bit, { y: -1000, duration: 10, ease: "linear", onUpdate });
+
+    
+    bal.slv({ hudBit: { idx: "tween-hud", lst } });
+    return cpy;
 };
 
 
@@ -160,3 +175,4 @@ import * as HUD from "../../val/hud";
 
 import Sprite_UltraHUDComponent_Window from '../fce/sprite-ultraHUDComponent-window'
 import HBit from "../fce/h.bit";
+import gsap from "gsap";

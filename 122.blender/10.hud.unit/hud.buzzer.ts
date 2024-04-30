@@ -6,3 +6,4 @@ export { writeHud  } from "./buz/hud.buzz";
 export { deleteHud  } from "./buz/hud.buzz";
 export { createHud  } from "./buz/hud.buzz";
 export { finHud  } from "./buz/hud.buzz";
+export { tweenHud  } from "./buz/hud.buzz";

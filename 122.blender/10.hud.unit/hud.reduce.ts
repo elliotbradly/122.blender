@@ -31,6 +31,9 @@ case Act.CREATE_HUD:
 case Act.FIN_HUD:
  return Buzz.finHud(clone(model), act.bale, state);
  
+case Act.TWEEN_HUD:
+ return Buzz.tweenHud(clone(model), act.bale, state);
+ 
  default:
  return model;
  }
