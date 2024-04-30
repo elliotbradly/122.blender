@@ -71,8 +71,6 @@
       var sceneStage = window.BLENDER.ActRps.SCENE_RPGSTAGE;
       var moveParty = window.BLENDER.ActRpp.MOVE_RPGPARTY;
 
-      debugger
-
       var dat = {
         gameTemp: $gameTemp,
         gameSystem: $gameSystem,
