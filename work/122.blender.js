@@ -1556,7 +1556,7 @@ const tweenHud = async (cpy, bal, ste) => {
     dat = bit.hudBit.dat;
     bit = dat.bit;
     var onUpdate = () => { };
-    gsap_1.default.to(bit, { y: -1000, duration: 10, ease: "linear", onUpdate });
+    gsap_1.default.to(bit, { y: -1000, duration: 3, ease: "linear", onUpdate });
     bal.slv({ hudBit: { idx: "tween-hud", lst } });
     return cpy;
 };

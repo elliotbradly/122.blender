@@ -159,7 +159,7 @@ export const tweenHud = async (cpy: HudModel, bal: HudBit, ste: State) => {
 
     var onUpdate = () =>{}
 
-    gsap.to( bit, { y: -1000, duration: 10, ease: "linear", onUpdate });
+    gsap.to( bit, { y: -1000, duration: 3, ease: "linear", onUpdate });
 
     
     bal.slv({ hudBit: { idx: "tween-hud", lst } });
