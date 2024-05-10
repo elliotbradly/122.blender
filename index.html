@@ -1,28 +1,254 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= productName %></title>
 
-    <meta charset="utf-8">
-    <meta name="description" content="<%= productDescription %>">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
+<head>
+  <title>
+    <%= productName %>
+  </title>
 
-    <link rel="stylesheet" href="/css/xterm.css" />
+  <meta charset="utf-8">
+  <meta name="description" content="<%= productDescription %>">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport"
+    content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
 
-    <link rel="icon" type="image/png" sizes="128x128" href="icons/favicon-128x128.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-    <link rel="icon" type="image/ico" href="favicon.ico">
-  </head>
-  <body>
-    <!-- quasar:entry-point -->
+  <link rel="stylesheet" href="/css/quill.snow.css" />
+
+  <link rel="icon" type="image/png" sizes="128x128" href="icons/favicon-128x128.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="icon" type="image/ico" href="favicon.ico">
+
+  <style>
+
+    /* Angle Font */
+    @font-face {
+      font-family: angle;
+      src: url(./font/Angle.woff);
+    }
+
+    .angle-font {
+      font-family: 'angle';
+      font-size: 15px;
+    }
+
+    /* Apex Bold */
+    @font-face {
+      font-family: apexBold;
+      src: url(./font/ApexMk2-BoldExtended.woff);
+    }
+
+    .apex-bold-font-font {
+      font-family: 'apexBold';
+      font-size: 15px;
+    }
+
+    /* Apex Light */
+    @font-face {
+      font-family: apexLightCon;
+      src: url(./font/ApexMk2-LightCondensed.woff);
+    }
+
+    .apex-light-con-font {
+      font-family: 'apexLightCon';
+      font-size: 15px;
+    }
+
+    /* Apex Regular */
+    @font-face {
+      font-family: apexReg;
+      src: url(./font/ApexMk2-Regular.woff);
+    }
+
+    .apex-reg-font {
+      font-family: 'apexReg';
+      font-size: 15px;
+    }
+
+    /* Art Nouveau */
+    @font-face {
+      font-family: newart;
+      src: url(./font/Art-Nouveau-Caps.woff);
+    }
+
+    .new-art-font {
+      font-family: 'newart';
+      font-size: 20px;
+    }
+
+    /* Cutive Mono */
+    @font-face {
+      font-family: cutive;
+      src: url(./font/CutiveMono-wPDx.woff);
+    }
+
+    .cutive-font {
+      font-family: 'cutive';
+      font-size: 15px;
+    }
+
+    /* Fargo */
+    @font-face {
+      font-family: fargo;
+      src: url(./font/FargoFaroNF.woff);
+    }
+
+    .fargo-font {
+      font-family: 'fargo';
+      font-size: 15px;
+    }
+
+    /* Monsterrat Extra Bold */
+    @font-face {
+      font-family: montExtraBold;
+      src: url(./font/Montserrat-ExtraBold.woff);
+    }
+
+    .mont-extra-bold-font {
+      font-family: 'montExtraBold';
+      font-size: 15px;
+    }
+
+    
+    /* Monsterrat Extra Light */
+    @font-face {
+      font-family: montExtraLight;
+      src: url(./font/Montserrat-ExtraLight.woff);
+    }
+
+    .mont-extra-light-font {
+      font-family: 'montExtraLight';
+      font-size: 15px;
+    }
+
+     /* Monsterrat Italic Variable */
+     @font-face {
+      font-family: montItalicVar;
+      src: url(./font/Montserrat-Italic-VariableFont_wght.woff);
+    }
+
+    .mont-italic-var-font {
+      font-family: 'montItalicVar';
+      font-size: 15px;
+    }
+
+    /* Monsterrat Regular */
+    @font-face {
+      font-family: montReg;
+      src: url(./font/Montserrat-Regular.woff);
+    }
+
+    .mont-reg-font {
+      font-family: 'montReg';
+      font-size: 15px;
+    }
+
+    
+    /* Monsterrat Variable */
+    @font-face {
+      font-family: montVar;
+      src: url(./font/Montserrat-VariableFont_wght.woff);
+    }
+
+    .mont-reg-font {
+      font-family: 'montVar';
+      font-size: 15px;
+    }
+
+    /* Mutant Academy BB */
+    @font-face {
+      font-family: mutantAcademBB;
+      src: url(./font/MutantAcademyBB.woff);
+    }
+
+    .mutant-academ-bb-font {
+      font-family: 'mutantAcademBB';
+      font-size: 15px;
+    }
+
+    /* Mutant Academy DCBB */
+    @font-face {
+      font-family: mutantAcademDCBB;
+      src: url(./font/MutantAcademyDCBB.woff);
+    }
+
+    .mutant-academ-dcbb-font {
+      font-family: 'mutantAcademDCBB';
+      font-size: 15px;
+    }
+
+
+    /* Neuropolitical */
+    @font-face {
+      font-family: neuropolictical;
+      src: url(./font/neuropolitical-rg.woff);
+    }
+
+    .neuropolictical-font {
+      font-family: 'neuropolictical';
+      font-size: 15px;
+    }
+
+
+    /* Pixily */
+    @font-face {
+      font-family: pixily;
+      src: url(./font/Pixely.woff);
+    }
+
+    .pixily-font {
+      font-family: 'pixily';
+      font-size: 7px;
+    }
+
+    /* Sui Generis */
+    @font-face {
+      font-family: generis;
+      src: url(./font/sui-generis-rg.woff);
+    }
+
+    .generis-font {
+      font-family: 'generis';
+      font-size: 17px;
+    }
+
+   
+
+
+  </style>
+
+  <style>
+
+
+.rpgmenu {
+-webkit-transform-origin: 0px 0px;
+transform-origin: 0px 0px 0px;
+-webkit-transform: scale(1);
+transform: scale(1);
+margin-left: 110.67073170731703px;
+margin-top: 10px;
+}
 
 
 
 
-    <script src="/jsx/110.shade.js"></script>
-  </body>
+  </style>
+
+</head>
+
+<body>
+  <!-- quasar:entry-point -->
+
+  
+  <script src="/jsx/quill.js"></script>
+
+  <script src="/jsx/masonry.pkgd.min.js"></script>
+
+  <script src="/jsx/110.shade.js"></script>
+  <script src="/jsx/333.depth.js"></script>
+  <script src="/jsx/888.market.js"></script>
+</body>
+
 </html>

@@ -1,0 +1,134 @@
+const express = require("express");
+
+const path = require("path");
+const cool = require("cool-ascii-faces");
+const cors = require("cors");
+
+require('dotenv').config()
+
+const { Buffer } = require("buffer");
+const { COSESign1, COSEKey, BigNum, Label, Int } = require("@emurgo/cardano-message-signing-nodejs");
+const { Ed25519Signature, RewardAddress, PublicKey, Address } = require("@emurgo/cardano-serialization-lib-nodejs");
+
+var core = require("@meshsdk/core");
+var generateNonce = core.generateNonce;
+var checkSignature = core.checkSignature;
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+const CRYPTO = require(path.resolve("./168.crypto/index"));
+const CRYPTO_ACTION = require(path.resolve("./168.crypto/00.crypto.unit/crypto.action"));
+const BLOCK_ACTION = require(path.resolve("./168.crypto/03.block.unit/block.action"));
+
+const EARTH = require(path.resolve("./011.earth/index"));
+const EARTH_ACTION = require(path.resolve("./011.earth/00.earth.unit/earth.action"));
+
+var bit;
+
+app
+  .use(express.static(path.join(__dirname, "public")))
+  .use(
+    cors({
+      origin: "*",
+    })
+  )
+  .set("views", path.join(__dirname, "views"))
+  .set("view engine", "ejs")
+  .get("/", (req, res) => res.render("pages/index"))
+  .get("/init", async (req, res) => {
+    var bitCry = await CRYPTO.hunt(CRYPTO_ACTION.INIT_CRYPTO, { val: 0 });
+    var bitEth = await EARTH.hunt(EARTH_ACTION.INIT_EARTH, { val: 0 });
+    res.json({ idx: "init", dat: { lst: [bitCry, bitEth] } });
+  })
+  .get("/openEarth", async (req, res) => {
+    var bitEth = await EARTH.hunt(EARTH_ACTION.OPEN_EARTH, { idx: "000" });
+    res.json({ idx: "init", dat: { lst: [bitEth] } });
+  })
+  .get("/writeBlock", async (req, res) => {
+    bit = await CRYPTO.hunt(BLOCK_ACTION.OPEN_BLOCK, { idx: "blk00" });
+    bit = await CRYPTO.hunt(BLOCK_ACTION.WRITE_BLOCK, { idx: "blk00" });
+
+    res.json({ idx: "writeBlock", dat: { lst: [bit] } });
+  })
+
+  .get("/cool", (req, res) => res.send(cool()))
+  .get("/readNow", (req, res) => {
+    const key = generateNonce("Sign to login in to Mesh: ");
+
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    }
+
+    res.json({
+      idx: "read-now",
+      dat: {
+        src: "time-code",
+        val: getRandomInt(11),
+        todo: [
+          { id: "000", title: "rock00" },
+          { id: "001", title: "rock01" },
+        ],
+      },
+    });
+  })
+  .get("/key", (req, res) => {
+    const key = generateNonce("Sign to login in to Mesh: ");
+    res.json({ a: 1, key });
+  })
+  .get("/sign", (req, res) => {
+    console.log("attempting to sign...");
+
+    const address0 = req.query.idx;
+    const key0 = req.query.key;
+    const signature0 = req.query.sig;
+
+    console.log("address..." + address0);
+    console.log("key..." + key0);
+    console.log("signature..." + signature0);
+
+    //old way
+    //const result = checkSignature("a", "b", "c");
+    //console.log(JSON.stringify(result));
+
+    console.log("new way");
+
+    const decoded = COSESign1.from_bytes(Buffer.from(signature0, "hex"));
+    const headermap = decoded.headers().protected().deserialized_headers();
+    const addressHex = Buffer.from(headermap.header(Label.new_text("address")).to_bytes())
+      .toString("hex")
+      .substring(4);
+
+    console.log("address hex " + addressHex);
+
+    const address = Address.from_bytes(Buffer.from(addressHex, "hex"));
+
+    const key = COSEKey.from_bytes(Buffer.from(key0, "hex"));
+    const pubKeyBytes = key.header(Label.new_int(Int.new_negative(BigNum.from_str("2")))).as_bytes();
+    const publicKey = PublicKey.from_bytes(pubKeyBytes);
+
+    const payload = decoded.payload();
+    const signature = Ed25519Signature.from_bytes(decoded.signature());
+    const receivedData = decoded.signed_data().to_bytes();
+
+    console.log("received data ");
+
+    const signerStakeAddrBech32 = RewardAddress.from_address(address).to_address().to_bech32();
+    const utf8Payload = Buffer.from(payload).toString("utf8");
+    const expectedPayload = `account: ${signerStakeAddrBech32}`; // reconstructed message
+
+    // verify:
+    const isVerified = publicKey.verify(receivedData, signature);
+    const payloadAsExpected = utf8Payload == expectedPayload;
+    const signerIsRegistered = registeredUsers.includes(signerStakeAddrBech32);
+
+    const isAuthSuccess = isVerified && payloadAsExpected && signerIsRegistered;
+
+    res.send({
+      success: isAuthSuccess,
+      message: isAuthSuccess ? "✅ Authentication success!" : "❌ Authentication failed.",
+    });
+
+    //res.json({ a: 1 });
+  })
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));

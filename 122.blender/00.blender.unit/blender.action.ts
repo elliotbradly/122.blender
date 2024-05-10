@@ -15,40 +15,4 @@ export class UpdateBlender implements Action {
  constructor(public bale: BlenderBit) {}
 }
 
-
-export const OPEN_BLENDER = "[Open action] Open Blender";
- export class OpenBlender implements Action {
- readonly type = OPEN_BLENDER;
- constructor(public bale: BlenderBit) {}
- }
- 
-export const CLOSE_BLENDER = "[Close action] Close Blender";
- export class CloseBlender implements Action {
- readonly type = CLOSE_BLENDER;
- constructor(public bale: BlenderBit) {}
- }
- 
-export const RELOAD_BLENDER = "[Reload action] Reload Blender";
- export class ReloadBlender implements Action {
- readonly type = RELOAD_BLENDER;
- constructor(public bale: BlenderBit) {}
- }
- 
-export const WRITE_BLENDER = "[Write action] Write Blender";
- export class WriteBlender implements Action {
- readonly type = WRITE_BLENDER;
- constructor(public bale: BlenderBit) {}
- }
- 
-export const COMMIT_BLENDER = "[Commit action] Commit Blender";
- export class CommitBlender implements Action {
- readonly type = COMMIT_BLENDER;
- constructor(public bale: BlenderBit) {}
- }
- 
-export type Actions = | InitBlender | UpdateBlender 
-| OpenBlender
-| CloseBlender
-| ReloadBlender
-| WriteBlender
-| CommitBlender
+export type Actions = | InitBlender | UpdateBlender ;

@@ -1,0 +1,9 @@
+<template>
+
+  <div class="full-height row wrap justify-start items-start content-start">
+
+    <canvas id="indexCanvas"> </canvas>
+
+  </div>
+
+</template>

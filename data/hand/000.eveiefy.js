@@ -130,13 +130,12 @@ var eveiefy = () => {
     .exclude("chalk")
     .exclude("worker_threads")
     .exclude("pnpapi")
+    .exclude("blessed")
     .exclude("blessed-contrib")
     .exclude("node-fetch")
     .exclude("esbuild")
     .exclude("terminal-kit")
-    .exclude("undici")
-    .exclude("pty.js")
-    .exclude("blessed")
+    .exclude("undici");
 
   var loc = "../" + title + '/' + title + "/000.quest." + pvt + ".js";
   console.log("let see " + loc);

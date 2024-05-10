@@ -15,14 +15,11 @@ export function reducer(model: MenuModel = new MenuModel(), act: Act.Actions, st
     case Act.TEST_MENU:
       return Buzz.testMenu(clone(model), act.bale, state);
 
-    case Act.CLOSE_MENU:
-      return Buzz.closeMenu(clone(model), act.bale, state);
-
     case Act.PRINT_MENU:
       return Buzz.printMenu(clone(model), act.bale, state);
 
-    case Act.RPGACTOR_MENU:
-      return Buzz.rpgactorMenu(clone(model), act.bale, state);
+    case Act.CLOSE_MENU:
+      return Buzz.closeMenu(clone(model), act.bale, state);
 
     default:
       return model;

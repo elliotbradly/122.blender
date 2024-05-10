@@ -1,13 +1,13 @@
+require("dotenv").config();
+
 const path = require('path');
 const fs = require('fs');
 const MQTT = require('async-mqtt');
 const { program } = require('commander');
 
-const PORT = 1122;
-const wsPort = 8888;
+const PORT = 1500;
+const wsPort = 8500;
 
-let SHADE;
-let VURT;
 
 var idx;
 program.option('--first').option('-t, --separator <char>');
@@ -31,23 +31,23 @@ const ws = require('websocket-stream')
 ws.createServer({ server: httpServer }, aedes.handle)
 
 httpServer.listen(wsPort, function () {
-    console.log('Aedes MQTT-WS listening on port: ' + wsPort)
-    aedes.publish({ topic: 'aedes/hello', payload: "I'm broker " + aedes.id })
+  console.log('Aedes MQTT-WS listening on port: ' + wsPort)
+  aedes.publish({ topic: 'aedes/hello', payload: "I'm broker " + aedes.id })
 });
 
 server.listen(PORT, async () => {
     console.log('server started and listening on port ', PORT);
 
-    var exec = require('child_process').exec;
+    var exec  = require('child_process').exec;
 
-    exec('tsc -b 122.blender', async (err, stdout, stderr) => {
+    exec('tsc -b 500.motion', async (err, stdout, stderr) => {
         if (err) {
             console.error(`exec error: ${err}`);
         }
 
         init(PORT);
 
-    })
+        })
 
 
 });
@@ -60,11 +60,11 @@ const init = async (prt) => {
     const local = 'mqtt://localhost:' + prt;
     const localBit = { idx: 'local', src: local };
 
-    BLENDER = require(path.resolve('./dist/122.blender/hunt'));
-    BLENDER_ACTION = require(path.resolve('./dist/122.blender/00.blender.unit/blender.action'));
+    MOTION = require(path.resolve('./dist/500.motion/hunt'));
+    MOTION_ACTION = require(path.resolve('./dist/500.motion/00.motion.unit/motion.action'));
 
-    CONTROL = require(path.resolve('./900.control/index'));
-    CONTROL_ACTION = require(path.resolve('./900.control/00.control.unit/control.action'));
+    //SPACE = require(path.resolve('./002.space/index'));
+    //SPACE_ACTION = require(path.resolve('./002.space/00.space.unit/space.action'));
 
     PIVOT = require(path.resolve('./999.pivot/index'));
     PIVOT_ACTION = require(path.resolve('./999.pivot/00.pivot.unit/pivot.action'));
@@ -72,18 +72,18 @@ const init = async (prt) => {
     TERMINAL = require(path.resolve('./997.terminal/index'));
     TERMINAL_ACTION = require(path.resolve('./997.terminal/00.terminal.unit/terminal.action'));
 
-    if (pvt == false) {
+    if ( pvt == false){
 
-        await TERMINAL.hunt(TERMINAL_ACTION.INIT_TERMINAL, { dat: MQTT, src: local });
-        await CONTROL.hunt( CONTROL_ACTION.INIT_CONTROL, {  dat: MQTT, src: local });
-        await PIVOT.hunt(PIVOT_ACTION.INIT_PIVOT, { dat: MQTT, src: local });
-        await BLENDER.hunt(BLENDER_ACTION.INIT_BLENDER, { val: 1, dat: MQTT, src: [localBit] });
+      await TERMINAL.hunt( TERMINAL_ACTION.INIT_TERMINAL, { dat: MQTT, src: local });
+      await PIVOT.hunt( PIVOT_ACTION.INIT_PIVOT, {  dat: MQTT, src: local });
+      //await SPACE.hunt( SPACE_ACTION.INIT_SPACE, {  dat: MQTT, src: local });
+      await MOTION.hunt( MOTION_ACTION.INIT_MOTION , { val: 1, dat: MQTT, src:  [localBit]  });
 
     }
-    else {
+    else{
 
-        await PIVOT.hunt(PIVOT_ACTION.INIT_PIVOT, { val: 1, dat: MQTT, src: local });
-        //await SHADE.hunt( SHADE_ACTION.INIT_SHADE , { val: 1, dat: MQTT, src:  [localBit]  });
+      await PIVOT.hunt( PIVOT_ACTION.INIT_PIVOT, { val:1, dat: MQTT, src: local });
+      //await SHADE.hunt( SHADE_ACTION.INIT_SHADE , { val: 1, dat: MQTT, src:  [localBit]  });
     }
 
 
@@ -110,7 +110,7 @@ process.chdir("../");
 
 var pivot = exec("pnpm watch")
 
-process.chdir("./122.blender");
+process.chdir("./500.motion");
 
 pivot.stderr.on('data', function (data) {
     //console.log('aaads stderr: ' + data.toString());

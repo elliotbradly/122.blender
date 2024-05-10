@@ -38,22 +38,24 @@ export const VISAGE_MENU = "[Visage action] Visage Menu";
  constructor(public bale: MenuBit) {}
  }
 
- export const RPGACTOR_MENU = "[Visage action] RPG Actor Menu";
- export class RPGactorMenu implements Action {
- readonly type = RPGACTOR_MENU;
+ export const CONTAINER_MENU = "[Visage action] Container Menu";
+ export class ContainerMenu implements Action {
+ readonly type = CONTAINER_MENU;
  constructor(public bale: MenuBit) {}
  }
 
+ 
  export const PRINT_MENU = "[Visage action] Print Menu";
  export class PrintMenu implements Action {
  readonly type = PRINT_MENU;
  constructor(public bale: MenuBit) {}
  }
- 
+
+
 
  
 export type Actions = InitMenu | UpdateMenu | TestMenu | CloseMenu
 | ShadeMenu
 | VisageMenu
-| RPGactorMenu
+| ContainerMenu
 | PrintMenu

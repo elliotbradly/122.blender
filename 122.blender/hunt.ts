@@ -1,9 +1,11 @@
 var sim = {
  hunt:null,
+ bus:null,
  state: null
 };
 
 sim.hunt = (typ,obj) =>{return host(obj, typ)}
+
 
 var host = (obj, typ) => {
  

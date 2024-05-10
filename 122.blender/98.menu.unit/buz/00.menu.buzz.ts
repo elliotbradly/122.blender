@@ -1,9 +1,12 @@
 import * as ActMnu from "../menu.action";
 
-import * as ActBld from "../../00.blender.unit/blender.action";
+import * as ActMtn from "../../00.motion.unit/motion.action";
+
+
 //import * as ActFoc from "../../01.focus.unit/focus.action";
 //import * as ActPvt from "../../96.pivot.unit/pivot.action";
 
+//import * as ActMap from "../../03.hexmap.unit/hexmap.action"
 
 import * as ActTrm from "../../act/terminal.action";
 import * as ActChc from "../../act/choice.action"; 111
@@ -18,16 +21,16 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   if (bal == null) bal = { idx: null }
 
-  bit = await ste.bus(ActTrm.CLEAR_TERMINAL, {})
+  //bit = await ste.bus(ActTrm.CLEAR_TERMINAL, {})
 
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 3, y: 0, xSpan: 1, ySpan: 12 })
   bit = await ste.bus(ActCvs.WRITE_CANVAS, { idx: 'cvs1', dat: { clr: Color.CYAN, net: bit.grdBit.dat }, })
 
-  bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 4, y: 0, xSpan: 10, ySpan: 12 })
+  bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 4, y: 0, xSpan: 8, ySpan: 12 })
   bit = await ste.bus(ActCns.WRITE_CONSOLE, { idx: 'cns00', src: "", dat: { net: bit.grdBit.dat, src: "alligaor0" } })
 
   bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "-----------" })
-  bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "Blender PIVOT V0" })
+  bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "Motion PIVOT V0" })
   bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: "-----------" })
 
   updateMenu(cpy, bal, ste);
@@ -35,17 +38,12 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
   return cpy;
 };
 
-var updateBlender = async (ste) => {
-
-  var bitUp = await ste.hunt(ActBld.UPDATE_BLENDER, {})
-  bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating blender....' })
-  bit = await ste.hunt(ActMnu.PRINT_MENU, bitUp)
-
-}
-
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-  lst = [ActBld.UPDATE_BLENDER, ActBld.RELOAD_BLENDER, ActMnu.RPGACTOR_MENU, ActBld.COMMIT_BLENDER ]
+
+  // ActOai.UPDATE_OPENAI
+  lst = [ActMtn.UPDATE_MOTION, ActMtn.DEV_MOTION]
+
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
 
@@ -53,75 +51,33 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   switch (src) {
 
-    case ActMnu.RPGACTOR_MENU:
-      bit = await ste.hunt(ActMnu.RPGACTOR_MENU, {})
-      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open rpg actor menu....' })
-      break;
 
-      case ActBld.OPEN_BLENDER:
-        bit = await ste.hunt(ActBld.OPEN_BLENDER, {})
-        bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'open blender....' })
-        break;
-
-    case ActBld.COMMIT_BLENDER:
-      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'commit blender....' })
-      bit = await ste.hunt(ActBld.COMMIT_BLENDER, {})
-      lst = bit.blnBit.lst;
-
-      lst.forEach( (a)=>{
-        ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: a })
-      })
-
-      var count = 0
-
-      var interval = setInterval( ()=>{
-
-        count += 1;
-        if ( count <= 11 ) ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'waiting... ' + count })
-        else clearInterval( interval )
-      }, 1000)
-
-      break;
-
-    case ActBld.UPDATE_BLENDER:
-      await updateBlender(ste)
+    case ActMtn.DEV_MOTION:
+      bit = await ste.hunt(ActMtn.DEV_MOTION, {})
+      bit = await ste.hunt(ActMnu.PRINT_MENU, bit)
       break;
 
 
-    case ActBld.RELOAD_BLENDER:
 
-      var bitUp = await ste.hunt(ActBld.RELOAD_BLENDER, {})
-      bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'reloading setup' })
-
-      const fs = require('fs');
-
-      // can be a filename or a directory...
-      const fileToWatch = './0.AlligatorEarth.js'
-      const dirToWatch = './122.blender'
-
-      fs.watch(fileToWatch, async (eventType, fileName) => {
-        if (eventType != 'rename') {
-          await updateBlender(ste)
-          ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: `${fileName} was updated` })
-        }
-      });
-
-      fs.watch(dirToWatch, { recursive: true }, async (eventType, fileName) => {
-        if (eventType != 'rename') {
-          bit = await ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: 'updating...' })
-          await updateBlender(ste)
-          ste.bus(ActCns.UPDATE_CONSOLE, { idx: 'cns00', src: `${fileName} was updated` })
-        }
-      });
-
+    case ActMtn.UPDATE_MOTION:
+      bit = await ste.hunt(ActMtn.UPDATE_MOTION, {})
+      bit = await ste.hunt(ActMnu.PRINT_MENU, bit)
       break;
+
 
     default:
       bit = await ste.bus(ActTrm.CLOSE_TERMINAL, {})
       break;
   }
 
-  setTimeout(() => { updateMenu(cpy, bal, ste) }, 11)
+  setTimeout(() => {
+
+    updateMenu(cpy, bal, ste)
+
+  }, 33)
+
+
+
 
   return cpy;
 };
@@ -148,9 +104,6 @@ export const printMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   var itm = JSON.stringify(dat);
 
-  itm = itm.replace( '["', '\n' )
-  itm = itm.replace( ']}', '\n' )
-
   lst = itm.split(",");
   lst.forEach((a) => ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: a }));
   ste.bus(ActCns.UPDATE_CONSOLE, { idx: "cns00", src: "------------" });
@@ -172,4 +125,5 @@ import * as Color from '../../val/console-color';
 
 import * as SHAPE from '../../val/shape'
 import * as FOCUS from "../../val/focus";
+
 
