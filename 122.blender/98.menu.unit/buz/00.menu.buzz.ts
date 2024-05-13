@@ -2,8 +2,7 @@ import * as ActMnu from "../menu.action";
 
 import * as ActMtn from "../../00.motion.unit/motion.action";
 
-
-//import * as ActFoc from "../../01.focus.unit/focus.action";
+import * as ActBld from "../../00.blender.unit/blender.action";
 //import * as ActPvt from "../../96.pivot.unit/pivot.action";
 
 //import * as ActMap from "../../03.hexmap.unit/hexmap.action"
@@ -40,9 +39,8 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
-
   // ActOai.UPDATE_OPENAI
-  lst = [ActMtn.UPDATE_MOTION, ActMtn.DEV_MOTION]
+  lst = [ ActBld.OPEN_BLENDER ]
 
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
@@ -51,19 +49,10 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   switch (src) {
 
-
-    case ActMtn.DEV_MOTION:
-      bit = await ste.hunt(ActMtn.DEV_MOTION, {})
+    case ActBld.OPEN_BLENDER:
+      bit = await ste.hunt(ActBld.OPEN_BLENDER, {})
       bit = await ste.hunt(ActMnu.PRINT_MENU, bit)
       break;
-
-
-
-    case ActMtn.UPDATE_MOTION:
-      bit = await ste.hunt(ActMtn.UPDATE_MOTION, {})
-      bit = await ste.hunt(ActMnu.PRINT_MENU, bit)
-      break;
-
 
     default:
       bit = await ste.bus(ActTrm.CLOSE_TERMINAL, {})

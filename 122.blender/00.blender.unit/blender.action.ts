@@ -15,4 +15,11 @@ export class UpdateBlender implements Action {
  constructor(public bale: BlenderBit) {}
 }
 
-export type Actions = | InitBlender | UpdateBlender ;
+export const OPEN_BLENDER = "[Open action] Open Blender";
+ export class OpenBlender implements Action {
+ readonly type = OPEN_BLENDER;
+ constructor(public bale: BlenderBit) {}
+ }
+ 
+export type Actions = | InitBlender | UpdateBlender 
+| OpenBlender

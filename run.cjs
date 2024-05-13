@@ -5,8 +5,8 @@ const fs = require('fs');
 const MQTT = require('async-mqtt');
 const { program } = require('commander');
 
-const PORT = 1500;
-const wsPort = 8500;
+const PORT = 1122;
+const wsPort = 8122;
 
 
 var idx;
@@ -40,7 +40,7 @@ server.listen(PORT, async () => {
 
     var exec  = require('child_process').exec;
 
-    exec('tsc -b 500.motion', async (err, stdout, stderr) => {
+    exec('tsc -b 122.blender', async (err, stdout, stderr) => {
         if (err) {
             console.error(`exec error: ${err}`);
         }
@@ -60,8 +60,8 @@ const init = async (prt) => {
     const local = 'mqtt://localhost:' + prt;
     const localBit = { idx: 'local', src: local };
 
-    MOTION = require(path.resolve('./dist/500.motion/hunt'));
-    MOTION_ACTION = require(path.resolve('./dist/500.motion/00.motion.unit/motion.action'));
+    BLENDER = require(path.resolve('./dist/122.blender/hunt'));
+    BLENDER_ACTION = require(path.resolve('./dist/122.blender/00.blender.unit/blender.action'));
 
     //SPACE = require(path.resolve('./002.space/index'));
     //SPACE_ACTION = require(path.resolve('./002.space/00.space.unit/space.action'));
@@ -77,7 +77,7 @@ const init = async (prt) => {
       await TERMINAL.hunt( TERMINAL_ACTION.INIT_TERMINAL, { dat: MQTT, src: local });
       await PIVOT.hunt( PIVOT_ACTION.INIT_PIVOT, {  dat: MQTT, src: local });
       //await SPACE.hunt( SPACE_ACTION.INIT_SPACE, {  dat: MQTT, src: local });
-      await MOTION.hunt( MOTION_ACTION.INIT_MOTION , { val: 1, dat: MQTT, src:  [localBit]  });
+      await BLENDER.hunt( BLENDER_ACTION.INIT_BLENDER , { val: 1, dat: MQTT, src:  [localBit]  });
 
     }
     else{
@@ -92,7 +92,6 @@ const init = async (prt) => {
 
 
 const close = async () => {
-
 
     var run = fs.readFileSync("./run.cjs").toString()
     fs.writeFileSync("./run.cjs", run)
@@ -110,7 +109,7 @@ process.chdir("../");
 
 var pivot = exec("pnpm watch")
 
-process.chdir("./500.motion");
+process.chdir("./122.blender");
 
 pivot.stderr.on('data', function (data) {
     //console.log('aaads stderr: ' + data.toString());

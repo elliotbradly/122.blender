@@ -1,7 +1,7 @@
 {
  "extends": "../tsconfig-base.json",
  "compilerOptions": {
- "outDir": "../dist/500.motion",
+ "outDir": "../dist/122.blender",
  "composite": true,
  "skipLibCheck": true
  },
