@@ -40,7 +40,7 @@ export const initMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
 
   // ActOai.UPDATE_OPENAI
-  lst = [ ActBld.OPEN_BLENDER ]
+  lst = [ ActBld.UPDATE_BLENDER, ActBld.OPEN_BLENDER ]
 
   bit = await ste.bus(ActGrd.UPDATE_GRID, { x: 0, y: 4, xSpan: 4, ySpan: 12 })
   bit = await ste.bus(ActChc.OPEN_CHOICE, { dat: { clr0: Color.BLACK, clr1: Color.YELLOW }, src: Align.VERTICAL, lst, net: bit.grdBit.dat })
@@ -48,6 +48,11 @@ export const updateMenu = async (cpy: MenuModel, bal: MenuBit, ste: State) => {
   src = bit.chcBit.src;
 
   switch (src) {
+
+    case ActBld.UPDATE_BLENDER:
+      bit = await ste.hunt( ActBld.UPDATE_BLENDER, {})
+      bit = await ste.hunt(ActMnu.PRINT_MENU, bit)
+      break;
 
     case ActBld.OPEN_BLENDER:
       bit = await ste.hunt(ActBld.OPEN_BLENDER, {})

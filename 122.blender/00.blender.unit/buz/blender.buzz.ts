@@ -29,6 +29,50 @@ export const initBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State
 };
 
 export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
+
+    const { exec } = require("child_process");
+
+    exec("tsc -b 122.blender", async (err, stdout, stderr) => {
+      if (err) {
+        console.error(`exec error: ${err}`);
+      }
+  
+      lst = [];
+  
+      bit = await ste.bus(ActPvt.BUNDLE_PIVOT, { src: "122.blender" });
+      lst.push(bit)
+  
+      bit = await ste.bus(ActDsk.READ_DISK, { src: "./work/122.blender.js" });
+      var blend = bit.dskBit.dat;
+  
+      bit = await ste.bus(ActDsk.WRITE_DISK, { src: "./public/jsx/122.blender.js", dat: blend });
+      lst.push(bit)
+  
+      src = "../111.control/rpgmaker/app/js/plugins/122.blender.js"
+      bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+      lst.push(bit)
+  
+      src = "../service/fictiq.com/js/plugins/122.blender.js"
+      bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: blend });
+      lst.push(bit)
+  
+      //bit = await ste.bus(ActDsk.READ_DISK, { src: "./0.AlligatorEarth.js" });
+      //var alligator = bit.dskBit.dat;
+  
+      //src = "../111.control/rpgmaker/app/js/plugins/AlligatorEarth.js"
+      //bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
+      //lst.push(bit)
+  
+      //src = "../service/fictiq.com/js/plugins/AlligatorEarth.js"
+      //bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
+      //lst.push(bit)
+  
+      setTimeout(() => {
+        if (bal.slv != null) bal.slv({ blnBit: { idx: "update-blender", lst } });
+      }, 3);
+    });
+
+
     return cpy;
 };
 
@@ -46,7 +90,6 @@ export const openBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
 
     });
 
-    return cpy;
 
     return cpy;
 };
