@@ -21,5 +21,12 @@ export const OPEN_BLENDER = "[Open action] Open Blender";
  constructor(public bale: BlenderBit) {}
  }
  
+export const DEV_BLENDER = "[Dev action] Dev Blender";
+ export class DevBlender implements Action {
+ readonly type = DEV_BLENDER;
+ constructor(public bale: BlenderBit) {}
+ }
+ 
 export type Actions = | InitBlender | UpdateBlender 
 | OpenBlender
+| DevBlender

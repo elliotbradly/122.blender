@@ -20,6 +20,7 @@
     "@tanstack/vue-query": "^5.14.1",
     "aedes": "^0.50.0",
     "async-mqtt": "2.2.1",
+    "babylonjs": "^7.8.0",
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.11.0",
     "browserify": "^17.0.0",

@@ -16,6 +16,9 @@ export function reducer(model: BlenderModel = new BlenderModel(), act: Act.Actio
 case Act.OPEN_BLENDER:
  return Buzz.openBlender(clone(model), act.bale, state);
  
+case Act.DEV_BLENDER:
+ return Buzz.devBlender(clone(model), act.bale, state);
+ 
  default:
  return model;
  }

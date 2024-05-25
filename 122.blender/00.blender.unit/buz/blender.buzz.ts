@@ -95,7 +95,27 @@ export const openBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) => {
 };
 
 
+export const devBlender = (cpy: BlenderModel, bal:BlenderBit, ste: State) => {
+  
+  const { exec } = require('child_process');
+
+  exec('npx quasar dev -m electron', async (err, stdout, stderr) => {
+
+      //bit = await ste.hunt(ActMrk.DEV_MARKET, { val: 1 })
+      bal.slv({ mtnBit: { idx: "dev-motion", dat: stdout } });
+
+  });
+
+  return cpy;
+
+  
+  };
+
+
 var patch = (ste, type, bale) => ste.dispatch({ type, bale });
+
+
+
 
 
 import { BlenderModel } from "../blender.model";
