@@ -1,18 +1,18 @@
-export const initEngine = (cpy: EngineModel, bal:EngineBit, ste: State) => {
- debugger
+export const initEngine = (cpy: EngineModel, bal: EngineBit, ste: State) => {
+    debugger
 
 
- var canvas:any = document.getElementById('renderCanvas');
-// Load the 3D engine
-var engine = new BABYLON.Engine(canvas, true, {preserveDrawingBuffer: true, stencil: true});
+    var canvas: any = document.getElementById('renderCanvas');
+    // Load the 3D engine
+    var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
- return cpy;
+    return cpy;
 };
 
-export const updateEngine = (cpy: EngineModel, bal:EngineBit, ste: State) => {
- 
-    
- 
+export const updateEngine = (cpy: EngineModel, bal: EngineBit, ste: State) => {
+
+
+
     return cpy;
 };
 
