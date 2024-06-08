@@ -104,10 +104,10 @@ const routes = [
   },
 
   {
-    path: '/fullscreen',
+    path: '/example',
     component: () => import('layouts/SimpleLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/001.full-screen.vue') }
+      { path: '', component: () => import('pages/001.example.vue') }
     ]
   },
 

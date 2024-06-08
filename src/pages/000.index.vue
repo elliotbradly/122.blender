@@ -1,53 +1,32 @@
 <template>
-  <q-page class="q-gutter-sm">
+  
+  <div class="q-pa-md">
+    <q-card class="my-card">
+      <q-parallax
+        src="https://cdn.quasar.dev/img/parallax1.jpg"
+        :height="15"
+      />
 
-    <div class="absolute-top-right">
-      <q-btn outline label="" @click="action('login')" />
-    </div>
+      <q-card-section>
+        <div class="text-h6" @click="action('credits')" >T>A>S>U>S</div>
 
-    <div class="absolute-bottom-left">
-      <q-btn outline label="" @click="action('admin')" />
-    </div>
+        <q-btn flat  color="primary" label="002.example" @click="action('example')" />
+        
+      </q-card-section>
+    </q-card>
+  </div>
 
-    <div class="q-pa-md absolute-center">
+  <q-space />
 
-      <canvas id="renderCanvas" style="width: 720px; height: 480px;"></canvas>
-
-    </div>
-
-  </q-page>
 </template>
 
 <script setup>
 
-import Status from '../components/Status.vue'
-import Poll from '../components/Poll.vue'
-
-import { ref, onMounted, onUnmounted, onUpdated, inject, getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useQuery } from '@tanstack/vue-query'
-//import { mount, update, unmount } from "../screens/horizontal-window"
-import { mount, update, unmount } from "../composables/blender"
-
 
 const router = useRouter()
 
-var action = (idx) => {
- router.push('/' + idx)
-}
-
-
-onMounted(async (props) => {
-  mount('renderCanvas')
-})
-
-onUpdated(async () => {
-  //update('on')
-})
-
-onUnmounted(async () => {
-})
-
+var action = (idx) => router.push('/' + idx)
 
 </script>
 
@@ -55,6 +34,6 @@ onUnmounted(async () => {
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'TitleScreen'
+  name: 'IndexScreen'
 })
 </script>
