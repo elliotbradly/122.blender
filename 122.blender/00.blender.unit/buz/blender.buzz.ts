@@ -4,12 +4,12 @@ import * as ActBus from "../../99.bus.unit/bus.action";
 import * as ActMnu from "../../98.menu.unit/menu.action";
 
 import * as ActBld from "../../00.blender.unit/blender.action";
+import * as ActEng from "../../01.engine.unit/engine.action";
 
 import * as ActVrt from "../../act/vurt.action"
 import * as ActDsk from "../../act/disk.action"
 import * as ActPvt from "../../act/pivot.action";
 import * as ActDep from "../../act/depth.action";
-import * as ActEng from "../../act/engine.action";
 
 var bit, val, idx, dex, lst, dat, src;
 
@@ -19,7 +19,7 @@ export const initBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State
 
     if (bal.val == 1) patch(ste, ActMnu.INIT_MENU, bal);
 
-    //bit = await ste.hunt(ActEmo.INIT_EMOTION, {})
+    if (bal.val != 1) await ste.hunt(ActEng.INIT_ENGINE, {})
     //bal.slv({ blnBit: { idx: "open-blender", bit } });
 
     if (bal.slv != null) bal.slv({ intBit: { idx: "init-blender", bit } });
