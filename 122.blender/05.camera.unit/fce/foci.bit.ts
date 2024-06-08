@@ -1,4 +1,4 @@
 
-export default interface CameraBit {
+export default interface FociBit {
  idx:string;
 }

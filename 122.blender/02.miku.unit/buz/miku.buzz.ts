@@ -36,6 +36,8 @@ export const createMiku = (cpy: MikuModel, bal: MikuBit, ste: State) => {
     debugger
     return cpy;
 };
+
+
 import { MikuModel } from "../miku.model";
 import MikuBit from "../fce/miku.bit";
 import State from "../../99.core/state";
