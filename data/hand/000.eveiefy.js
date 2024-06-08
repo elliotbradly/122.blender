@@ -110,7 +110,7 @@ var eveiefy = () => {
     .exclude("socket.io-client")
     .exclude("sharp")
     .exclude("natural")
-    .exclude("babylonjs")
+    //.exclude("babylonjs")
     .exclude("@nexrender/core")
     .exclude("axios")
     .exclude("fluent-ffmpeg")
