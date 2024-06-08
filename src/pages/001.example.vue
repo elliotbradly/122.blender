@@ -1,13 +1,6 @@
 <template>
   <q-page class="q-gutter-sm">
 
-    <div class="absolute-top-right">
-      <q-btn outline label="" @click="action('index')" />
-    </div>
-
-    <div class="absolute-bottom-left">
-      <q-btn outline label="" @click="action('index')" />
-    </div>
 
     <div class="q-pa-md absolute-center">
 
@@ -15,20 +8,31 @@
 
     </div>
 
+    <div class="absolute-top-right">
+      <q-btn outline label="index" @click="action('/')" />
+    </div>
+
+    <div class="absolute-bottom-left">
+      <q-btn outline label="index" @click="action('/')" />
+    </div>
+
+    <div class="absolute-top-left">
+      <q-btn outline label="index" @click="action('/')" />
+    </div>
+
+    <div class="absolute-bottom-right">
+      <q-btn outline label="index" @click="action('/')" />
+    </div>
+
+
   </q-page>
 </template>
 
 <script setup>
 
-import Status from '../components/Status.vue'
-import Poll from '../components/Poll.vue'
-
 import { ref, onMounted, onUnmounted, onUpdated, inject, getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useQuery } from '@tanstack/vue-query'
-//import { mount, update, unmount } from "../screens/horizontal-window"
 import { mount, update, unmount } from "../composables/blender"
-
 
 const router = useRouter()
 
