@@ -1,4 +1,4 @@
-import Miku from "./fce/Miku.interface";
+import Miku from "./fce/miku.interface";
 import MikuBit from "./fce/miku.interface";
 
 export class MikuModel implements Miku {

@@ -66,9 +66,9 @@ export const updateBlender = (cpy: BlenderModel, bal: BlenderBit, ste: State) =>
       //bit = await ste.bus(ActDsk.WRITE_DISK, { src, dat: alligator });
       //lst.push(bit)
   
-      setTimeout(() => {
+      //setTimeout(() => {
         if (bal.slv != null) bal.slv({ blnBit: { idx: "update-blender", lst } });
-      }, 3);
+      //}, 3);
     });
 
 

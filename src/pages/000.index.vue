@@ -26,7 +26,9 @@ import Poll from '../components/Poll.vue'
 import { ref, onMounted, onUnmounted, onUpdated, inject, getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
-import { mount, update, unmount } from "../screens/horizontal-window"
+//import { mount, update, unmount } from "../screens/horizontal-window"
+import { mount, update, unmount } from "../composables/blender"
+
 
 const router = useRouter()
 
@@ -36,7 +38,7 @@ var action = (idx) => {
 
 
 onMounted(async (props) => {
-
+  mount('renderCanvas')
 })
 
 onUpdated(async () => {
