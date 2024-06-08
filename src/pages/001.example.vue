@@ -32,12 +32,12 @@
 
 import { ref, onMounted, onUnmounted, onUpdated, inject, getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { mount, update, unmount } from "../composables/blender"
+import { mount, update, unmount } from "../composables/example"
 
 const router = useRouter()
 
 var action = (idx) => {
- router.push('/' + idx)
+  router.push('/' + idx)
 }
 
 
