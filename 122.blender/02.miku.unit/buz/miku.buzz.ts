@@ -48,7 +48,7 @@ export const createMiku = async (cpy: MikuModel, bal: MikuBit, ste: State) => {
     var BABYLONMMD = global.BABYLONMMD;
     
     const mmdRuntime = new BABYLONMMD.MmdRuntime(scene, new BABYLONMMD.MmdPhysics(scene));
-    const mmdCamera = new BABYLONMMD.MmdCamera("MmdCamera", new BABYLON.Vector3(0, 10, 0), scene);
+    const mmdCamera = new BABYLONMMD.MmdCamera("MmdCamera", new BABYLON.Vector3(0, 500, 0), scene);
 
     const promises = [];
     const bvmdLoader = new BABYLONMMD.BvmdLoader(scene);
@@ -70,11 +70,18 @@ export const createMiku = async (cpy: MikuModel, bal: MikuBit, ste: State) => {
     mmdCamera.setAnimation("motion");
 
     const modelMesh = loadResults[1].meshes[0];
+
+    modelMesh.normalizeToUnitCube();
+
+
     modelMesh.receiveShadows = true;
     ;
     //for (const mesh of modelMesh.metadata.meshes)
     //shadowGenerator.addShadowCaster(mesh);
     const mmdModel = mmdRuntime.createMmdModel(modelMesh);
+
+
+
     mmdModel.addAnimation(loadResults[0]);
     mmdModel.setAnimation("motion");
     const bodyBone = mmdModel.runtimeBones.find((bone) => bone.name === "センター");
