@@ -31,8 +31,6 @@ export const createCamera = async (cpy: CameraModel, bal: CameraBit, ste: State)
     dat.y = bal.dat.y;
     dat.z = bal.dat.z;
 
-    debugger
-
     if ( dat.x == null ) dat.x = 0
     if ( dat.y == null ) dat.y = 30
     if ( dat.z == null ) dat.z = -10
@@ -71,7 +69,7 @@ export const readCamera = async (cpy: CameraModel, bal: CameraBit, ste: State) =
     return cpy;
 };
 export const writeCamera = async (cpy: CameraModel, bal: CameraBit, ste: State) => {
-    bal.dat = {}
+    if ( bal.dat == null ) bal.dat = {}
     if (bal.dat.dat == null) bal.dat.dat = {}
     bit = await ste.hunt(ActCol.WRITE_COLLECT, { idx: bal.idx, src: bal.src, dat: bal.dat, bit: ActCam.CREATE_CAMERA });
     var data = bit.clcBit.dat

@@ -10,7 +10,8 @@
       <q-card-section>
         <div class="text-h6" @click="action('credits')" >T>A>S>U>S</div>
 
-        <q-btn flat  color="primary" label="002.example" @click="action('example')" />
+        <q-btn flat  color="primary" label="001.example" @click="action('example001')" />
+        <q-btn flat  color="primary" label="002.example" @click="action('example002')" />
         
       </q-card-section>
     </q-card>

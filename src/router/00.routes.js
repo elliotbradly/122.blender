@@ -13,6 +13,22 @@ const routes = [
     ]
   },
 
+  {
+    path: '/example001',
+    component: () => import('layouts/SimpleLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/001.example.vue') }
+    ]
+  },
+
+  {
+    path: '/example002',
+    component: () => import('layouts/SimpleLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/002.example.vue') }
+    ]
+  },
+
   
   
   {
@@ -103,13 +119,7 @@ const routes = [
     ]
   },
 
-  {
-    path: '/example',
-    component: () => import('layouts/SimpleLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/001.example.vue') }
-    ]
-  },
+  
 
   {
     path: '/login',
