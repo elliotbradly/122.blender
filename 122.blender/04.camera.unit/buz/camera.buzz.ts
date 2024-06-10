@@ -27,6 +27,16 @@ export const initCamera = (cpy: CameraModel, bal: CameraBit, ste: State) => {
 export const createCamera = async (cpy: CameraModel, bal: CameraBit, ste: State) => {
     var dat: FociBit = { idx: bal.idx }
 
+    dat.x = bal.dat.x
+    dat.y = bal.dat.y;
+    dat.z = bal.dat.z;
+
+    debugger
+
+    if ( dat.x == null ) dat.x = 0
+    if ( dat.y == null ) dat.y = 30
+    if ( dat.z == null ) dat.z = -10
+
     bit = await ste.hunt(ActScn.READ_SCENE, { idx: bal.src })
     bit = bit.scnBit
     var scene = bit.dat.scene
@@ -36,7 +46,7 @@ export const createCamera = async (cpy: CameraModel, bal: CameraBit, ste: State)
     var engine = bit.dat.engine;
     var canvas = bit.dat.canvas;
 
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(12, 5, -10), scene);
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3( dat.x, dat.y, dat.z), scene);
     //    // Target the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
     // Attach the camera to the canvas
