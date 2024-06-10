@@ -5,6 +5,7 @@ import * as ActMnu from "../../98.menu.unit/menu.action";
 
 import * as ActBld from "../../00.blender.unit/blender.action";
 import * as ActEng from "../../01.engine.unit/engine.action";
+import * as ActMku from "../../02.miku.unit/miku.action";
 
 import * as ActVrt from "../../act/vurt.action"
 import * as ActDsk from "../../act/disk.action"
@@ -20,6 +21,8 @@ export const initBlender = async (cpy: BlenderModel, bal: BlenderBit, ste: State
     if (bal.val == 1) patch(ste, ActMnu.INIT_MENU, bal);
 
     if (bal.val != 1) await ste.hunt(ActEng.INIT_ENGINE, {})
+    if (bal.val != 1) await ste.hunt(ActMku.INIT_MIKU, {})
+    
     //bal.slv({ blnBit: { idx: "open-blender", bit } });
 
     if (bal.slv != null) bal.slv({ intBit: { idx: "init-blender", bit } });

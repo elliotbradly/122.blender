@@ -5,7 +5,7 @@ import * as ActScn from '../122.blender/03.scene.unit/scene.action'
 import * as ActCam from '../122.blender/04.camera.unit/camera.action'
 import * as ActLgt from '../122.blender/05.light.unit/light.action'
 import * as ActMsh from '../122.blender/06.mesh.unit/mesh.action'
-
+import * as ActMku from '../122.blender/02.miku.unit/miku.action'
 
 export type HelloWorld = string | number
 
@@ -22,8 +22,11 @@ export const mount = async (value: HelloWorld) => {
   bit = await BLENDER['hunt']( ActCam.WRITE_CAMERA, { idx: "cam00", src: "scn00", dat: {} });
   bit = await BLENDER['hunt']( ActLgt.WRITE_LIGHT, { idx: "lgt00", src: "scn00", dat: {} });
 
-  bit = await BLENDER['hunt']( ActMsh.WRITE_MESH, { idx: "msh00", src: "scn00", val:1, dat: {} });
+
   bit = await BLENDER['hunt']( ActMsh.WRITE_MESH, { idx: "msh01", src: "scn00", val:0, dat: {} });
+  bit = await BLENDER['hunt']( ActMku.WRITE_MIKU, { idx: "mku00", src: "scn00", val:1, dat: {} });
+
+  debugger
   
   instance?.proxy?.$forceUpdate();
 
