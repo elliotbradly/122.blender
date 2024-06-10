@@ -1,0 +1,65 @@
+var createScene = function () {
+
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+    // This creates and positions a free camera (non-mesh)
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+
+    // This targets the camera to scene origin
+    camera.setTarget(BABYLON.Vector3.Zero());
+
+    // This attaches the camera to the canvas
+    camera.attachControl(canvas, true);
+
+    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 0.7;
+
+    // Our built-in 'sphere' shape.
+    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);
+
+    // Move the sphere upward 1/2 its height
+    sphere.position.y = 1;
+
+    // Our built-in 'ground' shape.
+    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+
+    window.drawCanvas = document.createElement("canvas");
+    window.drawCanvas.width = 512;
+    window.drawCanvas.height = 512;
+
+    var ctx = window.drawCanvas.getContext("2d");
+    // Draw yellow background
+    ctx.beginPath();
+    ctx.fillStyle = '#ff6';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw blue triangle
+    ctx.beginPath();
+    ctx.fillStyle = 'blue';
+    ctx.moveTo(20, 20);
+    ctx.lineTo(180, 20);
+    ctx.lineTo(130, 130);
+    ctx.closePath();
+    ctx.fill();
+
+    var texture = new BABYLON.HtmlElementTexture("", window.drawCanvas, {
+        scene
+    });
+
+    var material = new BABYLON.PBRMaterial("", scene);
+    material.unlit = true;
+    material.albedoTexture = texture;
+
+    ground.material = material;
+
+    scene.onBeforeRenderObservable.add(() => {
+        texture.update();
+    });
+
+    return scene;
+
+};

@@ -36,7 +36,7 @@ export const createCamera = async (cpy: CameraModel, bal: CameraBit, ste: State)
     var engine = bit.dat.engine;
     var canvas = bit.dat.canvas;
 
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -10), scene);
+    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(12, 5, -10), scene);
     //    // Target the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
     // Attach the camera to the canvas
