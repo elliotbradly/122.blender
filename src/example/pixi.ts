@@ -21,18 +21,12 @@ export const mount = async (value: HelloWorld) => {
   bit = await BLENDER['hunt']( ActEgn.WRITE_ENGINE, { idx: "eng00", src: value, dat: {  h:1080, w:1080 } });
   bit = await BLENDER['hunt']( ActScn.WRITE_SCENE, { idx: "scn00", src: "eng00", dat: {} });
 
-  bit = await BLENDER['hunt']( ActCam.WRITE_CAMERA, { idx: "cam00", src: "scn00", dat: {x:60, y:50, z:0} });
+  bit = await BLENDER['hunt']( ActCam.WRITE_CAMERA, { idx: "cam00", src: "scn00", dat: {x:2, y:2, z:0} });
   bit = await BLENDER['hunt']( ActLgt.WRITE_LIGHT, { idx: "lgt00", src: "scn00", dat: {} });
 
-  bit = await BLENDER['hunt']( ActMsh.WRITE_MESH, { idx: "msh01", src: "scn00", val:0, dat: {} });
+  bit = await BLENDER['hunt']( ActMsh.WRITE_MESH, { idx: "msh01", src: "scn00", val:0, dat: {} });  
+  bit = await BLENDER['hunt']( ActPxi.WRITE_PIXIJS, { idx: "pxi00", src: "scn00", dat: {} });
 
-  debugger
-  
-  bit = await BLENDER['hunt']( ActPxi.WRITE_PIXIJS, { idx: "pxi00", src: "scn00", val:1, dat: {} });
-
-  debugger
-
-  
   
   instance?.proxy?.$forceUpdate();
 
