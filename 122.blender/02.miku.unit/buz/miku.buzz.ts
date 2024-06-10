@@ -48,7 +48,7 @@ export const createMiku = async (cpy: MikuModel, bal: MikuBit, ste: State) => {
     var BABYLONMMD = global.BABYLONMMD;
     
     const mmdRuntime = new BABYLONMMD.MmdRuntime(scene, new BABYLONMMD.MmdPhysics(scene));
-    const mmdCamera = new BABYLONMMD.MmdCamera("MmdCamera", new BABYLON.Vector3(0, 500, 0), scene);
+    const mmdCamera = new BABYLONMMD.MmdCamera("MmdCamera", new BABYLON.Vector3(0, 5500, 0), scene);
 
     const promises = [];
     const bvmdLoader = new BABYLONMMD.BvmdLoader(scene);

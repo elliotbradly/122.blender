@@ -1,0 +1,120 @@
+var url = "https://jerome.bousquie.fr/BJS/test/perlin.js";
+var ns = document.createElement("script");
+ns.src = url;
+document.head.appendChild(ns);
+
+var url = "https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js";
+var s = document.createElement("script");
+s.src = url;
+document.head.appendChild(s);
+
+var url = "https://rawcdn.githack.com/pixijs/pixi-spine/pixi5-spine3.7/bin/pixi-spine.js"
+var pxs = document.createElement("script")
+pxs.src = url
+document.head.appendChild(pxs)
+
+var createScene = function () {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+
+    var playerCam = new BABYLON.ArcRotateCamera("camera1", 0, 0, 0, new BABYLON.Vector3(0, 0, 0), scene);
+    playerCam.setPosition(new BABYLON.Vector3(0, 5, -10))
+    //playerCam.attachControl(canvas, true)
+    playerCam.alpha = -1.4625
+    playerCam.beta = 1.5132
+    playerCam.radius = 11.1803
+    playerCam.target.set(2.379, 1.501, 1.023)
+    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 0.7;
+
+    const background = BABYLON.MeshBuilder.CreatePlane("bg", {width: 10, height: 10}, scene)
+    background.scaling.scaleInPlace(3)
+    background.position.z += 3
+    background.position.y += 10
+    background.material = new BABYLON.SimpleMaterial("bgMat")
+    background.material.diffuseColor = BABYLON.Color3.Magenta()
+    background.material.diffuseTexture = new BABYLON.Texture("https://cdn.glitch.com/33daf4c1-8b4b-42e1-a95b-2a9d5ca481dd%2Fcloud.jpg?v=1598481496897")
+    
+    const stageSize = new BABYLON.Vector2(2000, 1000)
+    const out = BABYLON.MeshBuilder.CreateGround('out', {width:1, height:1}, scene)
+    const baseOutScale = stageSize.clone().scale(0.01)
+    out.scaling.set(baseOutScale.x, 1, baseOutScale.y)
+    out.rotation.x = -Math.PI*0.5
+    const outMat = new BABYLON.StandardMaterial('outMat', scene)
+    out.material = outMat
+    out.isVisible = false
+
+            
+s.onload = ()=>{
+    pxs.onload = ()=>{
+        
+        out.isVisible = true
+        const pixi = new PIXI.Application({
+            width: stageSize.x, 
+            height: 
+            stageSize.y, 
+            antialias: true,    // default: false
+            transparent: true, // default: false
+            resolution: 1,       // default: 1
+            clearBeforeRender: true
+        })
+        console.log(pixi)
+        const loader = PIXI.Loader.shared;
+
+         
+        let sprites = {}
+
+        loader.add('spineboy','https://raw.githubusercontent.com/pixijs/examples/gh-pages/examples/assets/pixi-spine/spineboy-pro.json');
+
+        loader.load((loader, resources) =>{  
+         
+            
+            let spineboy = new PIXI.spine.Spine(resources.spineboy.spineData)
+            spineboy.scale.set(0.4);
+            spineboy.state.setAnimation(0,'portal', false);
+            spineboy.x = 1000;
+            spineboy.y = 650;
+            spineboy.state.getCurrent(0).onComplete = ()=>{
+                spineboy.state.setAnimation(0,'shoot', true);
+            }
+       
+            pixi.stage.addChild(spineboy);
+
+
+            sprites["player"] = spineboy
+          
+        })
+
+        loader.onProgress.add(() => {console.log('progress')}); // called once per loaded/errored file
+        loader.onError.add(() => {console.log('error')}); // called once per errored file
+        loader.onLoad.add(() => {
+
+        }) // called once per loaded file
+
+        loader.onComplete.add(() => {
+            const pixiDt = new BABYLON.DynamicTexture('pixi-extract', {width:stageSize.x,  height: stageSize.y}, scene, false)
+            const pCtx = pixiDt.getContext()
+            outMat.emissiveTexture = pixiDt
+            outMat.diffuseTexture = pixiDt
+            outMat.opacityTexture = pixiDt
+            pixiDt.hasAlpha = true
+            outMat.disableLighting = true
+            scene.onBeforeRenderObservable.add(()=>{
+                pCtx.clearRect(0,0,pixi.view.width, pixi.view.height)
+                pCtx.drawImage(pixi.view, 0, 0)
+                pixiDt.update() 
+               
+            })
+            scene.onAfterRenderObservable.add(()=>{
+                pixi.renderer.clear()
+            })
+        })
+    }      
+    }
+    
+    return scene;
+};
