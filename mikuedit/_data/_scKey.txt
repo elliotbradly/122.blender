@@ -1,0 +1,355 @@
+﻿※Short-cut Key List
+Ctrl+A~Z / F1~F12 → Menu shortcuts (with some exceptions)
+
+========================================================================
+■Pmx Editor
+Ctrl + N   | [File] - [New]
+Ctrl + O   | [File] - [Open]
+Ctrl + S   | [File] - [Save]
+F1         | [File] - [Folder Relation] - [Show readme.txt]
+Ctrl + U   | [Edit] - [List Relation] - [Update Display]
+Ctrl + L   | [Edit] - [List Relation] - [List current View selection]
+Ctrl + Q   | [Edit] - [List Relation] - [Return (Label Jump)]
+Ctrl + Z   | [Edit] - [Undo]  Undo
+Ctrl + Y   | [Edit] - [Redo]  Redo
+Ctrl + W   | [View] - [Model Display]  PmxView
+
+<Vertex List>
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+<Material List>
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move Up]
+Ctrl + Down(↓) | [Move Down]
+Ctrl + A   | [Select All]
+Ctrl + X   | [Copy Index]
+Ctrl + W   | [Narrow View]
+Ctrl + R   | [Batch Name Editor]
+Ctrl + K   | [Copy Material]
+Ctrl + L   | [Copy Material (Other than by name)]
+Ctrl + P   | [Paste (Material)]
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+<Bone List>
+Ctrl + P   | [Add to end]
+Ctrl + I   | [Add to location]
+Ctrl + D   | [Duplicate]
+Ctrl + E   | [Duplicate to end]
+Ctrl + L   | [Add connection]
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select All]
+Ctrl + X   | [Copy Index]
+Ctrl + W   | [Narrow View]
+Ctrl + R   | [Batch Name Editor]
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+<IK List>
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select All]
+Ctrl + V   | [Add from index copy]
+
+<Morph List>
+Ctrl + E   | [Vertex/UV morph edit]
+Ctrl + D   | [Duplicate]
+Ctrl + G   | [Group morph summary]
+Ctrl + F   | [Flip morph]
+Ctrl + J   | [Join (Duplicates)]
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+Ctrl + X   | [Copy Index]
+Ctrl + R   | [Batch name editor]
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+<Morph Offset List>
+Ctrl + P   | [Add]
+Ctrl + D   | [Duplicate]
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+Ctrl + X   | [Copy Index]
+Ctrl + V   | [Add from index copy]
+
+
+<Display Frame List>
+Ctrl + P   | [Add]
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+Ctrl + R   | [Batch name editor]
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+
+<Display frame - In-frame element list>
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+Ctrl + X   | [Copy index]
+Ctrl + V   | [Add from index copy]
+
+
+<Rigid Body List>
+Ctrl + I   | [Add location]
+Ctrl + P   | [Add to end]
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+Ctrl + B   | [Set a rigid body name from the associated bone]
+Ctrl + X   | [Copy Index]
+Ctrl + W   | [Narrow View]
+Ctrl + R   | [Batch name editor]
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+
+<Joint List>
+Ctrl + I   | [Add location]
+Ctrl + P   | [Add to end]
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+Ctrl + B   | [Set the Joint name from the connection rigid body B]
+Ctrl + W   | [Narrow view]
+Ctrl + R   | [Batch name editor]
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+
+<Soft Body List>
+Ctrl + I   | [Add location]
+Ctrl + P   | [Add to end]
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+Ctrl + R   | [Batch name editor]
+Ctrl + C   | [Copy (Clipboard)]
+Ctrl + V   | [Paste (Clipboard)]
+
+
+<Soft Body - Anchor List>
+Ctrl + Del | [Delete]
+Ctrl + Up(↑)   | [Move up]
+Ctrl + Down(↓) | [Move down]
+Ctrl + A   | [Select all]
+
+
+========================================================================
+■View
+V   | Vertex Selection ON/OFF
+F   | Face Selection ON/OFF
+B   | Bone Selection ON/OFF
+D   | Rigid Body Selection ON/OFF
+J   | Joint Selection ON/OFF
+
+X   | Vertex Display ON/OFF
+N   | Normals/Normal Selection ON/OFF
+Z   | Surface Vertex Display ON/OFF
+W   | Wire+ ON/OFF
+O   | Path ON/OFF [+]
+
+M   | Open Display Format
+M-N |  Normal
+M-F |  Flat
+M-W |  Wire
+M-E |  Wire (Monochrome)
+M-D |  Weight
+M-B |  WeightBone
+M-T |  WeightType
+M-U |  UV
+M-X |  UVTex
+M-A |  UV+ (1)～(4)
+
+<Non-Numeric Keypad>
+1   | Change Selection Range To [・] 
+2   | Change to [□] 
+3   | Change to [δ] 
+4   | Change to [○] 
+5   | Change to [△]
+6   | Change to [Φ] 
+0   | Change to [x] 
+
+Ctrl + 1   | [View] - [Center of rotation] - [Initialize]
+Ctrl + 2   | [View] - [Center of rotation] - [Select Vertex]
+Ctrl + 3   | [View] - [Center of rotation] - [Select Bone]
+Ctrl + 4   | [View] - [Center of rotation] - [Select Face - Front Facing]
+Ctrl + 5   | [View] - [Center of rotation] - [Vector Copy Position]
+
+<Numeric keypad>
+0   | Viewpoint - Bottom
+2   | Viewpoint - Front
+4   | Viewpoint - Left
+5   | Viewpoint - Up
+6   | Viewpoint - Right
+7   | Display state just before you change the POV on the numeric keypad
+8   | Viewpoint - After
+9   | Display the rotation position in the center of the screen
+
+
+■Pmx View
+H   | Handle View ON/OFF
+A   | Virtual Axis Mode ON/OFF
+E   | Effect Drawing ON/OFF
+
+Ctrl + U   | [Edit] - [Update]
+Ctrl + Z   | [Edit] - [Undo]  Undo
+Ctrl + Y   | [Edit] - [Redo]  Redo
+Ctrl + A   | [Edit] - [Select All]
+Ctrl + Q   | [Edit] - [Last Selection]
+Ctrl + R   | [Edit] - [Invert Selection]
+Ctrl + I   | [Edit] - [Refine/Masking]
+Del        | [Edit] - [Select Objects] - [Selected Bone/RigidBody/Joint/Anchor are Deleted]
+Ctrl + C   | [Edit] - [Select Objects] - [VCopy Center Position]
+Ctrl + V   | [Edit] - [Select Objects] - [Paste Position ]
+Ctrl + N   | [Edit] - [Select Objects] - [Select Front Faces (Area)]
+Ctrl + K   | [Edit] - [Select Vertex] - [Refine]
+Ctrl + H   | [Edit] - [Select Vertex] - [Hidded]
+Ctrl + F   | [Edit] - [Select Vertex] - [Display Faces]
+Ctrl + W   | [Edit] - [Select Vertex] - [Add Object to center] - [Weight Bone]
+Ctrl + J   | [Edit] - [Select Vertex] - [Join Vertex]
+Shift + Del| [Edit] - [Select Vertex] - [Delete Vertex (Faces／Material／Morph)]
+Ctrl + L   | [Edit] - [Selected Surface] - [Replace Surface Diagonals]
+Ctrl + E   | [Edit] - [Selected faces] - [Extrude]
+Ctrl + X   | [Edit] - [Selected Surface] - [Extend Selection to Adjacent Surface]
+Ctrl + B   | [Edit] - [Normal Relation] - [Averaging Selection Normals]
+Ctrl + M   | [Edit] - [Weight related] - [Set selected vertex with near position bone] - [Bone axis reference]
+Ctrl + P   | [Edit] - [Add simple primitive]
+
+F1         | [Display] - [Display Setting]
+F2         | [Display] - [Select Objects Management]
+F3         | [Display] - [Refine display]
+F4         | [display] - [object operation]
+Ctrl + F4  | [Display] - [Individual storage]
+F5         | [display] - [extended edit]
+F6         | [Display] - [Weight drawing]
+Ctrl + F6  | [display] - [deformed synchronization]
+F7         | [display] - [selection guide]
+F8         | [Display] - [Subscreen]
+F9         | [Display] - [TransformView]
+F10        | [Edit] - [Weight related] - [Weight anchor Edit]
+F11        | [View] - [Effect settings]
+F12        | [Display] - [4 screen mode]
+
+Ctrl + 0   | [Display] - [rotation center of viewpoint] - [rotation center]
+Ctrl + S   | Overwrite Save
+
+
+■Sub View
+Ctrl + U   | [Edit] - [Update]
+Ctrl + A   | [Edit] - [Select all objects]
+Ctrl + Q   | [Edit] - [Last Selection Status]
+Ctrl + R   | [Edit] - [Invert selected state]
+Ctrl + I   | [Edit] - [Refine vertex display]
+Ctrl + C   | [Edit] - [Select Objects] - [Copy vector range center position]
+Ctrl + K   | [Edit] - [Select Vertex] - [Refine by]
+Ctrl + H   | [Edit] - [Select Vertex] - [Hide]
+Ctrl + F   | [Edit] - [Select Vertex] - [Display face]
+Ctrl + X   | [Edit] - [Update parent view with current selection state]
+
+F1         | [Display] - [Display Setting]
+F2         | [Display] - [Select Objects Management]
+F3         | [Display] - [Refine display]
+F7         | [Display] - [selection guide]
+
+
+■Transform View
+H  | ON/OFF of handle display
+
+Ctrl + U   | [Edit] - [Update]
+Ctrl + Z   | [Edit] - [Return deformed state] Undo
+Ctrl + Y   | [Edit] - [Advance deformation state] Redo
+Ctrl + X   | [Edit] - [Update with Current Selection Status]
+Ctrl + C   | [Edit] - [Select Objects] - [Copy vector range center position]
+Ctrl + H   | [Edit] - [Handle center operation]
+Ctrl + Space | [Mode] - [Realtime update]
+Space      | Pause (ON / OFF only in real-time update state)
+Ctrl + P   | [Mode] - [Physical operation]
+Ctrl + M   | [Mode] - [Motion playback]
+Ctrl + Right (→) | [Mode] - [Advance deform 1F]
+Ctrl + Left (←) | [Mode] - [Return 1F of deformation]
+Ctrl + I   | [Mode] - [Initialize playback frame position]
+
+Ctrl + B   | [Initialize] - [Initialize posture]
+Ctrl + K   | [Initialize] - [Initialize Morph]
+Ctrl + Q   | [Initialize] - [Initialize all]
+Esc        | deformation initialization (same as [All initialization])
+
+F1         | [Display] - [Display Setting]
+F3         | [Display] - [Refine display]
+F5         | [Display] - [related to transmission]
+F6         | [Display] - [Pose Slider]
+F7         | [Display] - [morph slider]
+F10        | [Display] - [Anchor display]
+
+
+■Refine Display
+Ctrl + Z   | [Edit] - [Undo] Undo
+Ctrl + Y   | [Edit] - [Redo] Redo
+Ctrl + U   | [Edit] - [Update List]
+Ctrl + C   | [Edit] - [Save / Restore Check Elements] - [Save Numbers (Index) to Clipboard]
+Ctrl + V   | [Edit] - [Saving / Restoring Check Elements] - [Restore by Number from Clipboard]
+Ctrl + A   | [Edit] - [Bone / Rigid body / Joint all display]
+Ctrl + F   | [Edit] - [Bone / Rigid body / Refine from Joint selection target]
+Ctrl + W   | [Edit] - [Only material containing selected vertices]
+Ctrl + Q   | [Edit] - [Only the material containing the selected surface]
+Ctrl + X   | [Edit] - [Exclude material containing selected surfaces]
+Ctrl + B   | [WaightBone related] - [narrow down related bones of display parts]
+
+<Material List>
+Ctrl + F   | [Display surface of selected material]
+Ctrl + Q   | [Initialize Selected Surface]
+Ctrl + S   | [Separate selected vertices into new materials]
+Ctrl + Up (↑) | [Move up]
+Ctrl + Down (↓) | [Move down]
+Ctrl + A   | [Check all]
+Ctrl + C   | [Not check all]
+Ctrl ate]
+Ctrl + P   | [Delete selected parts of selection]
+
+Ctrl + U   | [Delete hidden parts parts]
+
+<Vertex Morph List>
+Ctrl + S   |  [Separate selected vertices into new morphs]
+
+
+■Object Operation
+Ctrl + Z   | [Edit] - [Undo] Undo
+
+Ctrl + Y   | [Edit] - [Redo] Redo
+
+Ctrl + R   | [Edit] - [Operation system] - [Old operation system]
+
+Ctrl + E   | [Edit] - [Operation system] - [Switch display for vertex edit]
+
+Ctrl + D   | [Virtual axis] - [Set the view direction to virtual axis direction]
+
+<Storage List>
+Del        | Delete
+
+
+■Selection Guide
+Ctrl + C   | [Edit] - [Save to common area]
+
+Ctrl + V   | [Edit] - [Restore from common area]
+
+
+■Batch Name Editor
+Ctrl + C   | Copy cell
+Ctrl + V   | paste into cell
+
+

@@ -1,0 +1,506 @@
+<?xml version="1.0"?>
+<CSScriptData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ScriptType>CS1</ScriptType>
+  <CompilerVersion>4</CompilerVersion>
+  <ReferenceAssemblies>
+    <string>System.dll</string>
+    <string>System.Core.dll</string>
+    <string>System.Data.dll</string>
+    <string>System.Data.DataSetExtensions.dll</string>
+    <string>System.Deployment.dll</string>
+    <string>System.Drawing.dll</string>
+    <string>System.Windows.Forms.dll</string>
+    <string>System.Xml.dll</string>
+    <string>System.Xml.Linq.dll</string>
+    <string>Microsoft.CSharp.dll</string>
+  </ReferenceAssemblies>
+  <UsingText>using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.IO;
+using PEPlugin;
+using PEPlugin.SDX;
+using PEPlugin.Pmx;
+using PEPlugin.Pmd;
+using PEPlugin.Vmd;
+using PEPlugin.Vme;
+using PEPlugin.Form;
+using PEPlugin.View;
+using SlimDX;
+using SlimDX.Direct3D9;
+using IES = PEPlugin.Vme.IPEVmeEventState;
+using IBS = PEPlugin.Vme.IPEVmeBoneState;
+using ISS = PEPlugin.Vme.IPEVmeSingleValueState;
+using IMS = PEPlugin.Vme.IPEVmeSingleValueState;
+using ICS = PEPlugin.Vme.IPEVmeCameraState;
+using ILS = PEPlugin.Vme.IPEVmeLightState;
+</UsingText>
+  <FullCodeText>
+// using項目はメニューから一括管理(ここへの直接追記でも動作可能)
+
+// Scriptプラグインクラス(クラス名変更不可)
+public class CSScriptClass : PEPluginClass
+{
+    // コンストラクタ
+    public CSScriptClass() : base()
+    {
+        // 起動オプション
+        // boot時実行(true/false), プラグインメニューへの登録(true/false), メニュー登録名("")
+        m_option = new PEPluginOption(false, true, "ボーン・剛体モデル生成");
+    }
+
+    // エントリポイント
+    public override void Run(IPERunArgs args)
+    {
+        try {
+			//
+			// ---- 簡易編集用ヘッダコード ----
+			
+			// 常用接続変数一括登録
+			
+			// ホスト配下
+			IPEPluginHost host = args.Host;
+			IPEBuilder builder = host.Builder;
+			IPEShortBuilder bd = host.Builder.SC;		// 短絡系ビルダ
+			IPXPmxBuilder bdx = host.Builder.Pmx;		// PMXビルダ
+			IPEConnector connect = host.Connector;
+			IPEPMDViewConnector view = host.Connector.View.PMDView;
+					
+			//拡張PMD
+			IPEXPmd pex = connect.Pmd.GetCurrentStateEx();
+			IList&lt;IPEXBone&gt; pexBone = pex.Bone;
+			IList&lt;IPEXBody&gt; pexBody = pex.Body;
+			IList&lt;IPEXJoint&gt; pexJoint = pex.Joint;
+			IList&lt;IPEXVertex&gt; pexVertex = pex.Vertex;
+
+			//ここからボーン
+			for (int i = 0; i &lt; pexBone.Count; i++){
+				IPEXBone pbone = pexBone[i];
+				IPEXBone cbone = pbone.To;
+
+				IPEXMaterial pexMaterial = PEStaticBuilder.SC.XMaterial();
+				pexMaterial.Name = pexBone[i].Name;
+				pexMaterial.Diffuse = new V4(0.1f, 0.1f, 1f, 1);
+				pexMaterial.Specular = new V3(0.5f, 0.5f, 0.5f);
+				pexMaterial.Ambient = new V3(0.1f, 0.1f, 0.1f);
+				pexMaterial.Edge = true;
+				int mx = pex.Material.Count;
+				pex.Material.Add(pexMaterial);
+				IPEVector3 pp = pbone.Position;
+				IPEVector3 cp = pp;
+				if(cbone != null) cp = cbone.Position;
+
+				if(pbone.Kind == BoneKind.Twist){
+					int vcBefore = pexVertex.Count;
+					float len = (float)Math.Sqrt(Math.Pow(cp.X-pp.X,2)+Math.Pow(cp.Y-pp.Y,2)+Math.Pow(cp.Z-pp.Z,2));
+					pex.Primitive.AddTorus(mx,new V3(pp.X,pp.Y,pp.Z),0.01f,0.20f,8,12,pbone);
+					float xd = (float)Math.Atan2(Math.Sqrt(Math.Pow(cp.Z-pp.Z,2)+Math.Pow(cp.X-pp.X,2)),(cp.Y-pp.Y));//ピッチ
+					xd -= (float)Math.PI/2;//シリンダー用
+					float yd = (float)Math.Atan2((cp.X-pp.X),(cp.Z-pp.Z));//ヨー
+					float zd =0;//ロール
+					pex.Primitive.AddSphere(mx,new V3(pp.X,pp.Y,pp.Z),  0.1f,12,6, pbone);
+					for(int j=0;j&lt;pexVertex.Count - vcBefore;j++){
+						//簡易プリミティブ回転
+						pexVertex[pexVertex.Count-1-j].Position = rotate(//頂点回転
+							pp,pexVertex[pexVertex.Count-1-j].Position,xd,yd,zd);
+						pexVertex[pexVertex.Count-1-j].Normal = rotate(//法線回転
+							new V3(0f,0f,0f),pexVertex[pexVertex.Count-1-j].Normal,xd,yd,zd);
+					}
+				}else if(pbone.Kind != BoneKind.Unvisible){
+					int vcBefore = pexVertex.Count;
+					float len = (float)Math.Sqrt(Math.Pow(cp.X-pp.X,2)+Math.Pow(cp.Y-pp.Y,2)+Math.Pow(cp.Z-pp.Z,2));
+					pex.Primitive.AddCylinder(mx,new V3(pp.X,pp.Y,pp.Z+len/2),0.07f,0.01f,len,8,3,pbone);
+					float xd = (float)Math.Atan2(Math.Sqrt(Math.Pow(cp.Z-pp.Z,2)+Math.Pow(cp.X-pp.X,2)),(cp.Y-pp.Y));//ピッチ
+					xd -= (float)Math.PI/2;//シリンダー用
+					float yd = (float)Math.Atan2((cp.X-pp.X),(cp.Z-pp.Z));//ヨー
+					float zd =0;//ロール
+
+					if(pbone.Kind == BoneKind.RotateMove){
+						AddBox(pex,bd,pexMaterial,pp,0.1f,0.1f,0.1f,pbone);
+					}else{
+						pex.Primitive.AddSphere(mx,new V3(pp.X,pp.Y,pp.Z),0.1f,12,6, pbone);
+					}
+
+					for(int j=0;j&lt;pexVertex.Count - vcBefore;j++){
+						//簡易プリミティブ回転
+						pexVertex[pexVertex.Count-1-j].Position = rotate(//頂点回転
+							pp,pexVertex[pexVertex.Count-1-j].Position,xd,yd,zd);
+						pexVertex[pexVertex.Count-1-j].Normal = rotate(//法線回転
+							new V3(0f,0f,0f),pexVertex[pexVertex.Count-1-j].Normal,xd,yd,zd);
+					}
+				}
+			}
+
+			//ここからJoint
+			for (int i = 0; i &lt; pexJoint.Count; i++){
+				IPEXMaterial pexMaterial = PEStaticBuilder.SC.XMaterial();
+				pexMaterial.Name = "Joint_" + pexJoint[i].Name;
+				pexMaterial.Diffuse = new V4(1f, 1f, 0.1f, 1f);
+				pexMaterial.Specular = new V3(0.5f, 0.5f, 0.5f);
+				pexMaterial.Ambient = new V3(0.1f, 0.1f, 0.1f);
+				pexMaterial.Edge = true;
+				int mx = pex.Material.Count;
+				pex.Material.Add(pexMaterial);
+				IPEVector3 pos = pexJoint[i].Position;
+				int vcBefore = pexVertex.Count;
+				float xd = pexJoint[i].Rotation.X;
+				float yd = pexJoint[i].Rotation.Y;
+				float zd = pexJoint[i].Rotation.Z;
+
+				AddBox(pex,bd,pexMaterial,pos,0.15f,0.15f,0.15f,null);
+
+				for(int j=0;j&lt;pexVertex.Count - vcBefore;j++){
+					pexVertex[pexVertex.Count-1-j].Bone1 = pexJoint[i].BodyA.Bone;
+					pexVertex[pexVertex.Count-1-j].Bone2 = pexJoint[i].BodyB.Bone;
+					pexVertex[pexVertex.Count-1-j].Weight = 50;
+
+					//Joint回転
+					pexVertex[pexVertex.Count-1-j].Position = rotate(//頂点回転
+						pos,pexVertex[pexVertex.Count-1-j].Position,
+						pexJoint[i].Rotation.X,pexJoint[i].Rotation.Y,pexJoint[i].Rotation.Z);
+					pexVertex[pexVertex.Count-1-j].Normal = rotate(//法線回転
+						new V3(0f,0f,0f),pexVertex[pexVertex.Count-1-j].Normal,
+						pexJoint[i].Rotation.X,pexJoint[i].Rotation.Y,pexJoint[i].Rotation.Z);
+				}
+			}
+			//ここから剛体
+			for (int i = 0; i &lt; pexBody.Count; i++){
+				IPEXMaterial pexMaterial = PEStaticBuilder.SC.XMaterial();
+				pexMaterial.Name = "剛体_" + pexBody[i].Name;
+				pexMaterial.Diffuse = new V4(0.1f, 1f, 0.1f, 1f);
+				if(pexBody[i].Mode == BodyMode.Dynamic) pexMaterial.Diffuse = new V4(1f, 0.1f, 0.1f, 1f);
+				if(pexBody[i].Mode == BodyMode.DynamicWithBone) pexMaterial.Diffuse = new V4(1f, 1f, 0.1f, 1f);
+				pexMaterial.Specular = new V3(0.5f, 0.5f, 0.5f);
+				pexMaterial.Ambient = new V3(0.1f, 0.1f, 0.1f);
+				pexMaterial.Edge = true;
+				int mx = pex.Material.Count;
+				pex.Material.Add(pexMaterial);
+				IPEVector3 pos = pexBody[i].Position;
+				int vcBefore = pexVertex.Count;
+				float xd = pexBody[i].Rotation.X;
+				float yd = pexBody[i].Rotation.Y;
+				float zd = pexBody[i].Rotation.Z;
+
+				if(pexBody[i].BoxKind == BodyBoxKind.Sphere){
+					pex.Primitive.AddSphere(mx,new V3(pos.X,pos.Y,pos.Z),pexBody[i].BoxSize.X,12,6,pexBody[i].Bone);
+				}else if(pexBody[i].BoxKind == BodyBoxKind.Box){
+					AddBox(pex,bd,pexMaterial,pos,pexBody[i].BoxSize.X,pexBody[i].BoxSize.Y,pexBody[i].BoxSize.Z,pexBody[i].Bone);
+				}else if(pexBody[i].BoxKind == BodyBoxKind.Capsule){
+					AddCapsule(pex,bd,pexMaterial,pos,pexBody[i].BoxSize.X,pexBody[i].BoxSize.Y,pexBody[i].Bone);
+					xd += (float)Math.PI/2;
+				}
+
+				for(int j=0;j&lt;pexVertex.Count - vcBefore;j++){
+					//剛体回転
+					if(pexBody[i].BoxKind == BodyBoxKind.Capsule){//カプセルの場合は初期角度調整
+						pexVertex[pexVertex.Count-1-j].Position = rotate(//頂点回転
+							pos,pexVertex[pexVertex.Count-1-j].Position,
+							(float)Math.PI/2,0,0);
+						pexVertex[pexVertex.Count-1-j].Normal = rotate(//法線回転
+							new V3(0f,0f,0f),pexVertex[pexVertex.Count-1-j].Normal,
+							(float)Math.PI/2,0,0);
+					}
+
+					pexVertex[pexVertex.Count-1-j].Position = rotate(//頂点回転
+						pos,pexVertex[pexVertex.Count-1-j].Position,
+						pexBody[i].Rotation.X,pexBody[i].Rotation.Y,pexBody[i].Rotation.Z);
+					pexVertex[pexVertex.Count-1-j].Normal = rotate(//法線回転
+						new V3(0f,0f,0f),pexVertex[pexVertex.Count-1-j].Normal,
+						pexBody[i].Rotation.X,pexBody[i].Rotation.Y,pexBody[i].Rotation.Z);
+				}
+			}
+
+			//
+			// ---- 簡易編集用フッタコード ----
+			
+			// 更新処理
+			// デフォルト設定ではフッタコードはOFF
+			
+			// PMX更新
+			//connect.Pmx.Update(pmx);
+			connect.Pmd.UpdateEx(pex);
+			
+			// Form更新
+			connect.Form.UpdateList(UpdateObject.All);  // 重い場合は引数を変更して個別に更新
+			
+			// PMDView更新
+			connect.View.PMDView.UpdateModel();         // Viewの更新が不要な場合はコメントアウト
+			connect.View.PMDView.UpdateView();
+        }
+        catch (Exception ex) {
+            MessageBox.Show(ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+    }
+
+	public IPEVector3 rotate(IPEVector3 org,IPEVector3 dst,float xd,float yd,float zd){
+		V3 result = new V3();
+		float nx = dst.X-org.X;
+		float ny = dst.Y-org.Y;
+		float nz = dst.Z-org.Z;
+
+		result.X = (float)(nx*(Math.Cos(zd))+ny*(-Math.Sin(zd)));
+		result.Y = (float)(nx*(Math.Sin(zd))+ny*( Math.Cos(zd)));
+		result.Z = (float)nz;
+
+		nx = result.X; ny = result.Y; nz = result.Z;
+		result.X = (float)nx;
+		result.Y = (float)(ny*(Math.Cos(xd))+nz*(-Math.Sin(xd)));
+		result.Z = (float)(ny*(Math.Sin(xd))+nz*( Math.Cos(xd)));
+
+		nx = result.X; ny = result.Y; nz = result.Z;
+		result.X = (float)(nx*( Math.Cos(yd))+nz*(Math.Sin(yd)));
+		result.Y = (float)ny;
+		result.Z = (float)(nx*(-Math.Sin(yd))+nz*(Math.Cos(yd)));
+
+		result.X += org.X; result.Y += org.Y; result.Z += org.Z;
+
+		return(result);
+	}
+
+	public void AddCapsule(IPEXPmd pex,IPEShortBuilder bd,IPEXMaterial mx,IPEVector3 org,float xsize,float ysize,IPEXBone bone){
+		IList&lt;IPEXVertex&gt; pexVertex = pex.Vertex;
+		
+		IPEXVertex[] varr = new IPEXVertex[74];
+
+		float[] larr = new float[]{
+			0f,1f,0f,-0.258819f,0.965926f,0f,	0.5f,0.866025f,0f,0.258819f,0.965926f,0f,
+			0.866025f,0.5f,0f,0.707107f,0.707107f,0f,1f,0f,0f,0.965926f,-0.258819f,0f,
+			0.866025f,-0.5f,0f,0.707107f,-0.707107f,0f,0.5f,-0.866026f,0f,0.258819f,-0.965926f,0f,
+			0f,-1f,0f,-0.258819f,-0.965926f,0f,-0.5f,-0.866025f,0f,-0.707107f,-0.707107f,0f,
+			-0.866025f,-0.5f,0f,-0.965926f,-0.258819f,0f,	-1f,0f,0f,-0.965926f,0.258819f,0f,
+			-0.866025f,0.5f,0f,-0.965926f,0.258819f,0f,	-0.5f,0.866026f,0f,-0.707107f,0.707107f,0f,
+			0f,0.866025f,-0.5f,0f,0.866025f,-0.5f,	0.433013f,0.75f,-0.5f,0.433013f,0.75f,-0.5f,
+			0.75f,0.433013f,-0.5f,0.75f,0.433013f,-0.5f,	0.866025f,0f,-0.5f,0.866025f,0f,-0.5f,
+			0.75f,-0.433013f,-0.5f,0.75f,-0.433013f,-0.5f,	0.433013f,-0.75f,-0.5f,0.433013f,-0.75f,-0.5f,
+			0f,-0.866025f,-0.5f,0f,-0.866025f,-0.5f,	-0.433013f,-0.75f,-0.5f,-0.433013f,-0.75f,-0.5f,
+			-0.75f,-0.433013f,-0.5f,-0.75f,-0.433013f,-0.5f,	-0.866025f,0f,-0.5f,-0.866025f,0f,-0.5f,
+			-0.75f,0.433013f,-0.5f,-0.75f,0.433013f,-0.5f,	-0.433013f,0.75f,-0.5f,-0.433013f,0.75f,-0.5f,
+			0f,0.5f,-0.866025f,0f,0.5f,-0.866026f,	0.25f,0.433013f,-0.866025f,0.25f,0.433013f,-0.866026f,
+			0.433013f,0.25f,-0.866025f,0.433013f,0.25f,-0.866026f,	0.5f,0f,-0.866025f,0.5f,0f,-0.866026f,
+			0.433013f,-0.25f,-0.866025f,0.433013f,-0.25f,-0.866026f,	0.25f,-0.433013f,-0.866025f,0.25f,-0.433013f,-0.866026f,
+			0f,-0.5f,-0.866025f,0f,-0.5f,-0.866026f,	-0.25f,-0.433013f,-0.866025f,-0.25f,-0.433013f,-0.866026f,
+			-0.433013f,-0.25f,-0.866025f,-0.433013f,-0.25f,-0.866026f,	-0.5f,0f,-0.866025f,-0.5f,0f,-0.866026f,
+			-0.433012f,0.25f,-0.866025f,-0.433012f,0.25f,-0.866026f,	-0.25f,0.433013f,-0.866025f,-0.25f,0.433013f,-0.866026f,
+			0f,0f,-1f,0f,0f,-1f,	0f,1f,0f,-0.258819f,0.965926f,0f,
+			0.5f,0.866025f,0f,0.258819f,0.965926f,0f,	0.866025f,0.5f,0f,0.707107f,0.707107f,0f,
+			1f,0f,0f,0.965926f,-0.258819f,0f,	0.866025f,-0.5f,0f,0.707107f,-0.707107f,0f,
+			0.5f,-0.866026f,0f,0.258819f,-0.965926f,0f,	0f,-1f,0f,-0.258819f,-0.965926f,0f,
+			-0.5f,-0.866025f,0f,-0.707107f,-0.707107f,0f,	-0.866025f,-0.5f,0f,-0.965926f,-0.258819f,0f,
+			-1f,0f,0f,-0.965926f,0.258819f,0f,	-0.866025f,0.5f,0f,-0.965926f,0.258819f,0f,
+			-0.5f,0.866026f,0f,-0.707107f,0.707107f,0f,	0f,0f,1f,0f,0f,1f,
+			0f,0.5f,0.866025f,0f,0.5f,0.866025f,	0.25f,0.433013f,0.866025f,0.25f,0.433013f,0.866025f,
+			0.433013f,0.25f,0.866025f,0.433013f,0.25f,0.866025f,	0.5f,0f,0.866025f,0.5f,0f,0.866025f,
+			0.433013f,-0.25f,0.866025f,0.433013f,-0.25f,0.866025f,	0.25f,-0.433013f,0.866025f,0.25f,-0.433013f,0.866025f,
+			0f,-0.5f,0.866025f,0f,-0.5f,0.866025f,	-0.25f,-0.433013f,0.866025f,-0.25f,-0.433013f,0.866025f,
+			-0.433013f,-0.25f,0.866025f,-0.433013f,-0.25f,0.866025f,	-0.5f,0f,0.866025f,-0.5f,0f,0.866025f,
+			-0.433013f,0.25f,0.866025f,-0.433013f,0.25f,0.866025f,	-0.25f,0.433013f,0.866025f,-0.25f,0.433013f,0.866025f,
+			0f,0.866025f,0.5f,0f,0.866025f,0.5f,	0.433013f,0.75f,0.5f,0.433013f,0.75f,0.5f,
+			0.75f,0.433013f,0.5f,0.75f,0.433013f,0.5f,	0.866025f,0f,0.5f,0.866025f,0f,0.5f,
+			0.75f,-0.433013f,0.5f,0.75f,-0.433013f,0.5f,	0.433013f,-0.75f,0.5f,0.433013f,-0.75f,0.5f,
+			0f,-0.866025f,0.5f,0f,-0.866025f,0.5f,	-0.433013f,-0.75f,0.5f,-0.433013f,-0.75f,0.5f,
+			-0.75f,-0.433013f,0.5f,-0.75f,-0.433013f,0.5f,	-0.866025f,0f,0.5f,-0.866025f,0f,0.5f,
+			-0.75f,0.433013f,0.5f,-0.75f,0.433013f,0.5f,	-0.433013f,0.75f,0.5f,-0.433013f,0.75f,0.5f
+		};
+
+		for(int i=0;i&lt;larr.Length/2;i+=6){
+			varr[i/6] = boxVertex(bd,
+					org.X+larr[i]*xsize,org.Y+larr[i+1]*xsize,org.Z+larr[i+2]*xsize-ysize/2,
+					//org.X+larr[i]*1,org.Y+larr[i+1]*1,org.Z+larr[i+2]*1,
+					larr[i+3],larr[i+4],larr[i+5],bone);
+			pexVertex.Add(varr[i/6]);
+		}
+
+		for(int i=larr.Length/2;i&lt;larr.Length;i+=6){
+			varr[i/6] = boxVertex(bd,
+					org.X+larr[i]*xsize,org.Y+larr[i+1]*xsize,org.Z+larr[i+2]*xsize+ysize/2,
+					//org.X+larr[i]*1,org.Y+larr[i+1]*1,org.Z+larr[i+2]*1,
+					larr[i+3],larr[i+4],larr[i+5],bone);
+			pexVertex.Add(varr[i/6]);
+		}
+
+		int[] farr = new int[]{
+			0,1,12, 1,13,12, 1,2,13, 2,14,13, 2,3,14, 3,15,14,
+			3,4,15, 4,16,15, 4,5,16, 5,17,16, 5,6,17, 6,18,17,
+			6,7,18, 7,19,18, 7,8,19, 8,20,19, 8,9,20, 9,21,20,
+			9,10,21, 10,22,21, 10,11,22, 11,23,22, 11,0,23, 0,12,23,
+			12,13,24, 13,25,24, 13,14,25, 14,26,25, 14,15,26, 15,27,26,
+			15,16,27, 16,28,27, 16,17,28, 17,29,28, 17,18,29, 18,30,29,
+			18,19,30, 19,31,30, 19,20,31, 20,32,31, 20,21,32, 21,33,32,
+			21,22,33, 22,34,33, 22,23,34, 23,35,34, 23,12,35, 12,24,35,
+			24,25,36, 25,26,36, 26,27,36, 27,28,36, 28,29,36, 29,30,36,
+			30,31,36, 31,32,36, 32,33,36, 33,34,36, 34,35,36, 35,24,36,
+			49,51,50, 49,52,51, 49,53,52, 49,54,53, 49,55,54, 49,56,55,
+			49,57,56, 49,58,57, 49,59,58, 49,60,59, 49,61,60, 49,50,61,
+			50,51,62, 51,63,62, 51,52,63, 52,64,63, 52,53,64, 53,65,64,
+			53,54,65, 54,66,65, 54,55,66, 55,67,66, 55,56,67, 56,68,67,
+			56,57,68, 57,69,68, 57,58,69, 58,70,69, 58,59,70, 59,71,70,
+			59,60,71, 60,72,71, 60,61,72, 61,73,72, 61,50,73, 50,62,73,
+			62,63,37, 63,38,37, 63,64,38, 64,39,38, 64,65,39, 65,40,39,
+			65,66,40, 66,41,40, 66,67,41, 67,42,41, 67,68,42, 68,43,42,
+			68,69,43, 69,44,43, 69,70,44, 70,45,44, 70,71,45, 71,46,45,
+			71,72,46, 72,47,46, 72,73,47, 73,48,47, 73,62,48, 62,37,48,
+
+			48,11,10, 48,10,47, 47,10,9, 9,46,47, 46,9,8, 8,45,46,
+			45,8,7, 45,7,44, 44,7,6, 44,6,43, 43,6,5, 43,5,42,
+			42,5,4, 4,41,42, 41,4,3, 3,40,41, 40,3,2, 40,2,39,
+			39,2,1, 1,38,39, 38,1,0, 38,0,37, 37,0,11, 11,48,37
+		};
+
+		for(int i=0;i&lt;farr.Length;i+=3){
+			addFace(bd,mx,varr[farr[i+0]],varr[farr[i+1]],varr[farr[i+2]]);
+		}
+	}
+
+	public void AddBox(IPEXPmd pex,IPEShortBuilder bd,IPEXMaterial mx,IPEVector3 org,float xsize,float ysize,float zsize,IPEXBone bone){
+		IList&lt;IPEXVertex&gt; pexVertex = pex.Vertex;
+		
+		IPEXVertex[] varr = new IPEXVertex[24];
+
+		float[] larr = new float[]{
+			 1, 1, 1, 0, 0, 1,-1, 1, 1, 0, 0, 1, 1,-1, 1, 0, 0, 1,-1,-1, 1, 0, 0, 1,
+			 1, 1,-1, 0, 0,-1,-1, 1,-1, 0, 0,-1, 1,-1,-1, 0, 0,-1,-1,-1,-1, 0, 0,-1,
+			 1, 1, 1, 0, 1, 0,-1, 1, 1, 0, 1, 0, 1, 1,-1, 0, 1, 0,-1, 1,-1, 0, 1, 0,
+			 1,-1, 1, 0,-1, 0,-1,-1, 1, 0,-1, 0, 1,-1,-1, 0,-1, 0,-1,-1,-1, 0,-1, 0,
+			 1, 1, 1, 1, 0, 0, 1,-1, 1, 1, 0, 0, 1, 1,-1, 1, 0, 0, 1,-1,-1, 1, 0, 0,
+			-1, 1, 1,-1, 0, 0,-1,-1, 1,-1, 0, 0,-1, 1,-1,-1, 0, 0,-1,-1,-1,-1, 0, 0
+		};
+
+		for(int i=0;i&lt;larr.Length;i+=6){
+			varr[i/6] = boxVertex(bd,
+					org.X+larr[i]*xsize,org.Y+larr[i+1]*ysize,org.Z+larr[i+2]*zsize,
+					larr[i+3],larr[i+4],larr[i+5],bone);
+			pexVertex.Add(varr[i/6]);
+		}
+
+		int[] farr = new int[]{
+			//本体部分の面作成
+			 0, 1, 3, 0, 3, 2, 4, 7, 5, 4, 6 ,7,
+			 8,11, 9, 8,10,11,12,13,15,12,15,14,
+			16,17,19,16,19,18,21,20,23,23,20,22,
+			//面取り部分の面作成
+			 0, 9, 1, 0, 8, 9, 2, 3,13, 2,13,12, 4, 5,11, 4,11,10, 6,15, 7, 6,14,15,
+			 0, 2,17, 0,17,16, 4,19, 6, 4,18,19, 8,18,10, 8,16,18, 0,16, 8, 4,10,18,
+			17,14,19,17,12,14, 2,12,17, 6,19,14, 1,21, 3, 1,20,21, 5, 7,23, 5,23,22,
+			 9,11,22, 9,22,20,11, 5,22, 9,20, 1,13,23,15,13,21,23, 7,15,23, 3,21,13
+		};
+
+		for(int i=0;i&lt;farr.Length;i+=3){
+			addFace(bd,mx,varr[farr[i+0]],varr[farr[i+1]],varr[farr[i+2]]);
+		}
+	}
+
+	public IPEXVertex boxVertex(IPEShortBuilder bd,float x,float y,float z,float nx,float ny,float nz,IPEXBone bone){
+		IPEXVertex vertex = bd.XVertex();
+		vertex.Position.X = x;
+		vertex.Position.Y = y;
+		vertex.Position.Z = z;
+		vertex.Normal.X = nx;
+		vertex.Normal.Y = ny;
+		vertex.Normal.Z = nz;
+		vertex.Bone1 = bone;
+		vertex.Weight = 100;
+		return(vertex);
+	}
+
+	public void addFace(IPEShortBuilder bd,IPEXMaterial mx,IPEXVertex v1,IPEXVertex v2,IPEXVertex v3){
+		IPEXFace face =  bd.XFace();
+		face.Vertex1 = v1;
+		face.Vertex2 = v2;
+		face.Vertex3 = v3;
+		mx.Faces.Add(face);
+	}
+}
+</FullCodeText>
+  <CodeText>
+// Run()関数内の処理を記述
+// 外部クラスの活用などは一般形式のスクリプトコードを使用してください.
+
+// プラグイン変数は IPERunArgs args を通して取得可能
+// コードに自動的に追加されるヘッダ／フッタはメニューから有効化／確認が可能(ヘッダは標準で有効設定)
+
+
+</CodeText>
+  <CodeHeader>//
+// ---- 簡易編集用ヘッダコード ----
+
+// 常用接続変数一括登録
+
+// ホスト配下
+IPEPluginHost host = args.Host;
+IPEBuilder builder = host.Builder;
+IPEShortBuilder bd = host.Builder.SC;		// 短絡系ビルダ
+IPXPmxBuilder bdx = host.Builder.Pmx;		// PMXビルダ
+IPEConnector connect = host.Connector;
+IPEPMDViewConnector view = host.Connector.View.PMDView;
+
+// PMX関連
+
+IPXPmx pmx = connect.Pmx.GetCurrentState();     // PMX取得
+IPXHeader header = pmx.Header;                  // header   :ヘッダ
+IPXModelInfo info = pmx.ModelInfo;              // info     :モデル情報
+IList&lt;IPXVertex&gt; vertex = pmx.Vertex;           // vertex   :頂点   | リスト
+IList&lt;IPXMaterial&gt; material = pmx.Material;     // material :材質   | リスト
+IList&lt;IPXBone&gt; bone = pmx.Bone;                 // bone     :ボーン | リスト
+IList&lt;IPXMorph&gt; morph = pmx.Morph;				// morph    :モーフ | リスト
+IList&lt;IPXNode&gt; node = pmx.Node;					// node     :表示枠 | リスト
+IList&lt;IPXBody&gt; body = pmx.Body;                 // body     :剛体   | リスト
+IList&lt;IPXJoint&gt; joint = pmx.Joint;              // joint    :Joint  | リスト
+
+
+/*
+// PMD関連
+
+IPEPmd pmd = connect.Pmd.GetCurrentState();         // PMD取得
+// IPEXPmd pex = connect.Pmd.GetCurrentStateEx();       // 拡張PMDを使う場合はコメント解除(拡張用データへの接続変数は未登録)
+
+IPEHeader header = pmd.Header;                  // header   :ヘッダ
+IList&lt;IPEVertex&gt; vertex = pmd.Vertex;           // vertex   :頂点   | リスト
+IList&lt;int&gt; face = pmd.Face;                     // face     :面     | リスト
+IList&lt;IPEMaterial&gt; material = pmd.Material;     // material :材質   | リスト
+IList&lt;IPEBone&gt; bone = pmd.Bone;                 // bone     :ボーン | リスト
+IList&lt;IPEIK&gt; ik = pmd.IK;                       // ik       :IK     | リスト
+IList&lt;IPEExpression&gt; exp = pmd.Expression;      // exp      :表情   | リスト
+
+IList&lt;int&gt; frameExp = pmd.FrameExpression;      // frameExp :表情枠 | リスト
+IList&lt;IPEFrameBone&gt; frameBone = pmd.FrameBone;  // frameBone:ボーン表示枠 | リスト
+
+string[] toon = pmd.ToonName;                   // toon     :Toon   | 配列
+
+IList&lt;IPEBody&gt; body = pmd.Body;                 // body     :剛体   | リスト
+IList&lt;IPEJoint&gt; joint = pmd.Joint;              // joint    :Joint  | リスト
+*/
+
+</CodeHeader>
+  <CodeFooter>//
+// ---- 簡易編集用フッタコード ----
+
+// 更新処理
+// デフォルト設定ではフッタコードはOFF
+
+// PMX更新
+connect.Pmx.Update(pmx);
+
+/*
+// PMD更新
+connect.Pmd.Update(pmd);
+//connect.Pmd.UpdateEx(pex);
+*/
+
+// Form更新
+connect.Form.UpdateList(UpdateObject.All);  // 重い場合は引数を変更して個別に更新
+
+// PMDView更新
+connect.View.PMDView.UpdateModel();         // Viewの更新が不要な場合はコメントアウト
+connect.View.PMDView.UpdateView();
+
+
+</CodeFooter>
+  <EnableHeader>true</EnableHeader>
+  <EnableFooter>true</EnableFooter>
+  <ActivePages>0</ActivePages>
+</CSScriptData>

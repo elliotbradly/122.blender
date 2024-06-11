@@ -1,0 +1,4 @@
+﻿;Specify colors to be used in the Weight Bone display
+;"Bone Name",R(0-255),G(0-255),B(0-255)
+;Ex.)"Upper Body",255,0,0 -> Red
+;
